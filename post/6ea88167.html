@@ -1,0 +1,535 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Linux操作系统学习 | Rayce. personal blog</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="linux操作系统Linux的目录结构：    树状图解 vi &#x2F; vim的学习什么是vi&#x2F; vim，为什么我们需要学习原因：  鸟哥的原因   所有的Unix Like 系统都会内建vi 文书编辑器，其他的文书编辑器则不一定会存在； 很多个别软体的编辑介面都会主动呼叫vi (例如未来会谈到的crontab , visudo , edquota等指令)； vim 具有程式编辑的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux操作系统学习">
+<meta property="og:url" content="https://ray2310.github.io/post/6ea88167.html">
+<meta property="og:site_name" content="Rayce. personal blog">
+<meta property="og:description" content="linux操作系统Linux的目录结构：    树状图解 vi &#x2F; vim的学习什么是vi&#x2F; vim，为什么我们需要学习原因：  鸟哥的原因   所有的Unix Like 系统都会内建vi 文书编辑器，其他的文书编辑器则不一定会存在； 很多个别软体的编辑介面都会主动呼叫vi (例如未来会谈到的crontab , visudo , edquota等指令)； vim 具有程式编辑的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.51miz.com/Element/00/72/77/78/575accf3_E727778_6fadd380.jpg">
+<meta property="article:published_time" content="2023-01-02T13:23:15.000Z">
+<meta property="article:modified_time" content="2023-01-02T13:31:36.799Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.51miz.com/Element/00/72/77/78/575accf3_E727778_6fadd380.jpg"><link rel="shortcut icon" href="https://img95.699pic.com/photo/40094/7630.jpg_wh300.jpg"><link rel="canonical" href="https://ray2310.github.io/post/6ea88167.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. personal blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Linux操作系统学习',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2023-01-02 21:31:36'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://img.51miz.com/Element/00/72/77/78/575accf3_E727778_6fadd380.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. personal blog"><span class="site-name">Rayce. personal blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Linux操作系统学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-02T13:23:15.000Z" title="发表于 2023-01-02 21:23:15">2023-01-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-02T13:31:36.799Z" title="更新于 2023-01-02 21:31:36">2023-01-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Linux/">Linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Linux操作系统学习"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="linux操作系统"><a href="#linux操作系统" class="headerlink" title="linux操作系统"></a>linux操作系统</h1><h2 id="Linux的目录结构："><a href="#Linux的目录结构：" class="headerlink" title="Linux的目录结构："></a>Linux的目录结构：</h2><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4e0acf91abf541d08f5fd445614c0ed3~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d5e2a1000f4947d796b0596adbdc7122~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/10e80a9586674529a8b50e920b781cc8~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/84409ad7377c4593b8b2ad616f6f47ba~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<h2 id="树状图解"><a href="#树状图解" class="headerlink" title="树状图解"></a>树状图解</h2><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3ec3d8f97b5941cb843a829b470c4e0d~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ed935c1b0b7d4f8a9697a1ab668ac48b~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<h1 id="vi-x2F-vim的学习"><a href="#vi-x2F-vim的学习" class="headerlink" title="vi &#x2F; vim的学习"></a>vi &#x2F; vim的学习</h1><h2 id="什么是vi-x2F-vim，为什么我们需要学习"><a href="#什么是vi-x2F-vim，为什么我们需要学习" class="headerlink" title="什么是vi&#x2F; vim，为什么我们需要学习"></a>什么是vi&#x2F; vim，为什么我们需要学习</h2><p><strong>原因：</strong></p>
+<ol>
+<li><p>鸟哥的原因</p>
+</li>
+<li><ol>
+<li>所有的Unix Like 系统都会内建vi 文书编辑器，其他的文书编辑器则不一定会存在；</li>
+<li>很多个别软体的编辑介面都会主动呼叫vi (例如未来会谈到的crontab , visudo , edquota等指令)；</li>
+<li>vim 具有程式编辑的能力，可以主动的以字体颜色辨别语法的正确性，方便程式设计；</li>
+<li>因为程式简单，编辑速度相当快速。</li>
+</ol>
+</li>
+<li><p><strong>有太多Linux 上面的指令都预设使用vi 作为资料编辑的介面，所以你必须、一定要学会 vi ，否则很多指令你根本就无法操作呢！</strong></p>
+</li>
+</ol>
+<p><strong>什么是vi &#x2F; vim：</strong></p>
+<p>Vim 是从 vi 发展出来的一个文本编辑器。代码补全、编译及错误跳转等方便编程的功能特别丰富，在程序员中被广泛使用。 简单的来说， vi 是老式的字处理器，不过功能已经很齐全了，但是还是有可以进步的地方。 vim 则可以说是程序开发者的一项很好用的工具。</p>
+<p>连 vim 的官方网站 (<a href="https://link.juejin.cn/?target=https://www.vim.org/">www.vim.org/</a>) 自己也说 vim 是一个程序开发工具而不是文字处理软件。</p>
+<h1 id="各种模式的切换"><a href="#各种模式的切换" class="headerlink" title="各种模式的切换"></a>各种模式的切换</h1><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/65f28fc1e02f491cbfedb42ed7b1ce39~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p>各种模式解释：</p>
+<ol>
+<li>一般模式&#x2F;正常模式</li>
+</ol>
+<p>第一种：</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/88af663538104644908e005eb64930f5~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p>第二种： 就是进入遍历模式，但是没有输入( i &#x2F; a的情况下 )</p>
+<ol>
+<li>编辑模式（输入i, I, o, O, a, A, r, R的情况下）</li>
+</ol>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2df0a2f67c714011b91a631835f668bf~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<ol>
+<li>命令模式</li>
+</ol>
+<p>就是进入编辑模式之后，输入完成按esc键，然后在输入 ：或者 &#x2F; 就会进入命令模式<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6931fb0e976243ee8e2c19ba174ffbdc~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<h2 id="vim快捷键练习"><a href="#vim快捷键练习" class="headerlink" title="vim快捷键练习"></a>vim快捷键练习</h2><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9d74202aa35d44f9a7f46c0323a79a8c~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<h3 id="拷贝"><a href="#拷贝" class="headerlink" title="拷贝"></a>拷贝</h3><p>在正常模式&#x2F;一般模式下才会有效</p>
+<ol>
+<li>对于复制元素 命令： (x) yy,然后输入p &#x2F;&#x2F;x为我们需要向下拷贝的行数</li>
+</ol>
+<p>同样的对于拷贝&#x2F;复制 ，我们必须是在一般模式&#x2F;正常模式下进行</p>
+<p><strong>操作方法：</strong> 【 现输入x(行数) ，然后再按yy，（接下来就是移动光标，比如我们向向下复制这几行元素，就必须在进行完上述操作后将光标移动到下面），最后在按p<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0254d9c3c4064001af77ef5c5c333bf3~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img">最后呈现效果</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d4b306cf85364ddf96c01ae9533dda41~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p>】</p>
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><p>在正常模式&#x2F;一般模式下才会有效</p>
+<ol>
+<li>删除当前行：输入dd</li>
+</ol>
+<p>(x) dd,然后输入p &#x2F;&#x2F;x为我们需要向下删除的行数</p>
+<p>光标移动到当前行，然后输入5dd就会删除当前行下面的5行元素</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/087720ebad5f4d51a86bdd346568c9b3~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p>效果<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/83da363939084ac3a6670c54c687c8c1~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<h3 id="查找操作"><a href="#查找操作" class="headerlink" title="查找操作"></a>查找操作</h3><p>在命令模式下进行</p>
+<p>完成进入编辑模式后</p>
+<p>操作： 输入 &#x2F;+关键字，然后按回车 —&gt; 就会在编辑页面出现查找的内容，输入 n就会查找下一个</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e52bf7ac5b504f9085cce96077ec2c2b~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p>效果：（输入n 就是查找下一个 ）<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d5141613ff604e6d925d279432fee277~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<h3 id="设置文件行号"><a href="#设置文件行号" class="headerlink" title="设置文件行号"></a>设置文件行号</h3><p>在命令模式下</p>
+<p>操作： 进入命令行，输入:set nu</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ac8ab4b6afee41f2beec046e95bfac79~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p>如果不想展示则输入 set nonu 就会取消行号设置</p>
+<h3 id="快速定位到某文档的最末行-或者-最首行-在一般模式下-x2F-正常模式下"><a href="#快速定位到某文档的最末行-或者-最首行-在一般模式下-x2F-正常模式下" class="headerlink" title="快速定位到某文档的最末行 或者 最首行 在一般模式下&#x2F;正常模式下"></a>快速定位到某文档的最末行 或者 最首行 在一般模式下&#x2F;正常模式下</h3><p>直接输入 大写的G(最末行) 或者小写的gg(首行)</p>
+<p>撤销编辑时的输入操作 在一般模式下&#x2F;正常模式下</p>
+<p>输入 u</p>
+<h3 id="快速定位到某一行-在一般模式下-x2F-正常模式下"><a href="#快速定位到某一行-在一般模式下-x2F-正常模式下" class="headerlink" title="快速定位到某一行 在一般模式下&#x2F;正常模式下"></a>快速定位到某一行 在一般模式下&#x2F;正常模式下</h3><p>操作： 输入 行号 –&gt; 在输入 shift + g （建议先打开行号）</p>
+<h3 id="vim的键盘图"><a href="#vim的键盘图" class="headerlink" title="vim的键盘图"></a>vim的键盘图</h3><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/05c67f76506a491e93006c8adfd569a4~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f0460b70928145bdb71c473cd3672c52~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<hr>
+<h1 id="按键说明"><a href="#按键说明" class="headerlink" title="按键说明"></a>按键说明</h1><h3 id="第一部份：一般指令模式可用的按钮说明，游标移动、复制贴上、搜寻取代等"><a href="#第一部份：一般指令模式可用的按钮说明，游标移动、复制贴上、搜寻取代等" class="headerlink" title="第一部份：一般指令模式可用的按钮说明，游标移动、复制贴上、搜寻取代等"></a>第一部份：一般指令模式可用的按钮说明，游标移动、复制贴上、搜寻取代等</h3><table>
+<thead>
+<tr>
+<th>移动游标的方法</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>h 或向左方向键(←)</td>
+<td>游标向左移动一个字元</td>
+</tr>
+<tr>
+<td>j 或向下方向键(↓)</td>
+<td>游标向下移动一个字元</td>
+</tr>
+<tr>
+<td>k 或向上方向键(↑)</td>
+<td>游标向上移动一个字元</td>
+</tr>
+<tr>
+<td>l 或向右方向键(→)</td>
+<td>游标向右移动一个字元</td>
+</tr>
+<tr>
+<td>如果你将右手放在键盘上的话，你会发现hjkl 是排列在一起的，因此可以使用这四个按钮来移动游标。如果想要进行多次移动的话，例如向下移动30 列，可以使用”30j” 或”30↓” 的组合按键， 亦即加上想要进行的次数(数字)后，按下动作即可！</td>
+<td></td>
+</tr>
+<tr>
+<td>[Ctrl] + [f]</td>
+<td>萤幕『向下』移动一页，相当于[Page Down]按键 (常用)</td>
+</tr>
+<tr>
+<td>[Ctrl] + [b]</td>
+<td>萤幕『向上』移动一页，相当于[Page Up] 按键 (常用)</td>
+</tr>
+<tr>
+<td>[Ctrl] + [d]</td>
+<td>萤幕『向下』移动半页</td>
+</tr>
+<tr>
+<td>[Ctrl] + [u]</td>
+<td>萤幕『向上』移动半页</td>
+</tr>
+<tr>
+<td>+</td>
+<td>游标移动到非空白字元的下一列</td>
+</tr>
+<tr>
+<td>-</td>
+<td>游标移动到非空白字元的上一列</td>
+</tr>
+<tr>
+<td>n</td>
+<td>那个n 表示『数字』，例如20 。按下数字后再按空白键，游标会向右移动这一列的n 个字元。例如20 则游标会向后面移动20 个字元距离。</td>
+</tr>
+<tr>
+<td>0 或功能键[Home]</td>
+<td>这是数字『 0 』：移动到这一列的最前面字元处 (常用)</td>
+</tr>
+<tr>
+<td>$ 或功能键[End]</td>
+<td>移动到这一列的最后面字元处(常用)</td>
+</tr>
+<tr>
+<td>H</td>
+<td>游标移动到这个萤幕的最上方那一列的第一个字元</td>
+</tr>
+<tr>
+<td>M</td>
+<td>游标移动到这个萤幕的中央那一列的第一个字元</td>
+</tr>
+<tr>
+<td>L</td>
+<td>游标移动到这个萤幕的最下方那一列的第一个字元</td>
+</tr>
+<tr>
+<td>G</td>
+<td>移动到这个档案的最后一列(常用)</td>
+</tr>
+<tr>
+<td>nG</td>
+<td>n 为数字。移动到这个档案的第n 列。例如20G 则会移动到这个档案的第20 列(可配合:set nu)</td>
+</tr>
+<tr>
+<td>gg</td>
+<td>移动到这个档案的第一列，相当于1G 啊！(常用)</td>
+</tr>
+<tr>
+<td>n</td>
+<td>n 为数字。游标向下移动n 列(常用)</td>
+</tr>
+<tr>
+<td>搜寻与取代</td>
+<td></td>
+</tr>
+<tr>
+<td>&#x2F;word</td>
+<td>向游标之下寻找一个名称为word 的字串。例如要在档案内搜寻vbird 这个字串，就输入&#x2F;vbird 即可！(常用)</td>
+</tr>
+<tr>
+<td>?word</td>
+<td>向游标之上寻找一个字串名称为word 的字串。</td>
+</tr>
+<tr>
+<td>n</td>
+<td>这个n 是英文按键。代表『重复前一个搜寻的动作』。举例来说， 如果刚刚我们执行&#x2F;vbird 去向下搜寻vbird 这个字串，则按下n 后，会向下继续搜寻下一个名称为vbird 的字串。如果是执行?vbird 的话，那么按下n 则会向上继续搜寻名称为vbird 的字串！</td>
+</tr>
+<tr>
+<td>N</td>
+<td>这个N 是英文按键。与n 刚好相反，为『反向』进行前一个搜寻动作。例如&#x2F;vbird 后，按下N 则表示『向上』搜寻vbird 。</td>
+</tr>
+<tr>
+<td>使用&#x2F;word 配合n 及N 是非常有帮助的！可以让你重复的找到一些你搜寻的关键字！</td>
+<td></td>
+</tr>
+<tr>
+<td>:n1,n2s&#x2F;word1&#x2F;word2&#x2F;g</td>
+<td>n1 与n2 为数字。在第n1 与n2 列之间寻找word1 这个字串，并将该字串取代为 word2 ！举例来说，在100 到200 列之间搜寻vbird 并取代为VBIRD 则： 『:100,200s&#x2F;vbird&#x2F;VBIRD&#x2F;g』。(常用)</td>
+</tr>
+<tr>
+<td>:1,$s&#x2F;word1&#x2F;word2&#x2F;g</td>
+<td>从第一列到最后一列寻找word1 字串，并将该字串取代为 word2 ！(常用)</td>
+</tr>
+<tr>
+<td>:1,$s&#x2F;word1&#x2F;word2&#x2F;gc</td>
+<td>从第一列到最后一列寻找word1 字串，并将该字串取代为 word2 ！且在取代前显示提示字元给使用者确认(confirm) 是否需要取代！(常用)</td>
+</tr>
+<tr>
+<td>删除、复制与贴上</td>
+<td></td>
+</tr>
+<tr>
+<td>x, X</td>
+<td>在一列字当中，x 为向后删除一个字元(相当于[del] 按键)， X 为向前删除一个字元(相当于[backspace] 亦即是倒退键) (常用)</td>
+</tr>
+<tr>
+<td>nx</td>
+<td>n 为数字，连续向后删除n 个字元。举例来说，我要连续删除10 个字元， 『10x』。</td>
+</tr>
+<tr>
+<td>dd</td>
+<td>删除游标所在的那一整列(常用)</td>
+</tr>
+<tr>
+<td>ndd</td>
+<td>n 为数字。删除游标所在的向下n 列，例如20dd 则是删除20 列 (常用)</td>
+</tr>
+<tr>
+<td>d1G</td>
+<td>删除游标所在到第一列的所有资料</td>
+</tr>
+<tr>
+<td>dG</td>
+<td>删除游标所在到最后一列的所有资料</td>
+</tr>
+<tr>
+<td>d$</td>
+<td>删除游标所在处，到该列的最后一个字元</td>
+</tr>
+<tr>
+<td>d0</td>
+<td>那个是数字的0 ，删除游标所在处，到该列的最前面一个字元</td>
+</tr>
+<tr>
+<td>yy</td>
+<td>复制游标所在的那一列(常用)</td>
+</tr>
+<tr>
+<td>nyy</td>
+<td>n 为数字。复制游标所在的向下n 列，例如20yy 则是复制20 列(常用)</td>
+</tr>
+<tr>
+<td>y1G</td>
+<td>复制游标所在列到第一列的所有资料</td>
+</tr>
+<tr>
+<td>yG</td>
+<td>复制游标所在列到最后一列的所有资料</td>
+</tr>
+<tr>
+<td>y0</td>
+<td>复制游标所在的那个字元到该列行首的所有资料</td>
+</tr>
+<tr>
+<td>y$</td>
+<td>复制游标所在的那个字元到该列行尾的所有资料</td>
+</tr>
+<tr>
+<td>p, P</td>
+<td>p 为将已复制的资料在游标下一列贴上，P 则为贴在游标上一列！举例来说，我目前游标在第20 列，且已经复制了10 列资料。则按下p 后， 那10 列资料会贴在原本的20 列之后，亦即由21 列开始贴。但如果是按下P 呢？那么原本的第20 列会被推到变成30 列。(常用)</td>
+</tr>
+<tr>
+<td>J</td>
+<td>将游标所在列与下一列的资料结合成同一列</td>
+</tr>
+<tr>
+<td>c</td>
+<td>重复删除多个资料，例如向下删除10 列，[ 10cj ]</td>
+</tr>
+<tr>
+<td>u</td>
+<td>复原前一个动作。(常用)</td>
+</tr>
+<tr>
+<td>[Ctrl]+r</td>
+<td>重做上一个动作。(常用)</td>
+</tr>
+<tr>
+<td>这个u 与[Ctrl]+r 是很常用的指令！一个是复原，另一个则是重做一次～ 利用这两个功能按键，你的编辑，嘿嘿！很快乐的啦！</td>
+<td></td>
+</tr>
+<tr>
+<td>.</td>
+<td>不要怀疑！这就是小数点！意思是重复前一个动作的意思。如果你想要重复删除、重复贴上等等动作，按下小数点『.』就好了！(常用)</td>
+</tr>
+</tbody></table>
+<h3 id="第二部份：一般指令模式切换到编辑模式的可用的按钮说明"><a href="#第二部份：一般指令模式切换到编辑模式的可用的按钮说明" class="headerlink" title="第二部份：一般指令模式切换到编辑模式的可用的按钮说明"></a>第二部份：一般指令模式切换到编辑模式的可用的按钮说明</h3><table>
+<thead>
+<tr>
+<th>进入插入或取代的编辑模式</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>i, I</td>
+<td>进入插入模式(Insert mode)： i 为『从目前游标所在处插入』， I 为『在目前所在列的第一个非空白字元处开始插入』。(常用)</td>
+</tr>
+<tr>
+<td>a, A</td>
+<td>进入插入模式(Insert mode)： a 为『从目前游标所在的下一个字元处开始插入』， A 为『从游标所在列的最后一个字元处开始插入』。(常用)</td>
+</tr>
+<tr>
+<td>o, O</td>
+<td>进入插入模式(Insert mode)： 这是英文字母o 的大小写。o 为『在目前游标所在的下一列处插入新的一列』； O 为在目前游标所在处的上一列插入新的一列！(常用)</td>
+</tr>
+<tr>
+<td>r, R</td>
+<td>进入取代模式(Replace mode)： r 只会取代游标所在的那一个字元一次；R会一直取代游标所在的文字，直到按下 ESC 为止；(常用)</td>
+</tr>
+<tr>
+<td>上面这些按键中，在vi 画面的左下角处会出现『–INSERT–』或『–REPLACE–』的字样。由名称就知道该动作了吧！！特别注意的是，我们上面也提过了，你想要在档案里面输入字元时， 一定要在左下角处看到INSERT 或REPLACE 才能输入喔！</td>
+<td></td>
+</tr>
+<tr>
+<td>[Esc]</td>
+<td>退出编辑模式，回到一般指令模式中(常用)</td>
+</tr>
+</tbody></table>
+<h3 id="第三部份：一般指令模式切换到指令列模式的可用按钮说明"><a href="#第三部份：一般指令模式切换到指令列模式的可用按钮说明" class="headerlink" title="第三部份：一般指令模式切换到指令列模式的可用按钮说明"></a>第三部份：一般指令模式切换到指令列模式的可用按钮说明</h3><table>
+<thead>
+<tr>
+<th>指令列模式的储存、离开等指令</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>:w</td>
+<td>将编辑的资料写入硬碟档案中(常用)</td>
+</tr>
+<tr>
+<td>:w!</td>
+<td>若档案属性为『唯读』时，强制写入该档案。不过，到底能不能写入， 还是跟你对该档案的档案权限有关啊！</td>
+</tr>
+<tr>
+<td>:q</td>
+<td>离开vi (常用)</td>
+</tr>
+<tr>
+<td>:q!</td>
+<td>若曾修改过档案，又不想储存，使用! 为强制离开不储存档案。</td>
+</tr>
+<tr>
+<td>注意一下啊，那个惊叹号(!) 在vi 当中，常常具有『强制』的意思～</td>
+<td></td>
+</tr>
+<tr>
+<td>:wq</td>
+<td>储存后离开，若为:wq! 则为强制储存后离开 (常用)</td>
+</tr>
+<tr>
+<td>ZZ</td>
+<td>这是大写的Z 喔！若档案没有更动，则不储存离开，若档案已经被更动过，则储存后离开！</td>
+</tr>
+<tr>
+<td>:w [filename]</td>
+<td>将编辑的资料储存成另一个档案（类似另存新档）</td>
+</tr>
+<tr>
+<td>:r [filename]</td>
+<td>在编辑的资料中，读入另一个档案的资料。亦即将『filename』 这个档案内容加到游标所在列后面</td>
+</tr>
+<tr>
+<td>:n1,n2 w [filename]</td>
+<td>将n1 到n2 的内容储存成filename 这个档案。</td>
+</tr>
+<tr>
+<td>:! command</td>
+<td>暂时离开vi 到指令列模式下执行command 的显示结果！例如 『:! ls &#x2F;home』即可在vi 当中察看&#x2F;home 底下以ls 输出的档案资讯！</td>
+</tr>
+<tr>
+<td>vim 环境的变更</td>
+<td></td>
+</tr>
+<tr>
+<td>:set nu</td>
+<td>显示行号，设定之后，会在每一列的字首显示该列的行号</td>
+</tr>
+<tr>
+<td>:set nonu</td>
+<td>与set nu 相反，为取消行号！</td>
+</tr>
+</tbody></table>
+<h1 id="参考说明："><a href="#参考说明：" class="headerlink" title="参考说明："></a>参考说明：</h1><p>文档学习:</p>
+<p>​	相关内容参考鸟哥Linux私房菜( <a href="https://link.juejin.cn/?target=https://linux.vbird.org/">linux.vbird.org&#x2F;</a> )</p>
+<p>​	视频学习：韩顺平Linux</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/6ea88167.html">https://ray2310.github.io/post/6ea88167.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://ray2310.github.io" target="_blank">Rayce. personal blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Linux/">Linux</a></div><div class="post_share"><div class="social-share" data-image="https://img.51miz.com/Element/00/72/77/78/575accf3_E727778_6fadd380.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">linux操作系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E7%9A%84%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">Linux的目录结构：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%91%E7%8A%B6%E5%9B%BE%E8%A7%A3"><span class="toc-number">1.2.</span> <span class="toc-text">树状图解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#vi-x2F-vim%E7%9A%84%E5%AD%A6%E4%B9%A0"><span class="toc-number">2.</span> <span class="toc-text">vi &#x2F; vim的学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFvi-x2F-vim%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E4%BB%AC%E9%9C%80%E8%A6%81%E5%AD%A6%E4%B9%A0"><span class="toc-number">2.1.</span> <span class="toc-text">什么是vi&#x2F; vim，为什么我们需要学习</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%84%E7%A7%8D%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%88%87%E6%8D%A2"><span class="toc-number">3.</span> <span class="toc-text">各种模式的切换</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#vim%E5%BF%AB%E6%8D%B7%E9%94%AE%E7%BB%83%E4%B9%A0"><span class="toc-number">3.1.</span> <span class="toc-text">vim快捷键练习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%B7%E8%B4%9D"><span class="toc-number">3.1.1.</span> <span class="toc-text">拷贝</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4"><span class="toc-number">3.1.2.</span> <span class="toc-text">删除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E6%93%8D%E4%BD%9C"><span class="toc-number">3.1.3.</span> <span class="toc-text">查找操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A1%8C%E5%8F%B7"><span class="toc-number">3.1.4.</span> <span class="toc-text">设置文件行号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%AE%9A%E4%BD%8D%E5%88%B0%E6%9F%90%E6%96%87%E6%A1%A3%E7%9A%84%E6%9C%80%E6%9C%AB%E8%A1%8C-%E6%88%96%E8%80%85-%E6%9C%80%E9%A6%96%E8%A1%8C-%E5%9C%A8%E4%B8%80%E8%88%AC%E6%A8%A1%E5%BC%8F%E4%B8%8B-x2F-%E6%AD%A3%E5%B8%B8%E6%A8%A1%E5%BC%8F%E4%B8%8B"><span class="toc-number">3.1.5.</span> <span class="toc-text">快速定位到某文档的最末行 或者 最首行 在一般模式下&#x2F;正常模式下</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%AE%9A%E4%BD%8D%E5%88%B0%E6%9F%90%E4%B8%80%E8%A1%8C-%E5%9C%A8%E4%B8%80%E8%88%AC%E6%A8%A1%E5%BC%8F%E4%B8%8B-x2F-%E6%AD%A3%E5%B8%B8%E6%A8%A1%E5%BC%8F%E4%B8%8B"><span class="toc-number">3.1.6.</span> <span class="toc-text">快速定位到某一行 在一般模式下&#x2F;正常模式下</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vim%E7%9A%84%E9%94%AE%E7%9B%98%E5%9B%BE"><span class="toc-number">3.1.7.</span> <span class="toc-text">vim的键盘图</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8C%89%E9%94%AE%E8%AF%B4%E6%98%8E"><span class="toc-number">4.</span> <span class="toc-text">按键说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E4%BB%BD%EF%BC%9A%E4%B8%80%E8%88%AC%E6%8C%87%E4%BB%A4%E6%A8%A1%E5%BC%8F%E5%8F%AF%E7%94%A8%E7%9A%84%E6%8C%89%E9%92%AE%E8%AF%B4%E6%98%8E%EF%BC%8C%E6%B8%B8%E6%A0%87%E7%A7%BB%E5%8A%A8%E3%80%81%E5%A4%8D%E5%88%B6%E8%B4%B4%E4%B8%8A%E3%80%81%E6%90%9C%E5%AF%BB%E5%8F%96%E4%BB%A3%E7%AD%89"><span class="toc-number">4.0.1.</span> <span class="toc-text">第一部份：一般指令模式可用的按钮说明，游标移动、复制贴上、搜寻取代等</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E4%BB%BD%EF%BC%9A%E4%B8%80%E8%88%AC%E6%8C%87%E4%BB%A4%E6%A8%A1%E5%BC%8F%E5%88%87%E6%8D%A2%E5%88%B0%E7%BC%96%E8%BE%91%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8F%AF%E7%94%A8%E7%9A%84%E6%8C%89%E9%92%AE%E8%AF%B4%E6%98%8E"><span class="toc-number">4.0.2.</span> <span class="toc-text">第二部份：一般指令模式切换到编辑模式的可用的按钮说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%83%A8%E4%BB%BD%EF%BC%9A%E4%B8%80%E8%88%AC%E6%8C%87%E4%BB%A4%E6%A8%A1%E5%BC%8F%E5%88%87%E6%8D%A2%E5%88%B0%E6%8C%87%E4%BB%A4%E5%88%97%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8F%AF%E7%94%A8%E6%8C%89%E9%92%AE%E8%AF%B4%E6%98%8E"><span class="toc-number">4.0.3.</span> <span class="toc-text">第三部份：一般指令模式切换到指令列模式的可用按钮说明</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%AF%B4%E6%98%8E%EF%BC%9A"><span class="toc-number">5.</span> <span class="toc-text">参考说明：</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/6ea88167.html" title="Linux操作系统学习"><img src="https://img.51miz.com/Element/00/72/77/78/575accf3_E727778_6fadd380.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux操作系统学习"/></a><div class="content"><a class="title" href="/post/6ea88167.html" title="Linux操作系统学习">Linux操作系统学习</a><time datetime="2023-01-02T13:23:15.000Z" title="发表于 2023-01-02 21:23:15">2023-01-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/c0b354ed.html" title="MyBatis中的动态SQL技术"><img src="https://img.51miz.com/Element/00/72/77/78/575accf3_E727778_6fadd380.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MyBatis中的动态SQL技术"/></a><div class="content"><a class="title" href="/post/c0b354ed.html" title="MyBatis中的动态SQL技术">MyBatis中的动态SQL技术</a><time datetime="2023-01-01T09:41:44.000Z" title="发表于 2023-01-01 17:41:44">2023-01-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/23c7dc9f.html" title="myFirstBlog"><img src="https://th.bing.com/th/id/R.fc3712934d3f14e93bb049cb3be0ee18?rik=0ZlOt7i89hWjVA&amp;riu=http%3a%2f%2fwww.kutoo8.com%2fupload%2fimage%2f17634230%2f5656000.jpg&amp;ehk=ecvpFWTMp4spOXJ7pxOpzNwsdlk591NfEtk31YSdogg%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="myFirstBlog"/></a><div class="content"><a class="title" href="/post/23c7dc9f.html" title="myFirstBlog">myFirstBlog</a><time datetime="2023-01-01T09:29:37.000Z" title="发表于 2023-01-01 17:29:37">2023-01-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/4a17b156.html" title="Hello World"><img src="https://th.bing.com/th/id/R.fc3712934d3f14e93bb049cb3be0ee18?rik=0ZlOt7i89hWjVA&amp;riu=http%3a%2f%2fwww.kutoo8.com%2fupload%2fimage%2f17634230%2f5656000.jpg&amp;ehk=ecvpFWTMp4spOXJ7pxOpzNwsdlk591NfEtk31YSdogg%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/post/4a17b156.html" title="Hello World">Hello World</a><time datetime="2022-12-31T05:05:13.244Z" title="发表于 2022-12-31 13:05:13">2022-12-31</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://img.51miz.com/Element/00/72/77/78/575accf3_E727778_6fadd380.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
