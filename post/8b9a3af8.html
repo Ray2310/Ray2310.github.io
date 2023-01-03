@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>浅识Spring AOP | Rayce. personal blog</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Spring AOP 引言(just I think)： 因为java是面向对象编程，而面向对象是纵向继承机制，无法集中注意力到核心代码中，所以我们需要调用其他的机制来解决非核心代码的包装,将其从核心代码块中解耦出来   首先我们从spring官网了解一下他们对AOP思想的介绍 官网地址：docs.spring.io&#x2F;spring-fram… 面向方面编程 (AOP) 通过提供另一种思考">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅识Spring AOP">
+<meta property="og:url" content="https://ray2310.github.io/post/8b9a3af8.html">
+<meta property="og:site_name" content="Rayce. personal blog">
+<meta property="og:description" content="Spring AOP 引言(just I think)： 因为java是面向对象编程，而面向对象是纵向继承机制，无法集中注意力到核心代码中，所以我们需要调用其他的机制来解决非核心代码的包装,将其从核心代码块中解耦出来   首先我们从spring官网了解一下他们对AOP思想的介绍 官网地址：docs.spring.io&#x2F;spring-fram… 面向方面编程 (AOP) 通过提供另一种思考">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://th.bing.com/th/id/R.1adcbe85544d76e1e2e31d2683253438?rik=rtegGZrm6rdgzw&riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f2271e3d6ed6618845ff8cf4bdeeed33184e23d08.jpg&ehk=1sjnDT9IMMCM15%2fS4Pinlh5dZABRnayTAPoUKHeEeGs%3d&risl=&pid=ImgRaw&r=0">
+<meta property="article:published_time" content="2023-01-03T10:08:40.000Z">
+<meta property="article:modified_time" content="2023-01-03T10:28:10.964Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="后端">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://th.bing.com/th/id/R.1adcbe85544d76e1e2e31d2683253438?rik=rtegGZrm6rdgzw&riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f2271e3d6ed6618845ff8cf4bdeeed33184e23d08.jpg&ehk=1sjnDT9IMMCM15%2fS4Pinlh5dZABRnayTAPoUKHeEeGs%3d&risl=&pid=ImgRaw&r=0"><link rel="shortcut icon" href="https://img95.699pic.com/photo/40094/7630.jpg_wh300.jpg"><link rel="canonical" href="https://ray2310.github.io/post/8b9a3af8.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. personal blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '浅识Spring AOP',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2023-01-03 18:28:10'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"  media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://th.bing.com/th/id/R.1adcbe85544d76e1e2e31d2683253438?rik=rtegGZrm6rdgzw&amp;riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f2271e3d6ed6618845ff8cf4bdeeed33184e23d08.jpg&amp;ehk=1sjnDT9IMMCM15%2fS4Pinlh5dZABRnayTAPoUKHeEeGs%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. personal blog"><span class="site-name">Rayce. personal blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">浅识Spring AOP</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-03T10:08:40.000Z" title="发表于 2023-01-03 18:08:40">2023-01-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-03T10:28:10.964Z" title="更新于 2023-01-03 18:28:10">2023-01-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/java/">java</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/java/Spring/">Spring</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="浅识Spring AOP"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Spring-AOP"><a href="#Spring-AOP" class="headerlink" title="Spring AOP"></a>Spring AOP</h1><blockquote>
+<p>引言(just I think)： <strong>因为java是面向对象编程，而面向对象是纵向继承机制，无法集中注意力到核心代码中，所以我们需要调用其他的机制来解决非核心代码的包装,将其从核心代码块中解耦出来</strong></p>
+</blockquote>
+<blockquote>
+<p>首先我们从spring官网了解一下他们对AOP思想的介绍</p>
+<p>官网地址：<a href="https://link.juejin.cn/?target=https://docs.spring.io/spring-framework/docs/2.5.5/reference/aop.html">docs.spring.io&#x2F;spring-fram…</a></p>
+<p>面向方面编程 <em>(AOP) 通过提供另一种思考程序结构的方式来补充面向对象编程 (OOP)。OOP 中模块化的关键单元是类，而在 AOP 中，模块化的单元是</em>方面 <em>。方面使关注点模块化，例如跨越多种类型和对象的事务管理。（此类关注点在 AOP 文献中通常称为</em>横切关注点。）</p>
+<p>Spring 的关键组件之一是<em>AOP 框架</em>。虽然 Spring IoC 容器不依赖于 AOP，这意味着您不需要使用 AOP，但 AOP 补充了 Spring IoC 以提供非常强大的中间件解决方案。</p>
+</blockquote>
+<h3 id="具体概念"><a href="#具体概念" class="headerlink" title="具体概念"></a>具体概念</h3><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="strong">**<span class="emphasis">*AOP（Aspect Oriented Programming）是一种设计思想，是软件设计领域中的面向切面编程，它是面 向对象编程的一种补充和完善，它以通过预编译方式和运行期动态代理方式实现在不修改源代码的情况 下给程序动态统一添加额外功能的一种技术  。*</span>**</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AOP的相关相关术语："><a href="#AOP的相关相关术语：" class="headerlink" title="AOP的相关相关术语："></a>AOP的相关相关术语：</h3><ol>
+<li><ol>
+<li><strong>横切关注点</strong></li>
+</ol>
+</li>
+</ol>
+<p>就是从每个<strong>核心方法中</strong>抽取出来的非核心代码（既<strong>非核心业务逻辑</strong>），最后放入一个类中（<strong>这个类叫切面</strong>），不同的业务逻辑实现不同的方法</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这个概念不是语法层面天然存在的，而是根据附加功能（核心方法中的非核心代码）的逻辑上的需要：有十个附加功能（核心方法中的非核心代码），就有十个横切关注点。  </span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><ol>
+<li><strong>通知</strong></li>
+</ol>
+</li>
+</ol>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5883866603f1469ca4c2c9971796bee6~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p>简单地说就是在切面中，非核心业务也就是我们需要做的事，被封装成为一个方法（该方法叫通知）—-通知就是横切关注点的实现。</p>
+<ol>
+<li><strong>切面</strong></li>
+</ol>
+<p><em>封装横切关注点或者说是通知的类</em></p>
+<ol>
+<li><strong>目标</strong></li>
+</ol>
+<p><em>被代理的目标对象</em></p>
+<ol>
+<li><strong>代理</strong></li>
+</ol>
+<p><em>向目标对象应用通知之后创建的代理对象（不需要我们自己创建，封装的就是）AOP帮助我们创建</em></p>
+<ol>
+<li><strong>连接点</strong></li>
+</ol>
+<p><em>这也是一个纯逻辑概念，不是语法定义的。 把方法排成一排，每一个横切位置看成x轴方向，把方法从上到下执行的顺序看成y轴，x轴和y轴的交叉 点就是连接点</em></p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fafd3911b50d40cb828bf8cbd5e6667d~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p><em>从哪里套出来的就放回哪里，不改变元代码的逻辑</em></p>
+<ol>
+<li><strong>切入点</strong></li>
+</ol>
+<p><em>定位连接点的方式（位置）。</em></p>
+<h3 id><a href="#" class="headerlink" title></a><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5112a18e0fc441c3a6f917333fbcbb8f~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></h3><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ul>
+<li><em><strong>简化代码：</strong></em> 把方法中固定位置的重复的代码抽取出来，让被抽取的方法更专注于自己的核心功能， 提高内聚性。</li>
+<li><em><strong>代码增强：</strong></em> 把特定的功能封装到切面类中，看哪里有需要，就往上套，被套用了切面逻辑的方法就 被切面给增强了。</li>
+</ul>
+<h2 id="基于注解的AOP"><a href="#基于注解的AOP" class="headerlink" title="基于注解的AOP"></a>基于注解的AOP</h2><h3 id="技术说明："><a href="#技术说明：" class="headerlink" title="技术说明："></a>技术说明：</h3><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/93510564dc644f568d41641b73d0f4d1~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<h3 id="几种动态代理"><a href="#几种动态代理" class="headerlink" title="几种动态代理"></a>几种动态代理</h3><ul>
+<li>动态代理（InvocationHandler）：JDK原生的实现方式，需要被代理的目标类必须实现接口。因 为这个技术要求代理对象和目标对象实现同样的接口（兄弟两个拜把子模式）。</li>
+<li>cglib：通过继承被代理的目标类（认干爹模式）实现代理，所以不需要目标类实现接口。</li>
+<li>AspectJ：本质上是静态代理，将代理逻辑“织入”被代理的目标类编译得到的字节码文件，所以最 终效果是动态的。weaver就是织入器。Spring只是借用了AspectJ中的注解。</li>
+</ul>
+<p>通过阅读官方文档我们可以知道 :</p>
+<p>Spring AOP <strong>默认使用标准的 J2SE</strong>* <strong>动态代理</strong>* 作为 AOP 代理。这使得任何接口（或接口集）都可以被代理。</p>
+<h3 id="启用AOP顺序"><a href="#启用AOP顺序" class="headerlink" title="启用AOP顺序"></a>启用AOP顺序</h3><ol>
+<li><strong>将目标对象和切面交给IOC容器管理（注解+扫描）</strong></li>
+<li><strong>将切面类和目标类作为容器中的组件，所以加@Component</strong></li>
+<li><strong>将当前组件用@Aspect注解标注为切面</strong></li>
+<li><strong>开启基于注解的aop (</strong> 开启AspectJ的自动代理，为目标对象自动生成代理 <strong>)</strong></li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--    作用： 开启基于注解的aop--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><strong>配置好切入点表达式 ：</strong></li>
+</ol>
+<p><strong>声明一个方法，然后使用@Poincut注解来进行声明公共的切入点表达式 可)</strong> <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8fb3a34826364f6b8182e1ac33922ad2~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 切入点表达式的重用******重点</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"><span class="comment">//    execution(权限修饰符 返回值 项目. 包/ *  . 类/ * .方法 (..) )</span></span><br><span class="line">    <span class="meta">@Pointcut(&quot;execution(* com_Ray.such.*.*(..))&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">pointCut</span><span class="params">()</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/735ab7047ed34ec3b81fb740df6a0df2~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<h3 id="AOP的各种通知详解"><a href="#AOP的各种通知详解" class="headerlink" title="AOP的各种通知详解"></a>AOP的各种通知详解</h3><p>各种通知的执行顺序：</p>
+<blockquote>
+<p>Spring版本5.3.x以前：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">前置通知 -<span class="punctuation">-&gt;</span>目标操作-<span class="punctuation">-&gt;</span> 后置通知-<span class="punctuation">-&gt;</span> 返回通知 / 异常通知</span><br></pre></td></tr></table></figure>
+
+<p>Spring版本5.3.x以后：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">前置通知-<span class="punctuation">-&gt;</span> 目标操作-<span class="punctuation">-&gt;</span> 返回通知 / 异常通知-<span class="punctuation">-&gt;</span> 后置通知</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ol>
+<li><strong>前置语法：</strong></li>
+</ol>
+<p><strong>使用@Before注解标识，在被代理的目标方法前执行</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Before(&quot;pointCut()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">beforeAdviceMethod</span><span class="params">(JoinPoint joinPoint)</span>&#123;</span><br><span class="line">        <span class="comment">//1. 获取连接点所对应方法的方法名</span></span><br><span class="line">        <span class="type">Signature</span> <span class="variable">signature</span> <span class="operator">=</span> joinPoint.getSignature();</span><br><span class="line">        <span class="comment">//2.  获取连接点所对应方法的参数</span></span><br><span class="line">        Object[] args = joinPoint.getArgs();</span><br><span class="line">        System.out.println(<span class="string">&quot;方法名为： &quot;</span> + signature.getName()+ <span class="string">&quot;,参数为： &quot;</span> + Arrays.toString(args));</span><br><span class="line"><span class="comment">//        System.out.println(&quot;前置通知！&quot;);</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>joinPoint 作为前置通知的方法的参数 ，可以获取连接点多对应的方法的签名信息（）</p>
+<ol>
+<li><strong>后置语法</strong></li>
+</ol>
+<p><strong>注解 ：@After（“point Cut（）”）在方法执行之后的finally中执行</strong></p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/62e3ee1668eb4ef2a9d356096830114f~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<ol>
+<li><strong>返回通知</strong></li>
+</ol>
+<p><strong>注解： @AfterReturn（“point Cut（）“） 在目标对象执行之后执行</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 返回通知！</span></span><br><span class="line"><span class="comment"> * 在目标方法返回值之后的一个通知</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@AfterReturning(&quot;pointCut()&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterReturn</span><span class="params">(JoinPoint joinPoint)</span>&#123;</span><br><span class="line">    <span class="type">Signature</span> <span class="variable">signature</span> <span class="operator">=</span> joinPoint.getSignature();</span><br><span class="line">    System.out.println(<span class="string">&quot;方法： &quot;</span> + signature.getName()+<span class="string">&quot;执行返回通知&quot;</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><strong>异常通知</strong></li>
+</ol>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 异常通知</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">@AfterThrowing(<span class="keyword">value</span> = <span class="string">&quot;pointCut()&quot;</span>,throwing = <span class="string">&quot;ex&quot;</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AfterThrow</span>(<span class="params">JoinPoint joinPoint, Throwable ex</span>)</span>&#123;</span><br><span class="line">    Signature signature = joinPoint.getSignature();</span><br><span class="line">    System.<span class="keyword">out</span>.println(<span class="string">&quot;方法： &quot;</span> + signature.getName()+<span class="string">&quot;的异常通知:&quot;</span> + ex);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><strong>环绕通知---@Around( )</strong></li>
+</ol>
+<p><em><strong>设置环绕通知之后就可以将所有前面的通知都涵盖进去</strong></em></p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/54ec3fe2cdfb4bd3b267bfe2020faa1a~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<h2 id="基于XML的AOP"><a href="#基于XML的AOP" class="headerlink" title="基于XML的AOP"></a>基于XML的AOP</h2><p><strong>其基本与基于注解实现一样</strong></p>
+<h3 id="配置xml环境"><a href="#配置xml环境" class="headerlink" title="配置xml环境"></a>配置xml环境</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;com.atguigu.aop.xml&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">context:componentscan</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--配置切面类--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">&quot;loggerAspect&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">&quot;pointCut&quot;</span> <span class="attr">expression</span>=<span class="string">&quot;execution(*</span></span></span><br><span class="line"><span class="string"><span class="tag">com.atguigu.aop.xml.CalculatorImpl.*(..))&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">&quot;beforeMethod&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;pointCut&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:before</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:after</span> <span class="attr">method</span>=<span class="string">&quot;afterMethod&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;pointCut&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:after-returning</span> <span class="attr">method</span>=<span class="string">&quot;afterReturningMethod&quot;</span> <span class="attr">returning</span>=<span class="string">&quot;result&quot;</span></span></span><br><span class="line"><span class="tag">                         <span class="attr">pointcut-ref</span>=<span class="string">&quot;pointCut&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after-returning</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:after-throwing</span> <span class="attr">method</span>=<span class="string">&quot;afterThrowingMethod&quot;</span> <span class="attr">throwing</span>=<span class="string">&quot;ex&quot;</span> <span class="attr">pointcutref</span>=<span class="string">&quot;pointCut&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after-throwing</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:around</span> <span class="attr">method</span>=<span class="string">&quot;aroundMethod&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;pointCut&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:around</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">&quot;validateAspect&quot;</span> <span class="attr">order</span>=<span class="string">&quot;1&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">&quot;validateBeforeMethod&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;pointCut&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:before</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/8b9a3af8.html">https://ray2310.github.io/post/8b9a3af8.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://ray2310.github.io" target="_blank">Rayce. personal blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java/">java</a><a class="post-meta__tags" href="/tags/%E5%90%8E%E7%AB%AF/">后端</a><a class="post-meta__tags" href="/tags/Spring/">Spring</a></div><div class="post_share"><div class="social-share" data-image="https://th.bing.com/th/id/R.1adcbe85544d76e1e2e31d2683253438?rik=rtegGZrm6rdgzw&amp;riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f2271e3d6ed6618845ff8cf4bdeeed33184e23d08.jpg&amp;ehk=1sjnDT9IMMCM15%2fS4Pinlh5dZABRnayTAPoUKHeEeGs%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/23c7dc9f.html" title="myFirstBlog"><img class="cover" src="https://th.bing.com/th/id/OIP.F8Oa7hJkWSPopA80qdOHfAHaFS?pid=ImgDet&rs=1" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-01</div><div class="title">myFirstBlog</div></div></a></div><div><a href="/post/c0b354ed.html" title="MyBatis中的动态SQL技术"><img class="cover" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcGq1FpSxF0qUTqQbAkH_2uaT-SVYw7DP9eQ&usqp=CAU" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-01</div><div class="title">MyBatis中的动态SQL技术</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center"><img src="https://img-blog.csdnimg.cn/f7384c88956d4378b72e47548e19c9f8.gif" width="50" alt="mao"></p> <p align="center">微信号：l2310allen</p> <p align="center">QQ号：1326507725</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-AOP"><span class="toc-number">1.</span> <span class="toc-text">Spring AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E6%A6%82%E5%BF%B5"><span class="toc-number">1.0.1.</span> <span class="toc-text">具体概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AOP%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9B%B8%E5%85%B3%E6%9C%AF%E8%AF%AD%EF%BC%9A"><span class="toc-number">1.0.2.</span> <span class="toc-text">AOP的相关相关术语：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.0.3.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8"><span class="toc-number">1.0.4.</span> <span class="toc-text">作用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E7%9A%84AOP"><span class="toc-number">1.1.</span> <span class="toc-text">基于注解的AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E8%AF%B4%E6%98%8E%EF%BC%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text">技术说明：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E7%A7%8D%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="toc-number">1.1.2.</span> <span class="toc-text">几种动态代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E7%94%A8AOP%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.1.3.</span> <span class="toc-text">启用AOP顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AOP%E7%9A%84%E5%90%84%E7%A7%8D%E9%80%9A%E7%9F%A5%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.1.4.</span> <span class="toc-text">AOP的各种通知详解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8EXML%E7%9A%84AOP"><span class="toc-number">1.2.</span> <span class="toc-text">基于XML的AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AExml%E7%8E%AF%E5%A2%83"><span class="toc-number">1.2.1.</span> <span class="toc-text">配置xml环境</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/8b9a3af8.html" title="浅识Spring AOP"><img src="https://th.bing.com/th/id/R.1adcbe85544d76e1e2e31d2683253438?rik=rtegGZrm6rdgzw&amp;riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f2271e3d6ed6618845ff8cf4bdeeed33184e23d08.jpg&amp;ehk=1sjnDT9IMMCM15%2fS4Pinlh5dZABRnayTAPoUKHeEeGs%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浅识Spring AOP"/></a><div class="content"><a class="title" href="/post/8b9a3af8.html" title="浅识Spring AOP">浅识Spring AOP</a><time datetime="2023-01-03T10:08:40.000Z" title="发表于 2023-01-03 18:08:40">2023-01-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/6ea88167.html" title="Linux操作系统学习"><img src="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fwww.win3000.com%2Ftags%2Fjianyue%2F&amp;psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&amp;ust=1672760873466000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAH" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux操作系统学习"/></a><div class="content"><a class="title" href="/post/6ea88167.html" title="Linux操作系统学习">Linux操作系统学习</a><time datetime="2023-01-02T13:23:15.000Z" title="发表于 2023-01-02 21:23:15">2023-01-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/c0b354ed.html" title="MyBatis中的动态SQL技术"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcGq1FpSxF0qUTqQbAkH_2uaT-SVYw7DP9eQ&amp;usqp=CAU" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MyBatis中的动态SQL技术"/></a><div class="content"><a class="title" href="/post/c0b354ed.html" title="MyBatis中的动态SQL技术">MyBatis中的动态SQL技术</a><time datetime="2023-01-01T09:41:44.000Z" title="发表于 2023-01-01 17:41:44">2023-01-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/23c7dc9f.html" title="myFirstBlog"><img src="https://th.bing.com/th/id/OIP.F8Oa7hJkWSPopA80qdOHfAHaFS?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="myFirstBlog"/></a><div class="content"><a class="title" href="/post/23c7dc9f.html" title="myFirstBlog">myFirstBlog</a><time datetime="2023-01-01T09:29:37.000Z" title="发表于 2023-01-01 17:29:37">2023-01-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/4a17b156.html" title="Hello World"><img src="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fwww.moyublog.com%2Fhdwallpapers%2F1293.html&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAD" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/post/4a17b156.html" title="Hello World">Hello World</a><time datetime="2022-12-31T05:05:13.244Z" title="发表于 2022-12-31 13:05:13">2022-12-31</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://th.bing.com/th/id/R.1adcbe85544d76e1e2e31d2683253438?rik=rtegGZrm6rdgzw&amp;riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f2271e3d6ed6618845ff8cf4bdeeed33184e23d08.jpg&amp;ehk=1sjnDT9IMMCM15%2fS4Pinlh5dZABRnayTAPoUKHeEeGs%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> &nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="5183531430" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" muted></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
