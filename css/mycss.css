@@ -1,0 +1,11 @@
+/* ����ҳ���� */
+.layout_post>#post {
+    /* ���´���͸����Ϊ0.5 ���������޸�*/
+    background: rgba(255,255,255,.9);
+}
+
+/* ����ҳ�汳�� */
+#aside_content .card-widget, #recent-posts>.recent-post-item, .layout_page>div:first-child:not(.recent-posts), .layout_post>#page, .layout_post>#post, .read-mode .layout_post>#post{
+    /* ���´���͸����Ϊ0.5 */
+    background: rgba(255,255,255,.9);
+}
