@@ -1,0 +1,226 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>web项目整合---实现增删查改 | Rayce. personal blog</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="关于web项目中如何实现增删查改的操作这里我们以一个书城项目为例讲解 首先了解javaEE的三层架构 由图中我们可以看出,javaEE的三层架构严格的规定了项目中的每个模块,每个层需要完成的事情,这样会使项目的变得非常简洁,按部就班的完成每一部分,我们的项目也就很容易的完成,当然这这里说的只是针对非常简单的项目,对于大型项目就另当别论了。 增删查改之—-增Create思维导图 详解从图中我们可以看">
+<meta property="og:type" content="article">
+<meta property="og:title" content="web项目整合---实现增删查改">
+<meta property="og:url" content="https://ray2310.github.io/post/44f9189b.html">
+<meta property="og:site_name" content="Rayce. personal blog">
+<meta property="og:description" content="关于web项目中如何实现增删查改的操作这里我们以一个书城项目为例讲解 首先了解javaEE的三层架构 由图中我们可以看出,javaEE的三层架构严格的规定了项目中的每个模块,每个层需要完成的事情,这样会使项目的变得非常简洁,按部就班的完成每一部分,我们的项目也就很容易的完成,当然这这里说的只是针对非常简单的项目,对于大型项目就另当别论了。 增删查改之—-增Create思维导图 详解从图中我们可以看">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.google.com/url?sa=i&url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&ust=1672760873466000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD">
+<meta property="article:published_time" content="2023-01-06T12:05:35.000Z">
+<meta property="article:modified_time" content="2023-01-06T12:20:25.599Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="后端">
+<meta property="article:tag" content="javaWeb">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.google.com/url?sa=i&url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&ust=1672760873466000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD"><link rel="shortcut icon" href="https://img95.699pic.com/photo/40094/7630.jpg_wh300.jpg"><link rel="canonical" href="https://ray2310.github.io/post/44f9189b.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. personal blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'web项目整合---实现增删查改',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2023-01-06 20:20:25'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&amp;psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&amp;ust=1672760873466000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. personal blog"><span class="site-name">Rayce. personal blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">web项目整合---实现增删查改</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-06T12:05:35.000Z" title="发表于 2023-01-06 20:05:35">2023-01-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-06T12:20:25.599Z" title="更新于 2023-01-06 20:20:25">2023-01-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/java/">java</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/java/javaWeb/">javaWeb</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="web项目整合---实现增删查改"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="关于web项目中如何实现增删查改的操作"><a href="#关于web项目中如何实现增删查改的操作" class="headerlink" title="关于web项目中如何实现增删查改的操作"></a>关于web项目中如何实现增删查改的操作</h1><p>这里我们以一个书城项目为例讲解</p>
+<h2 id="首先了解javaEE的三层架构"><a href="#首先了解javaEE的三层架构" class="headerlink" title="首先了解javaEE的三层架构"></a>首先了解javaEE的三层架构</h2><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/03ac4472cdda46b29e155c4891cca09a~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="image.png"> 由图中我们可以看出,javaEE的三层架构严格的规定了项目中的每个模块,每个层需要完成的事情,这样会使项目的变得非常简洁,按部就班的完成每一部分,我们的项目也就很容易的完成,当然这这里说的只是针对非常简单的项目,对于大型项目就另当别论了。</p>
+<h2 id="增删查改之—-增Create"><a href="#增删查改之—-增Create" class="headerlink" title="增删查改之—-增Create"></a>增删查改之—-增Create</h2><h3 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h3><p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/54d0986b395245b689252d8e6b43cb15~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="image.png"></p>
+<h3 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h3><p>从图中我们可以看出,当客户端用户输入完数据之后请求就会发送给服务器,当服务器端BooServlet接受到来自add.html页面的请求后就会做出相应的相应,通过反射调用Add(req,resp)方法</p>
+<p>在Add方法中</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">protected void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException &#123;</span><br><span class="line">    //1. 获取请求参数，封装成Book对象</span><br><span class="line">    String <span class="attr">name</span> = req.getParameter(<span class="string">&quot;name&quot;</span>)<span class="comment">;</span></span><br><span class="line">    String <span class="attr">author</span> = req.getParameter(<span class="string">&quot;author&quot;</span>)<span class="comment">;</span></span><br><span class="line">    BigDecimal <span class="attr">price</span> = BigDecimal.valueOf(Double.parseDouble(req.getParameter(<span class="string">&quot;price&quot;</span>)))<span class="comment">;</span></span><br><span class="line">    Integer <span class="attr">sales</span> = Integer.valueOf(req.getParameter(<span class="string">&quot;sales&quot;</span>))<span class="comment">;</span></span><br><span class="line">    Integer <span class="attr">stock</span> = Integer.valueOf(req.getParameter(<span class="string">&quot;stock&quot;</span>))<span class="comment">;</span></span><br><span class="line">    Book <span class="attr">book</span> = new Book(null, name, author, price, sales, stock, null)<span class="comment">;</span></span><br><span class="line">    </span><br><span class="line">    //2. 调用bookService.addBook(book)将数据保存入数据库</span><br><span class="line">    bookService.addBook(book)<span class="comment">;</span></span><br><span class="line">    </span><br><span class="line">    //3. 跳转回图书列表页面----又出现表单重复提交的bug</span><br><span class="line">    resp.sendRedirect(req.getContextPath() + &quot;/bookServlet?<span class="attr">action</span>=page&amp;page<span class="literal">No</span>=<span class="string">&quot;+req.getParameter(&quot;</span>page<span class="literal">No</span><span class="string">&quot;));</span></span><br><span class="line"><span class="string">   </span></span><br><span class="line"><span class="string">复制代码</span></span><br></pre></td></tr></table></figure>
+
+<p>这就是一个简单add方法的实现</p>
+<h2 id="增删查改之—-查Read"><a href="#增删查改之—-查Read" class="headerlink" title="增删查改之—-查Read"></a>增删查改之—-查Read</h2><h3 id="思维导图-1"><a href="#思维导图-1" class="headerlink" title="思维导图"></a>思维导图</h3><p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7fecaab1016447959d65038754887258~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="image.png"></p>
+<ol>
+<li>在index上点击跳转到manager页面的请求，然后manager页面上显示响应【bookServlet？action&#x3D;list】，然后服务器端就会收到响应</li>
+</ol>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/20fb6e0f76ac451ab13b44fd40ca2741~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<ol>
+<li><p>服务器端收到响应就会调用BookServlet的doPost方法，在doPost方法中显示的action收到的是list，然后后端就会调用list方法</p>
+</li>
+<li><p>在list方法中有三个步骤【</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">1.</span>  通过BookService调用BookDao中的查询所有图书的方法（queryBooks），然后queryBooks再次调用BaseDao抽象类中的queryForList方法查找到所有图书。</span><br><span class="line"><span class="bullet">2.</span> 将查询到的所有图书保存到request域中</span><br><span class="line"><span class="bullet">3.</span>  通过请求转发，将保存的数据回传给前端book<span class="emphasis">_manager.jsp页面</span></span><br><span class="line"><span class="emphasis">4.  book_</span>manager.jsp页面收到转发的请求，通过el表达式，将数据显示出来</span><br><span class="line"><span class="bullet">5.</span>  最后，数据就会完美的呈现在面前</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>】</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现:"></a>代码实现:</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">list</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//1. 通过BookService查询所有的图书</span></span><br><span class="line">    List&lt;Book&gt; books = bookService.queryBooks();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//2. 保存所有的图书到request域中</span></span><br><span class="line"></span><br><span class="line">    req.setAttribute(<span class="string">&quot;books&quot;</span>,books);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//3. 请求转发到book_manager.jsp</span></span><br><span class="line">    req.getRequestDispatcher(<span class="string">&quot;book_manager.jsp&quot;</span>).forward(req,resp);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="增删查改之—-改Update"><a href="#增删查改之—-改Update" class="headerlink" title="增删查改之—-改Update"></a>增删查改之—-改Update</h2><h3 id="思维导图-2"><a href="#思维导图-2" class="headerlink" title="思维导图"></a>思维导图</h3><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/df30b25f71e74671a2e22e63088b475c~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<ol>
+<li>首先点击修改，他将会调用doPost方法，将action值赋值为getBook</li>
+</ol>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/40626b38033c47b2a91bd6ab7c9aa606~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<ol>
+<li><p>通过getBook()方法将id为XXX的数据获取出来然后显示在book_edit页面上。步骤有【</p>
+<p>1&gt;  获取请求的参数信息–图书编号</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/172491c3edf24da8b9f52161b8b2902e~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p>2&gt; 调用BookService下的queryBookById()获取该图书的所有信息</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/aa79a8b38678487f9dde6b5aeec568db~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p>3&gt; 将数据保存在request作用域中</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e62b1a858f5b4d62804f5cf5b8eb22b0~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p>4&gt; 请求转发到book_edit页面 <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cc37668e4b4b42c3af63e149622708b8~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+</li>
+</ol>
+<p>】</p>
+<ol>
+<li>通过上述步骤，在book_edit页面就会显示要修改的数据，接下来要做的就是将要修改的数据保存起来，然后再回传给客户端</li>
+<li>将book_edit页面的隐藏域的value值修改为动态获取的值<strong>因为book_edit页面会是实现两个操作，修改与保存，所以回传的action值就因该动态的获取是add&#x2F;update(判断的方法是id是否为空；添加的id为空)</strong></li>
+</ol>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/099ca85f1c7547ddaa7ac71a4f3a109a~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p><strong>这里我们回传的action值为update，所以再次回到BookServlet程序，这里我们调用的是doGet方法，然后通doGet在调用doPost 。通过doPost，因为action的值为update，所以这里我们调用update方法</strong>*</p>
+<ol>
+<li><p>在update方法中要实现以下的及步骤【</p>
+<p>1&gt; 获取请求参数，封装成Book对象<strong>不能忘记id，修改的时候id值是存在的，我们得获取但是不能修改</strong></p>
+<p>2&gt;通过BookService调用BookDao中的修改图书的方法（updateBook），然后updateBook再次调用BaseDao抽象类中的update方法将数据库中的数据修改保存</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/844acec9c4e94da696d91d1f440ce771~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p>3&gt; 重定向跳转回原来的页面</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/411d93a1b17f4924a865951761780423~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+</li>
+</ol>
+<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">protected void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException &#123;</span><br><span class="line">    //获取请求参数，封装成Book对象</span><br><span class="line">    Integer <span class="attr">id</span>= Integer.valueOf(req.getParameter(<span class="string">&quot;id&quot;</span>))<span class="comment">;</span></span><br><span class="line">    String <span class="attr">name</span> = req.getParameter(<span class="string">&quot;name&quot;</span>)<span class="comment">;</span></span><br><span class="line">    String <span class="attr">author</span> = req.getParameter(<span class="string">&quot;author&quot;</span>)<span class="comment">;</span></span><br><span class="line">    BigDecimal <span class="attr">price</span> = BigDecimal.valueOf(Double.parseDouble(req.getParameter(<span class="string">&quot;price&quot;</span>)))<span class="comment">;</span></span><br><span class="line">    Integer <span class="attr">sales</span> = Integer.valueOf(req.getParameter(<span class="string">&quot;sales&quot;</span>))<span class="comment">;</span></span><br><span class="line">    Integer <span class="attr">stock</span> = Integer.valueOf(req.getParameter(<span class="string">&quot;stock&quot;</span>))<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">    Book <span class="attr">book</span> = new Book(id, name, author, price, sales, stock, null)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">    bookService.updateBook(book)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">    //请求重定向</span><br><span class="line">    resp.sendRedirect(req.getContextPath() + &quot;/bookServlet?<span class="attr">action</span>=page&amp;page<span class="literal">No</span>=<span class="string">&quot;+req.getParameter(&quot;</span>page<span class="literal">No</span><span class="string">&quot;));</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="增删查改之—-删Delete"><a href="#增删查改之—-删Delete" class="headerlink" title="增删查改之—-删Delete"></a>增删查改之—-删Delete</h2><h3 id="思维导图-3"><a href="#思维导图-3" class="headerlink" title="思维导图"></a>思维导图</h3><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5bb36979638145b79e0673ca7437d6b5~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<ol>
+<li>服务器获取客户端要删除的数据的id</li>
+</ol>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6b6c6734964240eba039f5ba5254a0db~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<ol>
+<li><p>将请求发送至服务器，然后后端调用doPost方法，action传的值为delete</p>
+</li>
+<li><p>doPost方法，在其中执行这几步骤【</p>
+<p>1&gt; 获取请求参数 id</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/78c54fe73375454ebef06947711cee71~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<p>2&gt;通过BookService调用BookDao中的添加图书的方法（deleteBookById），然后adeleteBookById再次调用BaseDao抽象类中的update方法将数据库中的数据删除</p>
+<p>3&gt;重定向跳转回原来的页面</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4afd8aff7e854767ae72aa2345af54bc~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+</li>
+</ol>
+<p>】</p>
+<h3 id="代码实现-2"><a href="#代码实现-2" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">delete</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        <span class="comment">//1. 获取请求参数 id</span></span><br><span class="line">    <span class="type">Integer</span> <span class="variable">id</span> <span class="operator">=</span> Integer.valueOf(req.getParameter(<span class="string">&quot;id&quot;</span>));</span><br><span class="line">    <span class="comment">//2. 调用BookService.deleteBookById()删除数据</span></span><br><span class="line">    bookService.deleteBookById(id);</span><br><span class="line">    <span class="comment">//3. 重定向跳转回原来的页面</span></span><br><span class="line"></span><br><span class="line">    resp.sendRedirect(req.getContextPath() + <span class="string">&quot;/bookServlet?action=page&amp;pageNo=&quot;</span>+req.getParameter(<span class="string">&quot;pageNo&quot;</span>));</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/44f9189b.html">https://ray2310.github.io/post/44f9189b.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://ray2310.github.io" target="_blank">Rayce. personal blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java/">java</a><a class="post-meta__tags" href="/tags/%E5%90%8E%E7%AB%AF/">后端</a><a class="post-meta__tags" href="/tags/javaWeb/">javaWeb</a></div><div class="post_share"><div class="social-share" data-image="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&amp;psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&amp;ust=1672760873466000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/e71d88af.html" title="线索化二叉树"><img class="cover" src="https://www.google.com/imgres?imgurl=https%3A%2F%2Ftmpl.downzz.com%2Fsucai%2Fcontent%2F0tf4t1r53js.jpg&amp;imgrefurl=https%3A%2F%2Fwww.downzz.com%2Fjianyuebizhi%2F36732.html&amp;tbnid=O22DjUrs0X8icM&amp;vet=12ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ..i&amp;docid=Xc2fZTMSl7dnDM&amp;w=1202&amp;h=676&amp;q=%E7%AE%80%E7%BA%A6%20%E7%94%B5%E8%84%91%20%E5%A3%81%E7%BA%B8%204k&amp;ved=2ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">线索化二叉树</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/c0b354ed.html" title="MyBatis中的动态SQL技术"><img class="cover" src="https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&rs=1" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-01</div><div class="title">MyBatis中的动态SQL技术</div></div></a></div><div><a href="/post/8b9a3af8.html" title="浅识Spring AOP"><img class="cover" src="https://gss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/78310a55b319ebc47c0169ab8526cffc1e171682.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="title">浅识Spring AOP</div></div></a></div><div><a href="/post/23c7dc9f.html" title="myFirstBlog"><img class="cover" src="https://desk-fd.zol-img.com.cn/t_s208x130c5/g4/M08/00/0B/ChMly13CMDWIZfctAAvXuPJhBZEAAYRRQPV_woAC9fQ316.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-01</div><div class="title">myFirstBlog</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center"><img src="https://img-blog.csdnimg.cn/f7384c88956d4378b72e47548e19c9f8.gif" width="50" alt="mao"></p> <p align="center">微信号：l2310allen</p> <p align="center">QQ号：1326507725</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Eweb%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">关于web项目中如何实现增删查改的操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A6%96%E5%85%88%E4%BA%86%E8%A7%A3javaEE%E7%9A%84%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84"><span class="toc-number">1.1.</span> <span class="toc-text">首先了解javaEE的三层架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9%E4%B9%8B%E2%80%94-%E5%A2%9ECreate"><span class="toc-number">1.2.</span> <span class="toc-text">增删查改之—-增Create</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE"><span class="toc-number">1.2.1.</span> <span class="toc-text">思维导图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.2.2.</span> <span class="toc-text">详解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9%E4%B9%8B%E2%80%94-%E6%9F%A5Read"><span class="toc-number">1.3.</span> <span class="toc-text">增删查改之—-查Read</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE-1"><span class="toc-number">1.3.1.</span> <span class="toc-text">思维导图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.3.2.</span> <span class="toc-text">代码实现:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9%E4%B9%8B%E2%80%94-%E6%94%B9Update"><span class="toc-number">1.4.</span> <span class="toc-text">增删查改之—-改Update</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE-2"><span class="toc-number">1.4.1.</span> <span class="toc-text">思维导图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-1"><span class="toc-number">1.4.2.</span> <span class="toc-text">代码实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A2%9E%E5%88%A0%E6%9F%A5%E6%94%B9%E4%B9%8B%E2%80%94-%E5%88%A0Delete"><span class="toc-number">1.5.</span> <span class="toc-text">增删查改之—-删Delete</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE-3"><span class="toc-number">1.5.1.</span> <span class="toc-text">思维导图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-2"><span class="toc-number">1.5.2.</span> <span class="toc-text">代码实现</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/44f9189b.html" title="web项目整合---实现增删查改"><img src="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&amp;psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&amp;ust=1672760873466000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="web项目整合---实现增删查改"/></a><div class="content"><a class="title" href="/post/44f9189b.html" title="web项目整合---实现增删查改">web项目整合---实现增删查改</a><time datetime="2023-01-06T12:05:35.000Z" title="发表于 2023-01-06 20:05:35">2023-01-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/e71d88af.html" title="线索化二叉树"><img src="https://www.google.com/imgres?imgurl=https%3A%2F%2Ftmpl.downzz.com%2Fsucai%2Fcontent%2F0tf4t1r53js.jpg&amp;imgrefurl=https%3A%2F%2Fwww.downzz.com%2Fjianyuebizhi%2F36732.html&amp;tbnid=O22DjUrs0X8icM&amp;vet=12ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ..i&amp;docid=Xc2fZTMSl7dnDM&amp;w=1202&amp;h=676&amp;q=%E7%AE%80%E7%BA%A6%20%E7%94%B5%E8%84%91%20%E5%A3%81%E7%BA%B8%204k&amp;ved=2ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="线索化二叉树"/></a><div class="content"><a class="title" href="/post/e71d88af.html" title="线索化二叉树">线索化二叉树</a><time datetime="2023-01-05T06:05:53.000Z" title="发表于 2023-01-05 14:05:53">2023-01-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/8b9a3af8.html" title="浅识Spring AOP"><img src="https://gss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/78310a55b319ebc47c0169ab8526cffc1e171682.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浅识Spring AOP"/></a><div class="content"><a class="title" href="/post/8b9a3af8.html" title="浅识Spring AOP">浅识Spring AOP</a><time datetime="2023-01-03T10:08:40.000Z" title="发表于 2023-01-03 18:08:40">2023-01-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/6ea88167.html" title="Linux操作系统学习"><img src="https://th.bing.com/th/id/OIP.nZkOrLOn_bp0mLFxlK-x2wHaEK?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux操作系统学习"/></a><div class="content"><a class="title" href="/post/6ea88167.html" title="Linux操作系统学习">Linux操作系统学习</a><time datetime="2023-01-02T13:23:15.000Z" title="发表于 2023-01-02 21:23:15">2023-01-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/c0b354ed.html" title="MyBatis中的动态SQL技术"><img src="https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MyBatis中的动态SQL技术"/></a><div class="content"><a class="title" href="/post/c0b354ed.html" title="MyBatis中的动态SQL技术">MyBatis中的动态SQL技术</a><time datetime="2023-01-01T09:41:44.000Z" title="发表于 2023-01-01 17:41:44">2023-01-01</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&amp;psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&amp;ust=1672760873466000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a><a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a><a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> <a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
