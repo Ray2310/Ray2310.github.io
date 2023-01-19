@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>RESTful请求映射及其原理 | Rayce. Blogs</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="请求映射rest的使用与原理 @xxxMapping；  Rest风格支持（使用 HTTP 请求方式动词来表示对资源的操作）   以前： &#x2F;getUser 获取用户 &#x2F;deleteUser 删除用户 &#x2F;editUser 修改用户 &#x2F;saveUser 保存用户 现在： &#x2F;user GET-获取用户 DELETE-删除用户 PUT-修改用户 POST-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RESTful请求映射及其原理">
+<meta property="og:url" content="https://ray2310.github.io/post/104c2aa7.html">
+<meta property="og:site_name" content="Rayce. Blogs">
+<meta property="og:description" content="请求映射rest的使用与原理 @xxxMapping；  Rest风格支持（使用 HTTP 请求方式动词来表示对资源的操作）   以前： &#x2F;getUser 获取用户 &#x2F;deleteUser 删除用户 &#x2F;editUser 修改用户 &#x2F;saveUser 保存用户 现在： &#x2F;user GET-获取用户 DELETE-删除用户 PUT-修改用户 POST-">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&rs=1">
+<meta property="article:published_time" content="2023-01-19T03:17:02.000Z">
+<meta property="article:modified_time" content="2023-01-19T03:21:26.902Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="后端">
+<meta property="article:tag" content="SpringBoot">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&rs=1"><link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQHlJW3iX0eSx0YEsPnrToEC7iKW4m3TEgiQ&usqp=CAU"><link rel="canonical" href="https://ray2310.github.io/post/104c2aa7.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. Blogs","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'RESTful请求映射及其原理',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2023-01-19 11:21:26'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&amp;rs=1')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. Blogs"><span class="site-name">Rayce. Blogs</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">RESTful请求映射及其原理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-19T03:17:02.000Z" title="发表于 2023-01-19 11:17:02">2023-01-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-19T03:21:26.902Z" title="更新于 2023-01-19 11:21:26">2023-01-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/java/">java</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/java/SpringBoot/">SpringBoot</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">565</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>1分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="RESTful请求映射及其原理"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="请求映射"><a href="#请求映射" class="headerlink" title="请求映射"></a>请求映射</h3><h4 id="rest的使用与原理"><a href="#rest的使用与原理" class="headerlink" title="rest的使用与原理"></a>rest的使用与原理</h4><ul>
+<li><p>@xxxMapping；</p>
+</li>
+<li><p>Rest风格支持（<em>使用</em> <em>HTTP</em> <em>请求方式动词来表示对资源的操作</em>）</p>
+</li>
+<li><ul>
+<li><em>以前：</em> <em>&#x2F;getUser</em> <em>获取用户</em> <em>&#x2F;deleteUser</em> <em>删除用户</em> <em>&#x2F;editUser</em> <em>修改用户</em> <em>&#x2F;saveUser</em> <em>保存用户</em></li>
+<li><em>现在：</em> <em><strong>&#x2F;user GET-获取用户 DELETE-删除用户 PUT-修改用户 POST-保存用户</strong></em></li>
+<li><strong>核心Filter；HiddenHttpMethodFilter</strong></li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><strong>用法： 表单method&#x3D;post，隐藏域 _method&#x3D;put</strong></li>
+<li><strong>SpringBoot中手动开启</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li>扩展：如何把_method 这个名字换成我们自己喜欢的。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/92ce4d95864c498e84075a4c874aab29~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<h4 id="基于表单提交的RESTful原理"><a href="#基于表单提交的RESTful原理" class="headerlink" title="基于表单提交的RESTful原理"></a>基于表单提交的RESTful原理</h4><ol>
+<li>表单提交会带上[_method &#x3D; put]</li>
+<li>请求过来会被HiddenHttpMethodFilter拦截</li>
+<li>处理请求（如果请求正常，才会放行）</li>
+</ol>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/86b17a82db3f42dcbef52c0cefaf7e54~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<ol start="4">
+<li>然后内部进行处理，判断是否有请求。然后将请求转换为大写</li>
+</ol>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/170a4300486143e8b080cf2b9c17d89a~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<ol start="5">
+<li>（<strong>包装原生request</strong>）将原生的request转换成为HttpMethodRequestWrapper请求，然后HttpMethodRequestWrapper会重写HttpRequest的个体、Method 方法</li>
+</ol>
+<h4 id="在控制层请求发起的流程"><a href="#在控制层请求发起的流程" class="headerlink" title="在控制层请求发起的流程"></a>在控制层请求发起的流程</h4><p><strong>在请求处理之前，需要先执行Filter。然后HiddenHttpMethodFilter将原生请求的getMethod重写了变成delete。 然后此时当进行请求的时候。getMethod已经变成了delete&#x2F;put&#x2F;,,,就与请求匹配了。</strong></p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b2663d2c443945058c51c626562df36c~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<h4 id="DispatcherServlet请求原理"><a href="#DispatcherServlet请求原理" class="headerlink" title="DispatcherServlet请求原理"></a>DispatcherServlet请求原理</h4><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/24ff069825954e519fd44acafbcc512f~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<ol>
+<li><strong>他是处理所有请求的开始</strong></li>
+<li><strong>他没有重写了doGet和doPost，在FrameworkServelt中调用了doGet和doPost。然后又调用了processRequest（）。</strong></li>
+<li><strong>processRequest又调用类中的doService方法 。最终在DispacherSerlvet中做了doService的实现</strong></li>
+<li><strong>在DispacherServlet中有一个doDisptch（）就是请求转发。然后再doDisptch中才是一些真正有功能的我们需要的方法</strong></li>
+</ol>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7112e825f9c944cdbb911773544ef2b2~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<ol start="5">
+<li><strong>所以说doDispach（）才是每个请求都会调用的方法</strong></li>
+</ol>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception &#123;</span><br><span class="line">		HttpServletRequest <span class="attr">processedRequest</span> = request<span class="comment">;</span></span><br><span class="line">		HandlerExecutionChain <span class="attr">mappedHandler</span> = null<span class="comment">;</span></span><br><span class="line">		boolean <span class="attr">multipartRequestParsed</span> = <span class="literal">false</span><span class="comment">;</span></span><br><span class="line"></span><br><span class="line">		WebAsyncManager <span class="attr">asyncManager</span> = WebAsyncUtils.getAsyncManager(request)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">		try &#123;</span><br><span class="line">			ModelAndView <span class="attr">mv</span> = null<span class="comment">;</span></span><br><span class="line">			Exception <span class="attr">dispatchException</span> = null<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">			try &#123;</span><br><span class="line">				<span class="attr">processedRequest</span> = checkMultipart(request)<span class="comment">;</span></span><br><span class="line">				<span class="attr">multipartRequestParsed</span> = (processedRequest != request)<span class="comment">;</span></span><br><span class="line">	</span><br><span class="line">				// 找到当前请求使用哪个Handler（Controller的方法）处理</span><br><span class="line">				<span class="attr">mappedHandler</span> = getHandler(processedRequest)<span class="comment">;</span></span><br><span class="line">                </span><br><span class="line">                //HandlerMapping：处理器映射。/xxx-&gt;&gt;xxxx</span><br><span class="line"></span><br><span class="line">            </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li><p><strong>在doDispach（）中有getHandler方法，他会找到我们此时调用需要找到的请求</strong></p>
+</li>
+<li><p><strong>在getHandler()方法中可以看到有个handerMappings 它会加载所有的请求（在应用启动的时候就会加载保存）</strong></p>
+</li>
+</ol>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9e431818f83247f7b2151b28a2873c1f~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<ol start="8">
+<li><strong>在HandlerMapping中保存的我们写的所有请求</strong></li>
+</ol>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bdf3d7501c6c489a895800a9d0257c07~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+<ol start="9">
+<li><strong>在AbstractHandlerMethodMapping中有lookupHandlerMethod方法，在这个方法中我们才能匹配到所要找的请求</strong></li>
+</ol>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a9523aeecaf34864bab38e89df066858~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp" alt="img"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://Ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/104c2aa7.html">https://ray2310.github.io/post/104c2aa7.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ray2310.github.io" target="_blank">Rayce. Blogs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java/">java</a><a class="post-meta__tags" href="/tags/%E5%90%8E%E7%AB%AF/">后端</a><a class="post-meta__tags" href="/tags/SpringBoot/">SpringBoot</a></div><div class="post_share"><div class="social-share" data-image="https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&amp;rs=1" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/9f86f042.html" title="二叉树的最大深度"><img class="cover" src="https://th.bing.com/th/id/OIP.F8Oa7hJkWSPopA80qdOHfAHaFS?pid=ImgDet&amp;rs=1" onerror="onerror=null;src='/img/second.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">二叉树的最大深度</div></div></a></div><div class="next-post pull-right"><a href="/post/8cda0fae.html" title="springBoot静态资源配置及其原理"><img class="cover" src="https://th.bing.com/th/id/OIP.nZkOrLOn_bp0mLFxlK-x2wHaEK?pid=ImgDet&amp;rs=1" onerror="onerror=null;src='/img/second.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">springBoot静态资源配置及其原理</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/8cda0fae.html" title="springBoot静态资源配置及其原理"><img class="cover" src="https://th.bing.com/th/id/OIP.nZkOrLOn_bp0mLFxlK-x2wHaEK?pid=ImgDet&rs=1" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-01-19</div><div class="title">springBoot静态资源配置及其原理</div></div></a></div><div><a href="/post/d4e5e1b1.html" title="SpringBoot自动装配"><img class="cover" src="https://th.bing.com/th/id/OIP.1tjF2kQmna-oY-8tTH5OQgHaE7?pid=ImgDet&rs=1" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-01-15</div><div class="title">SpringBoot自动装配</div></div></a></div><div><a href="/post/3d5bac2d.html" title="MyBatis中表的映射关系"><img class="cover" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.moyublog.com%2Fhdwallpapers%2F1293.html&psig=AOvVaw3c6ZALefYz1O2l67XhTguu&ust=1672761033715000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAD" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-01-16</div><div class="title">MyBatis中表的映射关系</div></div></a></div><div><a href="/post/b50e0645.html" title="你真的了解SpringMVC吗？"><img class="cover" src="https://img.51miz.com/Element/00/72/77/78/575accf3_E727778_6fadd380.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-01-10</div><div class="title">你真的了解SpringMVC吗？</div></div></a></div><div><a href="/post/5f70b419.html" title="SSM整合实现CRUD"><img class="cover" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&ust=1672760873466000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-01-09</div><div class="title">SSM整合实现CRUD</div></div></a></div><div><a href="/post/44f9189b.html" title="Web项目整合---实现增删查改"><img class="cover" src="https://th.bing.com/th/id/OIP.nZkOrLOn_bp0mLFxlK-x2wHaEK?pid=ImgDet&rs=1" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-01-06</div><div class="title">Web项目整合---实现增删查改</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center"><img src="https://img-blog.csdnimg.cn/f7384c88956d4378b72e47548e19c9f8.gif" width="50" alt="mao"></p> <p align="center">微信号：l2310allen</p> <p align="center">QQ号：1326507725</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E6%98%A0%E5%B0%84"><span class="toc-number">1.</span> <span class="toc-text">请求映射</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#rest%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8E%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">rest的使用与原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4%E7%9A%84RESTful%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.</span> <span class="toc-text">基于表单提交的RESTful原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E6%8E%A7%E5%88%B6%E5%B1%82%E8%AF%B7%E6%B1%82%E5%8F%91%E8%B5%B7%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="toc-number">1.3.</span> <span class="toc-text">在控制层请求发起的流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DispatcherServlet%E8%AF%B7%E6%B1%82%E5%8E%9F%E7%90%86"><span class="toc-number">1.4.</span> <span class="toc-text">DispatcherServlet请求原理</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/8cda0fae.html" title="springBoot静态资源配置及其原理"><img src="https://th.bing.com/th/id/OIP.nZkOrLOn_bp0mLFxlK-x2wHaEK?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="springBoot静态资源配置及其原理"/></a><div class="content"><a class="title" href="/post/8cda0fae.html" title="springBoot静态资源配置及其原理">springBoot静态资源配置及其原理</a><time datetime="2023-01-19T03:17:55.000Z" title="发表于 2023-01-19 11:17:55">2023-01-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/104c2aa7.html" title="RESTful请求映射及其原理"><img src="https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="RESTful请求映射及其原理"/></a><div class="content"><a class="title" href="/post/104c2aa7.html" title="RESTful请求映射及其原理">RESTful请求映射及其原理</a><time datetime="2023-01-19T03:17:02.000Z" title="发表于 2023-01-19 11:17:02">2023-01-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/9f86f042.html" title="二叉树的最大深度"><img src="https://th.bing.com/th/id/OIP.F8Oa7hJkWSPopA80qdOHfAHaFS?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="二叉树的最大深度"/></a><div class="content"><a class="title" href="/post/9f86f042.html" title="二叉树的最大深度">二叉树的最大深度</a><time datetime="2023-01-18T05:20:25.000Z" title="发表于 2023-01-18 13:20:25">2023-01-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/3d5bac2d.html" title="MyBatis中表的映射关系"><img src="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fwww.moyublog.com%2Fhdwallpapers%2F1293.html&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAD" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="MyBatis中表的映射关系"/></a><div class="content"><a class="title" href="/post/3d5bac2d.html" title="MyBatis中表的映射关系">MyBatis中表的映射关系</a><time datetime="2023-01-16T02:21:04.000Z" title="发表于 2023-01-16 10:21:04">2023-01-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/d4e5e1b1.html" title="SpringBoot自动装配"><img src="https://th.bing.com/th/id/OIP.1tjF2kQmna-oY-8tTH5OQgHaE7?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="SpringBoot自动装配"/></a><div class="content"><a class="title" href="/post/d4e5e1b1.html" title="SpringBoot自动装配">SpringBoot自动装配</a><time datetime="2023-01-14T05:03:50.000Z" title="发表于 2023-01-14 13:03:50">2023-01-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&amp;rs=1')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a><a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a><a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> <a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: '',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: '',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
