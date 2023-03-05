@@ -1,0 +1,258 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>栈队列详解 | Rayce. Blogs</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="​	对于java语言来说，如果需要实现栈队列的数据结构，我们已经不需要自己手动实现了，java内部已经帮我们实现好了栈和队列，而且在其基础上又有了优化 ​	当需要使用栈时，Java已不推荐使用Stack，而是推荐使用更高效的ArrayDeque；既然Queue只是一个接口，当需要使用队列时也就首选ArrayDeque了(次选是LinkedList) 队列（先进先出）对于栈来说，java内部封装St">
+<meta property="og:type" content="article">
+<meta property="og:title" content="栈队列详解">
+<meta property="og:url" content="https://ray2310.github.io/post/78be656d.html">
+<meta property="og:site_name" content="Rayce. Blogs">
+<meta property="og:description" content="​	对于java语言来说，如果需要实现栈队列的数据结构，我们已经不需要自己手动实现了，java内部已经帮我们实现好了栈和队列，而且在其基础上又有了优化 ​	当需要使用栈时，Java已不推荐使用Stack，而是推荐使用更高效的ArrayDeque；既然Queue只是一个接口，当需要使用队列时也就首选ArrayDeque了(次选是LinkedList) 队列（先进先出）对于栈来说，java内部封装St">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://static-bbs.nubia.cn/forum/201705/11/212740nj1388z8351yy5yp.jpg">
+<meta property="article:published_time" content="2023-03-05T00:30:50.000Z">
+<meta property="article:modified_time" content="2023-03-05T01:53:40.694Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="java集合">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://static-bbs.nubia.cn/forum/201705/11/212740nj1388z8351yy5yp.jpg"><link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQHlJW3iX0eSx0YEsPnrToEC7iKW4m3TEgiQ&usqp=CAU"><link rel="canonical" href="https://ray2310.github.io/post/78be656d.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. Blogs","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '栈队列详解',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-03-05 09:53:40'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">41</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://static-bbs.nubia.cn/forum/201705/11/212740nj1388z8351yy5yp.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. Blogs"><span class="site-name">Rayce. Blogs</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">栈队列详解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-03-05T00:30:50.000Z" title="发表于 2023-03-05 08:30:50">2023-03-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-03-05T01:53:40.694Z" title="更新于 2023-03-05 09:53:40">2023-03-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/java/">java</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/java/java%E9%9B%86%E5%90%88/">java集合</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="栈队列详解"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>​	对于java语言来说，如果需要实现栈队列的数据结构，我们已经不需要自己手动实现了，java内部已经帮我们实现好了栈和队列，而且在其基础上又有了优化</p>
+<p>​	<strong>当需要使用栈时，Java已不推荐使用<em>Stack</em>，而是推荐使用更高效的<em>ArrayDeque</em>；既然<em>Queue</em>只是一个接口，当需要使用队列时也就首选<em>ArrayDeque</em>了(次选是<em>LinkedList</em>)</strong></p>
+<h1 id="队列（先进先出）"><a href="#队列（先进先出）" class="headerlink" title="队列（先进先出）"></a>队列（先进先出）</h1><p>对于栈来说，java内部封装Stack方法，但是没有封装Queue的方法。只有实现了接口</p>
+<h2 id="Queue接口"><a href="#Queue接口" class="headerlink" title="Queue接口"></a>Queue接口</h2><p><em>Queue</em>接口继承自Collection接口，除了最基本的Collection的方法之外，它还支持额外的<em>insertion</em>, <em>extraction</em>和<em>inspection</em>操作。这里有两组格式，<strong>共6个方法，一组是抛出异常的实现；另外一组是返回值的实现(没有则返回null)。</strong></p>
+<hr>
+<p><img src="/images/image-20230305084707140.png" alt="image-20230305084707140"></p>
+<h2 id="Deque—-继承Queue的接口"><a href="#Deque—-继承Queue的接口" class="headerlink" title="Deque—-继承Queue的接口"></a>Deque—-继承Queue的接口</h2><p>双向队列，也就是既可以实现队首插入、删除、查看。也可以实现队尾插入、删除、查看的操作。通过这些操作能够更加高效的实现我们所需的操作</p>
+<p><strong>由于Deque是双向的，所以可以对队列的头和尾都进行操作，它同时也支持两组格式，一组是抛出异常的实现；另外一组是返回值的实现(没有则返回null)。</strong></p>
+<p><img src="/images/image-20230305085129505.png" alt="image-20230305085129505"></p>
+<p>因为双向队列的缘故，我们既可以将其当作队列，也可以将当作栈 。</p>
+<p>如果将Deque当作队列和 Queue一样使用。那么对应Queue的方法就是这些</p>
+<p><img src="/images/image-20230305085338508.png" alt="image-20230305085338508"></p>
+<p>对应Queue中的方法</p>
+<p><img src="/images/image-20230305085458034.png" alt="image-20230305085458034"></p>
+<h1 id="栈（先进后出）"><a href="#栈（先进后出）" class="headerlink" title="栈（先进后出）"></a>栈（先进后出）</h1><p>如果将Deque当作栈来使用,那么就是先进后出的一种结果。因此我们对应的方法就是下面这些</p>
+<p><img src="/images/image-20230305090025862.png" alt="image-20230305090025862"></p>
+<h1 id="Deque的实现类"><a href="#Deque的实现类" class="headerlink" title="Deque的实现类"></a>Deque的实现类</h1><p><em>ArrayDeque</em>和<em>LinkedList</em>是<em>Deque</em>的两个通用实现，由于官方更推荐使用<em>AarryDeque</em>用作栈和队列,所以说，我们这里就着重了解ArrayDeque的实现</p>
+<h2 id="ArrayDeque"><a href="#ArrayDeque" class="headerlink" title="ArrayDeque"></a>ArrayDeque</h2><p><em>ArrayDeque</em>底层通过数组实现，为了满足可以同时在数组两端插入或删除元素的需求，该数组还必须是循环的，即**循环数组(circular array)**，也就是说数组的任何一点都可能被看作起点或者终点。</p>
+<p><strong><em>ArrayDeque</em>是非线程安全的(not thread-safe)，</strong>当多个线程同时使用的时候，需要程序员手动同步；另外，该容器不允许放入<code>null</code>元素。</p>
+<hr>
+<p><img src="/images/ArrayDeque_base.png" alt="ArrayDeque_base.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//由源码我们可以知道，它的初始容量为8</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">MIN_INITIAL_CAPACITY</span> <span class="operator">=</span> <span class="number">8</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>容量满时翻倍</p>
+<p><img src="/images/ArrayDeque_doubleCapacity.png" alt="ArrayDeque_doubleCapacity.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Doubles the capacity of this deque.  Call only when full, i.e.,</span></span><br><span class="line"><span class="comment"> * when head and tail have wrapped around to become equal.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">doubleCapacity</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">assert</span> head == tail;</span><br><span class="line">    <span class="type">int</span> <span class="variable">p</span> <span class="operator">=</span> head;</span><br><span class="line">    <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> elements.length;</span><br><span class="line">    <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> n - p; <span class="comment">// number of elements to the right of p  head右边元素的个数</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">newCapacity</span> <span class="operator">=</span> n &lt;&lt; <span class="number">1</span>;<span class="comment">//原空间的2倍</span></span><br><span class="line">    <span class="keyword">if</span> (newCapacity &lt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(<span class="string">&quot;Sorry, deque too big&quot;</span>);</span><br><span class="line">    Object[] a = <span class="keyword">new</span> <span class="title class_">Object</span>[newCapacity];</span><br><span class="line">    System.arraycopy(elements, p, a, <span class="number">0</span>, r);<span class="comment">//复制右半部分，对应上图中绿色部分</span></span><br><span class="line">    System.arraycopy(elements, <span class="number">0</span>, a, r, p);<span class="comment">//复制左半部分，对应上图中灰色部分</span></span><br><span class="line"></span><br><span class="line">    elements = a;</span><br><span class="line">    head = <span class="number">0</span>;</span><br><span class="line">    tail = n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="addFirst"><a href="#addFirst" class="headerlink" title="addFirst"></a>addFirst</h3><p><code>addFirst(E e)</code>的作用是在<em>Deque</em>的首端插入元素，也就是在<code>head</code>的前面插入元素，在空间足够且下标没有越界的情况下，只需要将<code>elements[--head] = e</code>即可。</p>
+<p><img src="/images/ArrayDeque_addFirst.png" alt="ArrayDeque_addFirst.png"></p>
+<p>要考虑的需求 ： </p>
+<p>1.空间是否够用</p>
+<p>2.下标是否越界的问题。</p>
+<p>上图中，如果<code>head</code>为<code>0</code>之后接着调用<code>addFirst()</code>，虽然空余空间还够用，但<code>head</code>为<code>-1</code>，下标越界了。下列代码很好的解决了这两个问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//addFirst(E e)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addFirst</span><span class="params">(E e)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (e == <span class="literal">null</span>)<span class="comment">//不允许放入null</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();</span><br><span class="line">    elements[head = (head - <span class="number">1</span>) &amp; (elements.length - <span class="number">1</span>)] = e;<span class="comment">//2.下标是否越界</span></span><br><span class="line">    <span class="keyword">if</span> (head == tail)<span class="comment">//1.空间是否够用</span></span><br><span class="line">        doubleCapacity();<span class="comment">//扩容</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="addLast"><a href="#addLast" class="headerlink" title="addLast"></a>addLast</h3><p><code>addLast(E e)</code>的作用是在<em>Deque</em>的尾端插入元素，也就是在<code>tail</code>的位置插入元素，由于<code>tail</code>总是指向下一个可以插入的空位，因此只需要<code>elements[tail] = e;</code>即可。插入完成后再检查空间，如果空间已经用光，则调用<code>doubleCapacity()</code>进行扩容。</p>
+<hr>
+<p><img src="/images/ArrayDeque_addLast.png" alt="ArrayDeque_addLast.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addLast</span><span class="params">(E e)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (e == <span class="literal">null</span>)<span class="comment">//不允许放入null</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();</span><br><span class="line">    elements[tail] = e;<span class="comment">//赋值</span></span><br><span class="line">    <span class="keyword">if</span> ( (tail = (tail + <span class="number">1</span>) &amp; (elements.length - <span class="number">1</span>)) == head)<span class="comment">//下标越界处理</span></span><br><span class="line">        doubleCapacity();<span class="comment">//扩容</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="pollFirst"><a href="#pollFirst" class="headerlink" title="pollFirst"></a>pollFirst</h3><p><code>pollFirst()</code>的作用是删除并返回<em>Deque</em>首端元素，也即是<code>head</code>位置处的元素。如果容器不空，只需要直接返回<code>elements[head]</code>即可，当然还需要处理下标的问题。由于<code>ArrayDeque</code>中不允许放入<code>null</code>，当<code>elements[head] == null</code>时，意味着容器为空。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> E <span class="title function_">pollFirst</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">h</span> <span class="operator">=</span> head;</span><br><span class="line">    <span class="type">E</span> <span class="variable">result</span> <span class="operator">=</span> elements[head];</span><br><span class="line">    <span class="keyword">if</span> (result == <span class="literal">null</span>)<span class="comment">//null值意味着deque为空</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    elements[h] = <span class="literal">null</span>;<span class="comment">//let GC work</span></span><br><span class="line">    head = (head + <span class="number">1</span>) &amp; (elements.length - <span class="number">1</span>);<span class="comment">//下标越界处理</span></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="pollLast"><a href="#pollLast" class="headerlink" title="pollLast"></a>pollLast</h3><p><code>pollLast()</code>的作用是删除并返回<em>Deque</em>尾端元素，也即是<code>tail</code>位置前面的那个元素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> E <span class="title function_">pollLast</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">t</span> <span class="operator">=</span> (tail - <span class="number">1</span>) &amp; (elements.length - <span class="number">1</span>);<span class="comment">//tail的上一个位置是最后一个元素</span></span><br><span class="line">    <span class="type">E</span> <span class="variable">result</span> <span class="operator">=</span> elements[t];</span><br><span class="line">    <span class="keyword">if</span> (result == <span class="literal">null</span>)<span class="comment">//null值意味着deque为空</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    elements[t] = <span class="literal">null</span>;<span class="comment">//let GC work</span></span><br><span class="line">    tail = t;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="peekFirst"><a href="#peekFirst" class="headerlink" title="peekFirst"></a>peekFirst</h3><p><code>peekFirst()</code>的作用是返回但不删除<em>Deque</em>首端元素，也即是<code>head</code>位置处的元素，直接返回<code>elements[head]</code>即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> E <span class="title function_">peekFirst</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> elements[head]; <span class="comment">// elements[head] is null if deque empty</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="peekLast"><a href="#peekLast" class="headerlink" title="peekLast"></a>peekLast</h3><p><code>peekLast()</code>的作用是返回但不删除<em>Deque</em>尾端元素，也即是<code>tail</code>位置前面的那个元素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> E <span class="title function_">peekLast</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> elements[(tail - <span class="number">1</span>) &amp; (elements.length - <span class="number">1</span>)];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="优先队列叫做PriorityQueue"><a href="#优先队列叫做PriorityQueue" class="headerlink" title="优先队列叫做PriorityQueue"></a>优先队列叫做<em>PriorityQueue</em></h2><p><strong>优先队列的作用是能保证每次取出的元素都是队列中权值最小的</strong>(Java的优先队列每次取最小元素，C++的优先队列每次取最大元素)。这里牵涉到了大小关系，<strong>元素大小的评判可以通过元素本身的自然顺序(*natural ordering*)，也可以通过构造时传入的比较器</strong>(<em>Comparator</em>，类似于C++的仿函数)。</p>
+<hr>
+<p>参考实现:  <a target="_blank" rel="noopener" href="https://pdai.tech/md/java/collection/java-collection-PriorityQueue.html">https://pdai.tech/md/java/collection/java-collection-PriorityQueue.html</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://Ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/78be656d.html">https://ray2310.github.io/post/78be656d.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ray2310.github.io" target="_blank">Rayce. Blogs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java%E9%9B%86%E5%90%88/">java集合</a></div><div class="post_share"><div class="social-share" data-image="https://static-bbs.nubia.cn/forum/201705/11/212740nj1388z8351yy5yp.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/4509351.html" title="Collection 集合源码剖析"><img class="cover" src="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&amp;psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&amp;ust=1672760873466000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD" onerror="onerror=null;src='/img/second.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Collection 集合源码剖析</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/4509351.html" title="Collection 集合源码剖析"><img class="cover" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&ust=1672760873466000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-03-03</div><div class="title">Collection 集合源码剖析</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">41</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center">最能让人感到快乐的事</p> <p align="center">  莫过于经过一番努力后</p> <p align="center">  所有的东西正在慢慢变成你想要的样子 ! </p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%98%9F%E5%88%97%EF%BC%88%E5%85%88%E8%BF%9B%E5%85%88%E5%87%BA%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">队列（先进先出）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Queue%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.1.</span> <span class="toc-text">Queue接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deque%E2%80%94-%E7%BB%A7%E6%89%BFQueue%E7%9A%84%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.2.</span> <span class="toc-text">Deque—-继承Queue的接口</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%88%EF%BC%88%E5%85%88%E8%BF%9B%E5%90%8E%E5%87%BA%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">栈（先进后出）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Deque%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%B1%BB"><span class="toc-number">3.</span> <span class="toc-text">Deque的实现类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayDeque"><span class="toc-number">3.1.</span> <span class="toc-text">ArrayDeque</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#addFirst"><span class="toc-number">3.1.1.</span> <span class="toc-text">addFirst</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#addLast"><span class="toc-number">3.1.2.</span> <span class="toc-text">addLast</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pollFirst"><span class="toc-number">3.1.3.</span> <span class="toc-text">pollFirst</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pollLast"><span class="toc-number">3.1.4.</span> <span class="toc-text">pollLast</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#peekFirst"><span class="toc-number">3.1.5.</span> <span class="toc-text">peekFirst</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#peekLast"><span class="toc-number">3.1.6.</span> <span class="toc-text">peekLast</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E5%8F%AB%E5%81%9APriorityQueue"><span class="toc-number">3.2.</span> <span class="toc-text">优先队列叫做PriorityQueue</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/78be656d.html" title="栈队列详解"><img src="https://static-bbs.nubia.cn/forum/201705/11/212740nj1388z8351yy5yp.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="栈队列详解"/></a><div class="content"><a class="title" href="/post/78be656d.html" title="栈队列详解">栈队列详解</a><time datetime="2023-03-05T00:30:50.000Z" title="发表于 2023-03-05 08:30:50">2023-03-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/4509351.html" title="Collection 集合源码剖析"><img src="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&amp;psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&amp;ust=1672760873466000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Collection 集合源码剖析"/></a><div class="content"><a class="title" href="/post/4509351.html" title="Collection 集合源码剖析">Collection 集合源码剖析</a><time datetime="2023-03-02T06:05:10.000Z" title="发表于 2023-03-02 14:05:10">2023-03-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/9184f38e.html" title="回溯到底怎么用？"><img src="https://www.google.com/imgres?imgurl=https%3A%2F%2Ftmpl.downzz.com%2Fsucai%2Fcontent%2F0tf4t1r53js.jpg&amp;imgrefurl=https%3A%2F%2Fwww.downzz.com%2Fjianyuebizhi%2F36732.html&amp;tbnid=O22DjUrs0X8icM&amp;vet=12ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ..i&amp;docid=Xc2fZTMSl7dnDM&amp;w=1202&amp;h=676&amp;q=%E7%AE%80%E7%BA%A6%20%E7%94%B5%E8%84%91%20%E5%A3%81%E7%BA%B8%204k&amp;ved=2ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="回溯到底怎么用？"/></a><div class="content"><a class="title" href="/post/9184f38e.html" title="回溯到底怎么用？">回溯到底怎么用？</a><time datetime="2023-03-01T04:17:49.000Z" title="发表于 2023-03-01 12:17:49">2023-03-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/376d0826.html" title="回溯算法"><img src="https://desk-fd.zol-img.com.cn/t_s208x130c5/g4/M08/00/0B/ChMly13CMDWIZfctAAvXuPJhBZEAAYRRQPV_woAC9fQ316.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="回溯算法"/></a><div class="content"><a class="title" href="/post/376d0826.html" title="回溯算法">回溯算法</a><time datetime="2023-02-22T05:25:10.000Z" title="发表于 2023-02-22 13:25:10">2023-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/a669b1a7.html" title="反转字符串中的单词"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdBEWTRsoTmfSwHZizVfB5ULTdnM2HLfWx_A&amp;usqp=CAU" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="反转字符串中的单词"/></a><div class="content"><a class="title" href="/post/a669b1a7.html" title="反转字符串中的单词">反转字符串中的单词</a><time datetime="2023-02-20T05:54:44.000Z" title="发表于 2023-02-20 13:54:44">2023-02-20</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://static-bbs.nubia.cn/forum/201705/11/212740nj1388z8351yy5yp.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a><a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a><a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> <a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: '',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: '',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
