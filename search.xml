@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>动态规划</title>
+      <link href="/post/a80d0031.html"/>
+      <url>/post/a80d0031.html</url>
+      
+        <content type="html"><![CDATA[<h3 id="参考-代码随想录"><a href="#参考-代码随想录" class="headerlink" title="参考 : 代码随想录"></a>参考 : 代码随想录</h3><p><img src="/images/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E6%80%BB%E7%BB%93%E5%A4%A7%E7%BA%B21.jpg" alt="img"></p><h1 id="理论知识"><a href="#理论知识" class="headerlink" title="理论知识"></a>理论知识</h1><p><strong>动态规划问题，将拆解为如下五步曲，这五步都搞清楚了，才能说把动态规划真的掌握了！</strong></p><ol><li>确定dp数组（dp table）以及下标的含义</li><li>确定递推公式</li><li>dp数组如何初始化</li><li>确定遍历顺序</li><li>举例推导dp数组</li></ol><p>发出这样的问题之前，其实可以自己先思考这三个问题：</p><ul><li>这道题目我举例推导状态转移公式了么？</li><li>我打印dp数组的日志了么？</li><li>打印出来了dp数组和我想的一样么？</li></ul><p><strong>如果这灵魂三问自己都做到了，基本上这道题目也就解决了</strong></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据结构与算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 动态规划 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>HashSet源码剖析</title>
       <link href="/post/d7392437.html"/>
       <url>/post/d7392437.html</url>
