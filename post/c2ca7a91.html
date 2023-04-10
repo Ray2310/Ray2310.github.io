@@ -1,0 +1,253 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Java线程 | Rayce. Blogs</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="进程线程进程 进程是指运行中的程序，比如QQ，就启动了一个进程，操作系统就会为该进程分配内存空间。当我们使用其他程序的时候，就又启动了一个进程，操作系统就会为其他进程分配新的内存空间 进程是程序的一次执行过程，或者是正在运行的一个程序。 是一个动态的过程，有他自身的产生、存在和消亡的过程  下面就是几个进程  线程 线程是由进程创建的，是进程的一个实体 一个进程可以拥有多个线程，如下图【同一个应用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java线程">
+<meta property="og:url" content="https://ray2310.github.io/post/c2ca7a91.html">
+<meta property="og:site_name" content="Rayce. Blogs">
+<meta property="og:description" content="进程线程进程 进程是指运行中的程序，比如QQ，就启动了一个进程，操作系统就会为该进程分配内存空间。当我们使用其他程序的时候，就又启动了一个进程，操作系统就会为其他进程分配新的内存空间 进程是程序的一次执行过程，或者是正在运行的一个程序。 是一个动态的过程，有他自身的产生、存在和消亡的过程  下面就是几个进程  线程 线程是由进程创建的，是进程的一个实体 一个进程可以拥有多个线程，如下图【同一个应用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2023-04-10T14:19:28.000Z">
+<meta property="article:modified_time" content="2023-04-10T14:22:07.678Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="java线程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQHlJW3iX0eSx0YEsPnrToEC7iKW4m3TEgiQ&usqp=CAU"><link rel="canonical" href="https://ray2310.github.io/post/c2ca7a91.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. Blogs","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Java线程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-04-10 22:22:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">54</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. Blogs"><span class="site-name">Rayce. Blogs</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Java线程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-04-10T14:19:28.000Z" title="发表于 2023-04-10 22:19:28">2023-04-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-04-10T14:22:07.678Z" title="更新于 2023-04-10 22:22:07">2023-04-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/java/">java</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Java线程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="进程线程"><a href="#进程线程" class="headerlink" title="进程线程"></a>进程线程</h1><h3 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h3><ul>
+<li><strong>进程是指运行中的程序</strong>，比如<code>QQ</code>，就启动了一个进程，<strong>操作系统就会为该进程分配内存空间</strong>。<strong>当我们使用其他程序的时候，就又启动了一个进程</strong>，操作系统就会为其他进程分配新的内存空间</li>
+<li><strong>进程是程序的一次执行过程，或者是正在运行的一个程序。</strong></li>
+<li><strong>是一个动态的过程，有他自身的产生、存在和消亡的过程</strong></li>
+</ul>
+<p>下面就是几个进程</p>
+<p><img src="/images/image-20230410204839968.png" alt="image-20230410204839968"></p>
+<h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><ul>
+<li>线程是由进程创建的，是进程的一个实体</li>
+<li>一个进程可以拥有多个线程，如下图【同一个应用迅雷 下载多个内容，就产生多个线程】</li>
+</ul>
+<p><img src="/images/image-20230410205001638.png" alt="image-20230410205001638"></p>
+<h4 id="多线程："><a href="#多线程：" class="headerlink" title="多线程："></a>多线程：</h4><p>​	同一时刻，可以执行多个进程，比如上面的迅雷同时下载多个文件 </p>
+<h4 id="单线程："><a href="#单线程：" class="headerlink" title="单线程："></a>单线程：</h4><p>同一时刻，只允许执行一个线程</p>
+<h4 id="并发"><a href="#并发" class="headerlink" title="并发 : "></a><code>并发 : </code></h4><p> 同一时刻 ， 多个任务交替执行， 造成一种‘貌似同时’ 的错觉， 简单的说，<strong>单核<code>cpu</code>实现的多任务就是并发</strong></p>
+<p><img src="/images/image-20230410205502037.png" alt="image-20230410205502037"></p>
+<p>看上去他们同时进行，但是在任意时间段内，他们都是相互交错执行的</p>
+<p>比如 ： ‘人的大脑一边说话，一边写字 ’</p>
+<h4 id="并行-："><a href="#并行-：" class="headerlink" title="并行 ："></a>并行 ：</h4><p>同一时刻， 多个任务同时执行。<strong>多核<code>cpu</code>可以实现并行</strong></p>
+<p><img src="/images/image-20230410205657962.png" alt="image-20230410205657962"></p>
+<h1 id="线程使用的两种方式"><a href="#线程使用的两种方式" class="headerlink" title="线程使用的两种方式"></a>线程使用的两种方式</h1><ul>
+<li>当一个类继承Thread类， 那么该类就可以当成一个线程</li>
+<li></li>
+</ul>
+<h2 id="一、-继承Thread创建线程"><a href="#一、-继承Thread创建线程" class="headerlink" title="一、 继承Thread创建线程"></a>一、 继承Thread创建线程</h2><ul>
+<li>案例一： 开启一个线程，该线程每隔1秒，在控制台输出一段话</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Thread01</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//1. 创建一个cat对象，可以当作一个线程来使用</span></span><br><span class="line">        <span class="type">Cat</span> <span class="variable">cat</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Cat</span>();</span><br><span class="line">        cat.start(); <span class="comment">//启动线程 - &gt; 最终会执行cat的run方法</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cat</span> <span class="keyword">extends</span> <span class="title class_">Thread</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="variable">times</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//todo 通过重写run方法，来实现自己的业务逻辑</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123; <span class="comment">// 实现了Runnable接口的run方法</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;执行一次&quot;</span> + <span class="string">&quot;次数&quot;</span> +(++times));</span><br><span class="line">            <span class="comment">//让其休眠一秒</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果就是每隔一秒输出一次</p>
+<p><img src="/images/image-20230410212000042.png" alt="image-20230410212000042"></p>
+<h2 id="二、-实现Runnable"><a href="#二、-实现Runnable" class="headerlink" title="二、 实现Runnable"></a>二、 实现Runnable</h2><ul>
+<li><code>java</code>是单继承的，在某些情况下一个类可能已经继承了某个父类，这是再用Thread类方法来创建线程显然是不可能了</li>
+<li><code>java</code>设计者们就想出了另一个创建线程的方法，就是通过实现Runnable接口来创建线程</li>
+</ul>
+<h4 id="实现案例："><a href="#实现案例：" class="headerlink" title="实现案例："></a>实现案例：</h4><p> 写一个程序，该程序可以每隔1秒，在控制台输出一段话</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Thread02</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Dog</span> <span class="variable">dog</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Dog</span>();</span><br><span class="line">        <span class="comment">//无法调用start方法 ，切记不能调用run方法，因为他只是一个普通的方法，没办法开启线程</span></span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(dog);</span><br><span class="line">        <span class="comment">//这时 ，我们可以创建一个Thread对象， 然后调用start方法 ，然后就可以启动一个线程，调用了run方法</span></span><br><span class="line">        thread.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span>&#123;<span class="comment">//通过Runnable接口实现线程</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="variable">times</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;执行一次&quot;</span> + <span class="string">&quot;次数&quot;</span> +(++times)+ <span class="string">&quot;线程名:&quot;</span> + Thread.currentThread().getName());</span><br><span class="line">        <span class="comment">//让其休眠一秒</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>这里使用的是一个设计模式【代理模式】</strong></p>
+<h2 id="多线程机制"><a href="#多线程机制" class="headerlink" title="多线程机制"></a>多线程机制</h2><p>当我们执行上述程序是，它的流程是这样的</p>
+<p>主线程的执行<img src="/images/image-20230410213321693.png" alt="image-20230410213321693"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//1. 创建一个cat对象，可以当作一个线程来使用</span></span><br><span class="line">    <span class="type">Cat</span> <span class="variable">cat</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Cat</span>();</span><br><span class="line">    cat.start();</span><br><span class="line">    <span class="comment">//当main方法执行一个线程 之后 ，主线程不会阻塞 ，会继续执行</span></span><br><span class="line">   <span class="keyword">while</span> (<span class="literal">true</span>)&#123;</span><br><span class="line">       System.out.println(<span class="string">&quot;主线程 执行次数: &quot;</span> + (++count) + <span class="string">&quot;线程名:&quot;</span> + Thread.currentThread().getName());</span><br><span class="line">       Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当main方法执行一个线程 之后 ，主线程不会阻塞 ，会继续执行</p>
+<p><img src="/images/image-20230410213202313.png" alt="image-20230410213202313"></p>
+<p>最后用检测工具发现，<strong>虽然主线程的执行完一定次数之后，结束了</strong>，<strong>但是它的子线程Thread-0 没有执行完 ，那么程序就不会结束</strong></p>
+<h3 id="为什么这里要调cat-start-方法？"><a href="#为什么这里要调cat-start-方法？" class="headerlink" title="为什么这里要调cat.start()方法？"></a>为什么这里要调<code>cat.start()</code>方法？</h3><p>答 ：因为<strong>run方法就是一个普通的方法，并无法启动一个真正的线程</strong>就会产生阻塞。</p>
+<ul>
+<li><strong>源码分析start方法</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">start</span><span class="params">()</span> &#123;</span><br><span class="line">     <span class="keyword">if</span> (threadStatus != <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalThreadStateException</span>();</span><br><span class="line">        group.add(<span class="built_in">this</span>);</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">started</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            start0();</span><br><span class="line">            started = <span class="literal">true</span>;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (!started) &#123;</span><br><span class="line">                    group.threadStartFailed(<span class="built_in">this</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Throwable ignore) &#123;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//本地方法， 是由jvm调用，底层是由c/c++实现，无法调用</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title function_">start0</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>换言之， <strong>真正实现多线程的效果是<code>start0();</code>方法</strong></p>
+<p><img src="/images/image-20230410215248921.png" alt="image-20230410215248921"></p>
+<h1 id="07多个子线程案例"><a href="#07多个子线程案例" class="headerlink" title="07多个子线程案例"></a>07多个子线程案例</h1><h1 id="08多线程售票问题"><a href="#08多线程售票问题" class="headerlink" title="08多线程售票问题"></a>08多线程售票问题</h1><h1 id="09通知线程退出"><a href="#09通知线程退出" class="headerlink" title="09通知线程退出"></a>09通知线程退出</h1><h1 id="10线程中断"><a href="#10线程中断" class="headerlink" title="10线程中断"></a>10线程中断</h1><h1 id="11线程插队"><a href="#11线程插队" class="headerlink" title="11线程插队"></a>11线程插队</h1><h1 id="13守护线程"><a href="#13守护线程" class="headerlink" title="13守护线程"></a>13守护线程</h1><h1 id="14线程7大状态"><a href="#14线程7大状态" class="headerlink" title="14线程7大状态"></a>14线程7大状态</h1><h1 id="15线程同步机制"><a href="#15线程同步机制" class="headerlink" title="15线程同步机制"></a>15线程同步机制</h1><h1 id="16互斥锁"><a href="#16互斥锁" class="headerlink" title="16互斥锁"></a>16互斥锁</h1><h1 id="17线程死锁"><a href="#17线程死锁" class="headerlink" title="17线程死锁"></a>17线程死锁</h1><h1 id="18释放锁"><a href="#18释放锁" class="headerlink" title="18释放锁"></a>18释放锁</h1><h1 id="19线程家庭作业1"><a href="#19线程家庭作业1" class="headerlink" title="19线程家庭作业1"></a>19线程家庭作业1</h1><h1 id="20线程家庭作业2"><a href="#20线程家庭作业2" class="headerlink" title="20线程家庭作业2"></a>20线程家庭作业2</h1></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://Ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/c2ca7a91.html">https://ray2310.github.io/post/c2ca7a91.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ray2310.github.io" target="_blank">Rayce. Blogs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java%E7%BA%BF%E7%A8%8B/">java线程</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/a21622d4.html" title="时间API的使用"><img class="cover" src="https://i.pinimg.com/236x/0c/da/a8/0cdaa811391a4313baf1a2128a76baad.jpg" onerror="onerror=null;src='/img/second.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">时间API的使用</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">54</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center">最能让人感到快乐的事</p> <p align="center">  莫过于经过一番努力后</p> <p align="center">  所有的东西正在慢慢变成你想要的样子 ! </p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">进程线程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-number">1.0.1.</span> <span class="toc-text">进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.0.2.</span> <span class="toc-text">线程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%9A"><span class="toc-number">1.0.2.1.</span> <span class="toc-text">多线程：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E7%BA%BF%E7%A8%8B%EF%BC%9A"><span class="toc-number">1.0.2.2.</span> <span class="toc-text">单线程：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91"><span class="toc-number">1.0.2.3.</span> <span class="toc-text">并发 : </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%B6%E8%A1%8C-%EF%BC%9A"><span class="toc-number">1.0.2.4.</span> <span class="toc-text">并行 ：</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E4%BD%BF%E7%94%A8%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">线程使用的两种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81-%E7%BB%A7%E6%89%BFThread%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">一、 继承Thread创建线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81-%E5%AE%9E%E7%8E%B0Runnable"><span class="toc-number">2.2.</span> <span class="toc-text">二、 实现Runnable</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%A1%88%E4%BE%8B%EF%BC%9A"><span class="toc-number">2.2.0.1.</span> <span class="toc-text">实现案例：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%9C%BA%E5%88%B6"><span class="toc-number">2.3.</span> <span class="toc-text">多线程机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E9%87%8C%E8%A6%81%E8%B0%83cat-start-%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="toc-number">2.3.1.</span> <span class="toc-text">为什么这里要调cat.start()方法？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#07%E5%A4%9A%E4%B8%AA%E5%AD%90%E7%BA%BF%E7%A8%8B%E6%A1%88%E4%BE%8B"><span class="toc-number">3.</span> <span class="toc-text">07多个子线程案例</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#08%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%94%AE%E7%A5%A8%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">08多线程售票问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#09%E9%80%9A%E7%9F%A5%E7%BA%BF%E7%A8%8B%E9%80%80%E5%87%BA"><span class="toc-number">5.</span> <span class="toc-text">09通知线程退出</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10%E7%BA%BF%E7%A8%8B%E4%B8%AD%E6%96%AD"><span class="toc-number">6.</span> <span class="toc-text">10线程中断</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11%E7%BA%BF%E7%A8%8B%E6%8F%92%E9%98%9F"><span class="toc-number">7.</span> <span class="toc-text">11线程插队</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#13%E5%AE%88%E6%8A%A4%E7%BA%BF%E7%A8%8B"><span class="toc-number">8.</span> <span class="toc-text">13守护线程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#14%E7%BA%BF%E7%A8%8B7%E5%A4%A7%E7%8A%B6%E6%80%81"><span class="toc-number">9.</span> <span class="toc-text">14线程7大状态</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#15%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6"><span class="toc-number">10.</span> <span class="toc-text">15线程同步机制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#16%E4%BA%92%E6%96%A5%E9%94%81"><span class="toc-number">11.</span> <span class="toc-text">16互斥锁</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#17%E7%BA%BF%E7%A8%8B%E6%AD%BB%E9%94%81"><span class="toc-number">12.</span> <span class="toc-text">17线程死锁</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#18%E9%87%8A%E6%94%BE%E9%94%81"><span class="toc-number">13.</span> <span class="toc-text">18释放锁</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#19%E7%BA%BF%E7%A8%8B%E5%AE%B6%E5%BA%AD%E4%BD%9C%E4%B8%9A1"><span class="toc-number">14.</span> <span class="toc-text">19线程家庭作业1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#20%E7%BA%BF%E7%A8%8B%E5%AE%B6%E5%BA%AD%E4%BD%9C%E4%B8%9A2"><span class="toc-number">15.</span> <span class="toc-text">20线程家庭作业2</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/c2ca7a91.html" title="Java线程"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Java线程"/></a><div class="content"><a class="title" href="/post/c2ca7a91.html" title="Java线程">Java线程</a><time datetime="2023-04-10T14:19:28.000Z" title="发表于 2023-04-10 22:19:28">2023-04-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/a21622d4.html" title="时间API的使用"><img src="https://i.pinimg.com/236x/0c/da/a8/0cdaa811391a4313baf1a2128a76baad.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="时间API的使用"/></a><div class="content"><a class="title" href="/post/a21622d4.html" title="时间API的使用">时间API的使用</a><time datetime="2023-04-05T04:00:11.000Z" title="发表于 2023-04-05 12:00:11">2023-04-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/862c3f1c.html" title="Stream流式编程"><img src="https://bpic.588ku.com/back_origin_min_pic/19/10/22/4b2ca2ba13a830385cd398820ef837e1.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Stream流式编程"/></a><div class="content"><a class="title" href="/post/862c3f1c.html" title="Stream流式编程">Stream流式编程</a><time datetime="2023-04-04T10:13:44.000Z" title="发表于 2023-04-04 18:13:44">2023-04-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/fa1d06da.html" title="Dp练习"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Dp练习"/></a><div class="content"><a class="title" href="/post/fa1d06da.html" title="Dp练习">Dp练习</a><time datetime="2023-04-04T01:29:32.000Z" title="发表于 2023-04-04 09:29:32">2023-04-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/470b3441.html" title="Daily-Blog项目后台日志"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcGq1FpSxF0qUTqQbAkH_2uaT-SVYw7DP9eQ&amp;usqp=CAU" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Daily-Blog项目后台日志"/></a><div class="content"><a class="title" href="/post/470b3441.html" title="Daily-Blog项目后台日志">Daily-Blog项目后台日志</a><time datetime="2023-03-27T12:12:10.000Z" title="发表于 2023-03-27 20:12:10">2023-03-27</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a><a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a><a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> <a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: '',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: '',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
