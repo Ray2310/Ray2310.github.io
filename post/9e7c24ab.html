@@ -1,0 +1,396 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>买卖股票系列 | Rayce. Blogs</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本篇主要详细学习买卖股票的最佳时机系列的题目 买卖股票的最佳时机题目：  给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。 你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。 返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。 示例 1：输入：[7,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="买卖股票系列">
+<meta property="og:url" content="https://ray2310.github.io/post/9e7c24ab.html">
+<meta property="og:site_name" content="Rayce. Blogs">
+<meta property="og:description" content="本篇主要详细学习买卖股票的最佳时机系列的题目 买卖股票的最佳时机题目：  给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。 你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。 返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。 示例 1：输入：[7,">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&rs=1">
+<meta property="article:published_time" content="2023-04-17T10:49:31.000Z">
+<meta property="article:modified_time" content="2023-04-17T11:50:46.322Z">
+<meta property="article:author" content="Rayce.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&rs=1"><link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQHlJW3iX0eSx0YEsPnrToEC7iKW4m3TEgiQ&usqp=CAU"><link rel="canonical" href="https://ray2310.github.io/post/9e7c24ab.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. Blogs","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '买卖股票系列',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-04-17 19:50:46'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&amp;rs=1')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. Blogs"><span class="site-name">Rayce. Blogs</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">买卖股票系列</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-04-17T10:49:31.000Z" title="发表于 2023-04-17 18:49:31">2023-04-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-04-17T11:50:46.322Z" title="更新于 2023-04-17 19:50:46">2023-04-17</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="买卖股票系列"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><strong>本篇主要详细学习买卖股票的最佳时机系列的题目</strong></p>
+<h1 id="买卖股票的最佳时机"><a href="#买卖股票的最佳时机" class="headerlink" title="买卖股票的最佳时机"></a>买卖股票的最佳时机</h1><p><strong>题目：</strong></p>
+<blockquote>
+<p>给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。</p>
+<p>你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。</p>
+<p>返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。</p>
+<p>示例 1：<br>输入：[7,1,5,3,6,4]<br>输出：5<br>解释：在第 2 天（股票价格 &#x3D; 1）的时候买入，在第 5 天（股票价格 &#x3D; 6）的时候卖出，最大利润 &#x3D; 6-1 &#x3D; 5 。注意利润不能是 7-1 &#x3D; 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。</p>
+<p>示例 2：<br>输入：prices &#x3D; [7,6,4,3,1]<br>输出：0<br>解释：在这种情况下, 没有交易完成, 所以最大利润为 0。</p>
+</blockquote>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>前面我们已经做了一道树形dp的题目， 所以我们的思路就可以往这方面靠一下。</p>
+<p>回归到题目 本身， 他需要<code>从这笔交易中获取的最大利润</code> ,而我们就需要再相对最小的价格时买入 ，在相对最大的价格时卖出。这样的到的利润才是最大 。为什么是用相对， 因为我们不能再买入前就卖出， 这不符合逻辑 也不符合题意。</p>
+<p>直接用dp的思路来思考。</p>
+<p>他要的是最大利润， 利润就是我们所获得的现金， 而我们<strong>所获得的现金就是买入后自己钱包所剩的现金 + 卖出后我们获得的现金。</strong></p>
+<p>用两个空间来记录我们买入股票时的现金数 ，和 卖出股票时的现金数</p>
+<p>所以我们就可以用一个二维数组来记录我们收获的现金</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dp[i][<span class="number">0</span>] : 第i天时，持有股票时 ，我们所拥有的最大现金 为dp[i][<span class="number">0</span>]</span><br><span class="line">dp[i][<span class="number">1</span>] : 第i天时，不持有股票时， 我们所拥有的最大现金为dp[i][<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>持有股票</strong>我们可以**分为两种情况： **</p>
+<ul>
+<li><strong>再第i天之前，我们已经买入了股票， 今天(第i天)我们继续持有</strong></li>
+<li><strong>今天（第i天），买入股票</strong></li>
+</ul>
+<p>这两种状态， 我们都可以作为持有股票</p>
+<p>同样的<strong>不持有股票， 我们也可以分为两种情况：</strong></p>
+<ul>
+<li><strong>再第i天之前 就不持有， 今天(第i天)也不持有</strong></li>
+<li><strong>今天（第i天） ，把股票买了</strong></li>
+</ul>
+<p>所以根据上述我们的思路，就可以得出dp式</p>
+<ol>
+<li>dp含义</li>
+</ol>
+<p>正如前面的递推 ，dp含义就是</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dp[i][<span class="number">0</span>] : 第i天时，持有股票时 ，我们所拥有的最大现金 为dp[i][<span class="number">0</span>]</span><br><span class="line">dp[i][<span class="number">1</span>] : 第i天时，不持有股票时， 我们所拥有的最大现金为dp[i][<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>dp公式</li>
+</ol>
+<p>因为dp的含义是得到最大现金 ， 而我们只有每一步都是得到最大值 ，那么我们的结果才是最大的。</p>
+<p>推导方程就是我们之前的持有股票 和 不持有股票的两种情况</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dp[i][<span class="number">0</span>] = Math.max(dp[i - <span class="number">1</span>][<span class="number">0</span>], -prices[i]);</span><br><span class="line">dp[i][<span class="number">1</span>] = Math.max(dp[i - <span class="number">1</span>][<span class="number">1</span>], prices[i] + dp[i - <span class="number">1</span>][<span class="number">0</span>]);</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="3">
+<li>dp初始化</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dp[<span class="number">0</span>][<span class="number">0</span>] = -prices[<span class="number">0</span>]; <span class="comment">//第一天我们持有股票 那么一定是当天买入</span></span><br><span class="line">dp[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">0</span>; 	<span class="comment">//第一天我们不持有股票 获得的最大现金就一定是 0 ，因为我们本来的现金默认就是0 ，没买自然没欠钱</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="4">
+<li>dp遍历顺序</li>
+</ol>
+<p>从递推公式可以看出dp[i]都是由dp[i - 1]推导出来的，那么一定是从前向后遍历。</p>
+<ol start="5">
+<li>打印dp</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>天数</th>
+<th>持有股票的最大现金</th>
+<th>不持有股票的最大现金</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>-7</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>-1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>-1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>3</td>
+<td>-1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>4</td>
+<td>-1</td>
+<td>5</td>
+</tr>
+<tr>
+<td>5</td>
+<td>-1</td>
+<td>5</td>
+</tr>
+</tbody></table>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxProfit</span><span class="params">(<span class="type">int</span>[] prices)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (prices == <span class="literal">null</span> || prices.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> prices.length;</span><br><span class="line">        <span class="type">int</span>[][] dp = <span class="keyword">new</span> <span class="title class_">int</span>[length][<span class="number">2</span>];</span><br><span class="line">        <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = -prices[<span class="number">0</span>];</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; length; i++) &#123;</span><br><span class="line">            dp[i][<span class="number">0</span>] = Math.max(dp[i - <span class="number">1</span>][<span class="number">0</span>], -prices[i]);</span><br><span class="line">            dp[i][<span class="number">1</span>] = Math.max(dp[i - <span class="number">1</span>][<span class="number">0</span>] + prices[i], dp[i - <span class="number">1</span>][<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[length - <span class="number">1</span>][<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="买卖股票的最佳时机II"><a href="#买卖股票的最佳时机II" class="headerlink" title="买卖股票的最佳时机II"></a>买卖股票的最佳时机II</h1><p><strong>题目：</strong></p>
+<blockquote>
+<p>给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。</p>
+<p>设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。</p>
+<p>注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</p>
+<p>示例 1:<br>输入: [7,1,5,3,6,4]<br>输出: 7<br>解释: 在第 2 天（股票价格 &#x3D; 1）的时候买入，在第 3 天（股票价格 &#x3D; 5）的时候卖出, 这笔交易所能获得利润 &#x3D; 5-1 &#x3D; 4。随后，在第 4 天（股票价格 &#x3D; 3）的时候买入，在第 5 天（股票价格 &#x3D; 6）的时候卖出, 这笔交易所能获得利润 &#x3D; 6-3 &#x3D; 3 。</p>
+<p>示例 2:<br>输入: [1,2,3,4,5]<br>输出: 4<br>解释: 在第 1 天（股票价格 &#x3D; 1）的时候买入，在第 5 天 （股票价格 &#x3D; 5）的时候卖出, 这笔交易所能获得利润 &#x3D; 5-1 &#x3D; 4 。注意你不能在第 1 天和第 2 天接连购买股票，之后再将它们卖出。因为这样属于同时参与了多笔交易，你必须在再次购买前出售掉之前的股票。</p>
+<p>示例 3:<br>输入: [7,6,4,3,1]<br>输出: 0<br>解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。</p>
+<p>提示：</p>
+<ul>
+<li>1 &lt;&#x3D; prices.length &lt;&#x3D; 3 * 10 ^ 4</li>
+<li>0 &lt;&#x3D; prices[i] &lt;&#x3D; 10 ^ 4</li>
+</ul>
+</blockquote>
+<h2 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2><p>这道题相比于之前的题目最大的区别就是 	<strong>你可以尽可能地完成更多的交易（多次买卖一支股票）。</strong></p>
+<p>但是题目的条件也很明确 ： <code>注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</code></p>
+<p>也就是我们可以买卖完一支股票之后 ，还可以再进行买卖其他的股票。 	</p>
+<p>思路和上道题 是一摸一样的 ，唯一有区别的就是我们<strong>持有股票时的最大的现金的两种情况需要发生变化</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//持有股票有两种情况</span></span><br><span class="line">	<span class="comment">//1. 之前就持有 ，那么现在继续持有    </span></span><br><span class="line">	<span class="comment">//2. 当前买入 ，但是必须将手头的股票卖掉</span></span><br><span class="line">dp[i][<span class="number">0</span>]  = Math.max(dp[i-<span class="number">1</span>][<span class="number">0</span>] , dp[i-<span class="number">1</span>][<span class="number">1</span>] - prices[i]);	<span class="comment">//因为不能再同一天出售 ，所以我们就必须在前一天出售调股票，所以就是前一天不持有股票的最大现金 - 今天的股票价格</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> </span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxProfit</span><span class="params">(<span class="type">int</span>[] prices)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> prices.length;</span><br><span class="line">        <span class="type">int</span>[][] dp = <span class="keyword">new</span> <span class="title class_">int</span>[n][<span class="number">2</span>];     <span class="comment">// 创建二维数组存储状态</span></span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;                   <span class="comment">// 初始状态</span></span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">1</span>] = -prices[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            dp[i][<span class="number">0</span>] = Math.max(dp[i - <span class="number">1</span>][<span class="number">0</span>], dp[i - <span class="number">1</span>][<span class="number">1</span>] + prices[i]);    <span class="comment">// 第 i 天，没有股票</span></span><br><span class="line">            dp[i][<span class="number">1</span>] = Math.max(dp[i - <span class="number">1</span>][<span class="number">1</span>], dp[i - <span class="number">1</span>][<span class="number">0</span>] - prices[i]);    <span class="comment">// 第 i 天，持有股票</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[n - <span class="number">1</span>][<span class="number">0</span>];    <span class="comment">// 卖出股票收益高于持有股票收益，因此取[0]</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="买卖股票的最佳时机III"><a href="#买卖股票的最佳时机III" class="headerlink" title="买卖股票的最佳时机III"></a>买卖股票的最佳时机III</h1><p><strong>题目：</strong> </p>
+<blockquote>
+<p>给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。</p>
+<p>设计一个算法来计算你所能获取的最大利润。你最多可以完成 两笔 交易。</p>
+<p>注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</p>
+<p>示例 1: 输入：prices &#x3D; [3,3,5,0,0,3,1,4] 输出：6 解释：在第 4 天（股票价格 &#x3D; 0）的时候买入，在第 6 天（股票价格 &#x3D; 3）的时候卖出，这笔交易所能获得利润 &#x3D; 3-0 &#x3D; 3 。随后，在第 7 天（股票价格 &#x3D; 1）的时候买入，在第 8 天 （股票价格 &#x3D; 4）的时候卖出，这笔交易所能获得利润 &#x3D; 4-1 &#x3D; 3。</p>
+<p>示例 2： 输入：prices &#x3D; [1,2,3,4,5] 输出：4 解释：在第 1 天（股票价格 &#x3D; 1）的时候买入，在第 5 天 （股票价格 &#x3D; 5）的时候卖出, 这笔交易所能获得利润 &#x3D; 5-1 &#x3D; 4。注意你不能在第 1 天和第 2 天接连购买股票，之后再将它们卖出。因为这样属于同时参与了多笔交易，你必须在再次购买前出售掉之前的股票。</p>
+<p>示例 3： 输入：prices &#x3D; [7,6,4,3,1] 输出：0 解释：在这个情况下, 没有交易完成, 所以最大利润为0。</p>
+<p>示例 4： 输入：prices &#x3D; [1] 输出：0</p>
+<p>提示：</p>
+<ul>
+<li>1 &lt;&#x3D; prices.length &lt;&#x3D; 10^5</li>
+<li>0 &lt;&#x3D; prices[i] &lt;&#x3D; 10^5</li>
+</ul>
+</blockquote>
+<h2 id="思路-2"><a href="#思路-2" class="headerlink" title="思路"></a>思路</h2><p>本题， 他要求最多可以完成两笔交易 。</p>
+<p>那么相较于之前的题目 ，我们需要记录两次交易的状态。</p>
+<p>所以dp数组的宽度就需要扩大</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dp[<span class="number">0</span>][<span class="number">0</span>] 无操作 直接设置为 <span class="number">0</span> 即可</span><br><span class="line">dp[i][<span class="number">1</span>] : 第i天时，第一次所持有股票时 ，我们所拥有的最大现金 为dp[i][<span class="number">1</span>]</span><br><span class="line">dp[i][<span class="number">2</span>] : 第i天时，第一次不持有股票时， 我们所拥有的最大现金为dp[i][<span class="number">2</span>]</span><br><span class="line">dp[i][<span class="number">3</span>] : 第i天时，第二次所持有股票时 ，我们所拥有的最大现金 为dp[i][<span class="number">3</span>]</span><br><span class="line">dp[i][<span class="number">4</span>] : 第i天时，第二次不持有股票时， 我们所拥有的最大现金为dp[i][<span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+
+<p>那么得到的状态也都是相应的有两种状态</p>
+<p><img src="/images/image-20230417193953398.png" alt="image-20230417193953398"></p>
+<h2 id="实现-2"><a href="#实现-2" class="headerlink" title="实现"></a>实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxProfit</span><span class="params">(<span class="type">int</span>[] prices)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> prices.length;</span><br><span class="line">        <span class="keyword">if</span> (prices.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 定义 5 种状态:</span></span><br><span class="line"><span class="comment">         * 0: 没有操作, 1: 第一次买入, 2: 第一次卖出, 3: 第二次买入, 4: 第二次卖出</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="type">int</span>[][] dp = <span class="keyword">new</span> <span class="title class_">int</span>[len][<span class="number">5</span>];</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">1</span>] = -prices[<span class="number">0</span>];</span><br><span class="line">        <span class="comment">// 初始化第二次买入的状态是确保 最后结果是最多两次买卖的最大利润</span></span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">3</span>] = -prices[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; len; i++) &#123;</span><br><span class="line">            dp[i][<span class="number">1</span>] = Math.max(dp[i - <span class="number">1</span>][<span class="number">1</span>], -prices[i]);</span><br><span class="line">            dp[i][<span class="number">2</span>] = Math.max(dp[i - <span class="number">1</span>][<span class="number">2</span>], dp[i][<span class="number">1</span>] + prices[i]);</span><br><span class="line">            dp[i][<span class="number">3</span>] = Math.max(dp[i - <span class="number">1</span>][<span class="number">3</span>], dp[i][<span class="number">2</span>] - prices[i]);</span><br><span class="line">            dp[i][<span class="number">4</span>] = Math.max(dp[i - <span class="number">1</span>][<span class="number">4</span>], dp[i][<span class="number">3</span>] + prices[i]);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dp[len - <span class="number">1</span>][<span class="number">4</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="买卖股票的最佳时机IV"><a href="#买卖股票的最佳时机IV" class="headerlink" title="买卖股票的最佳时机IV"></a>买卖股票的最佳时机IV</h1><p><strong>题目 ：</strong></p>
+<blockquote>
+<p>给定一个整数数组 prices ，它的第 i 个元素 prices[i] 是一支给定的股票在第 i 天的价格。</p>
+<p>设计一个算法来计算你所能获取的最大利润。你最多可以完成 k 笔交易。</p>
+<p>注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</p>
+<p>示例 1： 输入：k &#x3D; 2, prices &#x3D; [2,4,1] 输出：2 解释：在第 1 天 (股票价格 &#x3D; 2) 的时候买入，在第 2 天 (股票价格 &#x3D; 4) 的时候卖出，这笔交易所能获得利润 &#x3D; 4-2 &#x3D; 2。</p>
+<p>示例 2： 输入：k &#x3D; 2, prices &#x3D; [3,2,6,5,0,3] 输出：7 解释：在第 2 天 (股票价格 &#x3D; 2) 的时候买入，在第 3 天 (股票价格 &#x3D; 6) 的时候卖出, 这笔交易所能获得利润 &#x3D; 6-2 &#x3D; 4。随后，在第 5 天 (股票价格 &#x3D; 0) 的时候买入，在第 6 天 (股票价格 &#x3D; 3) 的时候卖出, 这笔交易所能获得利润 &#x3D; 3-0 &#x3D; 3 。</p>
+<p>提示：</p>
+<ul>
+<li>0 &lt;&#x3D; k &lt;&#x3D; 100</li>
+<li>0 &lt;&#x3D; prices.length &lt;&#x3D; 1000</li>
+<li>0 &lt;&#x3D; prices[i] &lt;&#x3D; 1000</li>
+</ul>
+</blockquote>
+<h2 id="思路-3"><a href="#思路-3" class="headerlink" title="思路"></a>思路</h2><p>这道题的实现  和上一道题唯一的区别就是他把 2 换成了 k ，所以我们在定义状态的时候 需要定义 k 个状态。</p>
+<p>使用二维数组 <code>dp[i][j]</code> ：第i天的状态为j，所剩下的最大现金是<code>dp[i][j]</code></p>
+<p>j的状态表示为：</p>
+<ul>
+<li>0 表示不操作</li>
+<li>1 第一次买入</li>
+<li>2 第一次卖出</li>
+<li>3 第二次买入</li>
+<li>4 第二次卖出</li>
+<li>…..</li>
+</ul>
+<p>从上述的推导中 ，我们可以看出， 好像奇数次 都是在买入 。 偶数次都是在卖出。</p>
+<p>那么根据这个规律 ，我们就可以推导出剩下的代码了</p>
+<p>**初始化： ** 所有的卖入都初始化为 -prices[i]</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt; <span class="number">2</span> * k; j += <span class="number">2</span>) &#123;</span><br><span class="line">    dp[<span class="number">0</span>][j] = -prices[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>**递推公式： **</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; <span class="number">2</span> * k - <span class="number">1</span>; j += <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="comment">//奇数次</span></span><br><span class="line">    dp[i][j + <span class="number">1</span>] = max(dp[i - <span class="number">1</span>][j + <span class="number">1</span>], dp[i - <span class="number">1</span>][j] - prices[i]);</span><br><span class="line">    <span class="comment">//偶数次</span></span><br><span class="line">    dp[i][j + <span class="number">2</span>] = max(dp[i - <span class="number">1</span>][j + <span class="number">2</span>], dp[i - <span class="number">1</span>][j + <span class="number">1</span>] + prices[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>**推导结果： **</p>
+<p><img src="/images/image-20230417194928332.png" alt="image-20230417194928332"></p>
+<h2 id="实现-3"><a href="#实现-3" class="headerlink" title="实现"></a>实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxProfit</span><span class="params">(<span class="type">int</span> k, <span class="type">int</span>[] prices)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (prices.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> prices.length;</span><br><span class="line">        <span class="type">int</span>[][] dp = <span class="keyword">new</span> <span class="title class_">int</span>[len][k*<span class="number">2</span> + <span class="number">1</span>];      </span><br><span class="line">        <span class="comment">// dp数组的初始化, 与版本一同理</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; k*<span class="number">2</span>; i += <span class="number">2</span>) &#123;</span><br><span class="line">            dp[<span class="number">0</span>][i] = -prices[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; len; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; k*<span class="number">2</span> - <span class="number">1</span>; j += <span class="number">2</span>) &#123;</span><br><span class="line">                dp[i][j + <span class="number">1</span>] = Math.max(dp[i - <span class="number">1</span>][j + <span class="number">1</span>], dp[i - <span class="number">1</span>][j] - prices[i]);</span><br><span class="line">                dp[i][j + <span class="number">2</span>] = Math.max(dp[i - <span class="number">1</span>][j + <span class="number">2</span>], dp[i - <span class="number">1</span>][j + <span class="number">1</span>] + prices[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[len - <span class="number">1</span>][k*<span class="number">2</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://Ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/9e7c24ab.html">https://ray2310.github.io/post/9e7c24ab.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ray2310.github.io" target="_blank">Rayce. Blogs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&amp;rs=1" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/e86d25dc.html" title="打家劫舍篇"><img class="cover" src="https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d058ccbf6c81800ae9cb0e37b83533fa828b47d9.jpg" onerror="onerror=null;src='/img/second.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">打家劫舍篇</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center">最能让人感到快乐的事</p> <p align="center">  莫过于经过一番努力后</p> <p align="center">  所有的东西正在慢慢变成你想要的样子 ! </p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA"><span class="toc-number">1.</span> <span class="toc-text">买卖股票的最佳时机</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">1.1.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.2.</span> <span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAII"><span class="toc-number">2.</span> <span class="toc-text">买卖股票的最佳时机II</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-1"><span class="toc-number">2.1.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0-1"><span class="toc-number">2.2.</span> <span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIII"><span class="toc-number">3.</span> <span class="toc-text">买卖股票的最佳时机III</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-2"><span class="toc-number">3.1.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0-2"><span class="toc-number">3.2.</span> <span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIV"><span class="toc-number">4.</span> <span class="toc-text">买卖股票的最佳时机IV</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-3"><span class="toc-number">4.1.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0-3"><span class="toc-number">4.2.</span> <span class="toc-text">实现</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/9e7c24ab.html" title="买卖股票系列"><img src="https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="买卖股票系列"/></a><div class="content"><a class="title" href="/post/9e7c24ab.html" title="买卖股票系列">买卖股票系列</a><time datetime="2023-04-17T10:49:31.000Z" title="发表于 2023-04-17 18:49:31">2023-04-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/e86d25dc.html" title="打家劫舍篇"><img src="https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d058ccbf6c81800ae9cb0e37b83533fa828b47d9.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="打家劫舍篇"/></a><div class="content"><a class="title" href="/post/e86d25dc.html" title="打家劫舍篇">打家劫舍篇</a><time datetime="2023-04-13T11:14:51.000Z" title="发表于 2023-04-13 19:14:51">2023-04-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/c2ca7a91.html" title="Java线程"><img src="https://www.google.com/imgres?imgurl=https%3A%2F%2Ftmpl.downzz.com%2Fsucai%2Fcontent%2F0tf4t1r53js.jpg&amp;imgrefurl=https%3A%2F%2Fwww.downzz.com%2Fjianyuebizhi%2F36732.html&amp;tbnid=O22DjUrs0X8icM&amp;vet=12ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ..i&amp;docid=Xc2fZTMSl7dnDM&amp;w=1202&amp;h=676&amp;q=%E7%AE%80%E7%BA%A6%20%E7%94%B5%E8%84%91%20%E5%A3%81%E7%BA%B8%204k&amp;ved=2ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Java线程"/></a><div class="content"><a class="title" href="/post/c2ca7a91.html" title="Java线程">Java线程</a><time datetime="2023-04-10T14:19:28.000Z" title="发表于 2023-04-10 22:19:28">2023-04-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/a21622d4.html" title="时间API的使用"><img src="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&amp;psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&amp;ust=1672760873466000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="时间API的使用"/></a><div class="content"><a class="title" href="/post/a21622d4.html" title="时间API的使用">时间API的使用</a><time datetime="2023-04-05T04:00:11.000Z" title="发表于 2023-04-05 12:00:11">2023-04-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/862c3f1c.html" title="Stream流式编程"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Stream流式编程"/></a><div class="content"><a class="title" href="/post/862c3f1c.html" title="Stream流式编程">Stream流式编程</a><time datetime="2023-04-04T10:13:44.000Z" title="发表于 2023-04-04 18:13:44">2023-04-04</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&amp;rs=1')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a><a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a><a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> <a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: '',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: '',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
