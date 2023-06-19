@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>操作系统的概念、功能、目标</title>
+      <link href="/post/5d5d6d5e.html"/>
+      <url>/post/5d5d6d5e.html</url>
+      
+        <content type="html"><![CDATA[<p>章节知识点大纲：</p><p><img src="/images/1687173153353-827ee487-8806-4a5d-9664-34b6d3f78370.png" alt="img"></p><h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p><strong>操作系统（OS）：</strong></p><ul><li>是指控制和<strong>管理</strong>整个计算机系统<strong>的硬件 和 软件</strong> 资源， 并合理地组织调动计算机地工作和资源地分配； </li><li>是<strong>以给提供给用户和其他软件方便地接口和环境</strong>；</li><li>他是<strong>计算机系统中最基本地系统软件</strong></li></ul><p><img src="/images/1687171500085-ba674b46-f884-46ad-a279-2fc3d8237f98.png" alt="img"></p><h1 id="目标、功能-：-系统资源的管理者"><a href="#目标、功能-：-系统资源的管理者" class="headerlink" title="目标、功能 ： 系统资源的管理者"></a>目标、功能 ： 系统资源的管理者</h1><h3 id="功能一：-处理器管理"><a href="#功能一：-处理器管理" class="headerlink" title="功能一： 处理器管理"></a>功能一： 处理器管理</h3><h3 id="功能二：-存储器管理"><a href="#功能二：-存储器管理" class="headerlink" title="功能二： 存储器管理"></a>功能二： 存储器管理</h3><h3 id="功能三：-文件管理"><a href="#功能三：-文件管理" class="headerlink" title="功能三： 文件管理"></a>功能三： 文件管理</h3><h3 id="功能四：-设备管理"><a href="#功能四：-设备管理" class="headerlink" title="功能四： 设备管理"></a>功能四： 设备管理</h3><h3 id="目标：-安全-、-高效"><a href="#目标：-安全-、-高效" class="headerlink" title="目标： 安全 、 高效"></a>目标： 安全 、 高效</h3><p>封装思想， 将一些复杂的功能封装称为一个简单的接口， 用户直接调用这些接口即可。</p><p><strong>给用户使用的三种命令接口</strong></p><ol><li><strong>联机命令接口 &#x3D; 交互式命令接口</strong> (win + R )的那个 ：  用户说一个系统做一个 </li><li><strong>脱机命令接口 &#x3D; 批处理命令接口</strong> ( *.bat 随便打开一个就知道了) ：  用户说一推 ，系统再执行</li><li><strong>GUI: 图形化用户接口</strong></li></ol><p><strong>给程序员使用的命令接口</strong></p><ol><li>系统调用（也叫广义指令）： 也就是程序员 通过高级语言编写程序 来进行系统调用</li></ol><h3 id="操作系统对硬件的拓展："><a href="#操作系统对硬件的拓展：" class="headerlink" title="操作系统对硬件的拓展："></a>操作系统对硬件的拓展：</h3><p>将cpu、内存、磁盘、显示器、鼠标等硬件合理的组合起来， 让各个硬件能够相互协调配合， 实现更多更复杂的功能</p><h3 id="案例-：-用QQ-和朋友使用聊天"><a href="#案例-：-用QQ-和朋友使用聊天" class="headerlink" title="案例 ： 用QQ 和朋友使用聊天"></a>案例 ： 用QQ 和朋友使用聊天</h3><ol><li>找到QQ的安装位置</li></ol><p><strong>找存储位置</strong></p><ol><li>双击打开qq</li></ol><p><strong>把程序相关数据 放入内存中</strong> </p><ol><li>qq开始运行</li></ol><p><strong>对应的进程正在被CPU处理</strong>   <strong>（只有将程序放入CPU ，他才能被cpu处理）</strong></p><ol><li>开始视频聊天</li></ol><p><strong>将需要的设备分配给进程</strong></p><h1 id="四个基本特征："><a href="#四个基本特征：" class="headerlink" title="四个基本特征："></a>四个基本特征：</h1><h2 id="特征一：-并发："><a href="#特征一：-并发：" class="headerlink" title="特征一： 并发："></a>特征一： 并发：</h2><p><strong>指两个或者多个事件再同一时间间隔内发生。 这些事件宏观上是同时发生的 ，但在微观上是交替发生的。</strong></p><p>并行：</p><p>两个或者多个事件再同一时刻同时发生</p><p><strong>注意点：</strong> </p><p>单核cpu同一时刻只能执行一个程序， 各个程序只能<strong>并发</strong>的执行</p><p>多个cpu同一时刻可以同时执行多个程序， 多个程序可以<strong>并行</strong>执行</p><h2 id="特征二：-共享"><a href="#特征二：-共享" class="headerlink" title="特征二： 共享"></a>特征二： 共享</h2><p>即资源共享， 是指系统中的资源可以供内存中多个并发执行的进程同时使用</p><h3 id="两种资源共享的方式"><a href="#两种资源共享的方式" class="headerlink" title="两种资源共享的方式"></a>两种资源共享的方式</h3><ul><li><strong>互斥共享方式</strong></li></ul><p>系统中的某些资源，虽然可以提供给多个进程使用， 但是一个时间段内只允许一个进程访问该资源</p><ul><li><strong>同时共享方式</strong></li></ul><p>系统中的某些资源，允许一个时间段内由多个进行“同时”对他们进行访问</p><h2 id="特征三：-虚拟"><a href="#特征三：-虚拟" class="headerlink" title="特征三： 虚拟"></a>特征三： 虚拟</h2><p>就是<strong>指把一个物理上的实体变成若干个逻辑上的对应物</strong>。 物理实体 是实际存在的 ，而逻辑上对应物 是用户感受到的。</p><p><img src="/images/1687174356752-3ccbd7b2-2553-4372-91e7-3b6a6c40d7ed.png" alt="img"></p><p>没有并发性。 虚拟性就没有意义</p><h2 id="特征四：-异步"><a href="#特征四：-异步" class="headerlink" title="特征四： 异步"></a>特征四： 异步</h2><p>是指多道程序下，允许多个程序并发执行，但由于资源有限， 进程的执行不是一贯到底的， 而是走走停停， 已不可预知的速度向前推进， 这就是进程的异步性。</p><h2 id="四者之间的关系-："><a href="#四者之间的关系-：" class="headerlink" title="四者之间的关系 ："></a>四者之间的关系 ：</h2><p>没有并发 和共享 就谈不上虚拟和异步， 因此并发和共享是操作系统的两个最基本的特征。</p><h1 id="操作系统的发展思维图"><a href="#操作系统的发展思维图" class="headerlink" title="操作系统的发展思维图"></a>操作系统的发展思维图</h1><p><img src="/images/1687176288744-f0634b57-5681-4907-be3d-9d61f5a91202.png" alt="img"></p><h1 id="操作系统的运行机制（怎么运行的）"><a href="#操作系统的运行机制（怎么运行的）" class="headerlink" title="操作系统的运行机制（怎么运行的）"></a>操作系统的运行机制（怎么运行的）</h1><ul><li>普通程序员写的是‘应用程序’</li><li>微软、苹果等公司他们的人负责实现操作系统的， 他们写的是‘内核程序’</li></ul><p><strong>一个操作系统， 只需要一个内核就足够了。 （Docker –&gt; 仅需要一个Linux的内核）</strong></p><p>还有的就是图形化界面不在内核中。</p><p><strong>CPU有两种状态</strong></p><ul><li><strong>用户态（目态）</strong></li></ul><p>此时正在运行的是应用程序， 此时只能执行非特权指令。</p><ul><li><strong>内核态（管态）</strong></li></ul><p>此时正在执行的是 内核程序， 此时可以执行特权指令。</p><hr><p>状态的转变就是我们计算机组成原理中的 <strong>程序状态字寄存器（PSW）</strong></p><p><img src="/images/1687177665974-9046a6cd-e36c-47c8-b0da-20e23059ec20.png" alt="img"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 操作系统 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 操作系统 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Life</title>
       <link href="/post/b9ff91c0.html"/>
       <url>/post/b9ff91c0.html</url>
