@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>中断异常和系统调用</title>
+      <link href="/post/12e5be94.html"/>
+      <url>/post/12e5be94.html</url>
+      
+        <content type="html"><![CDATA[<p>思维导图</p><p><img src="/images/1687184523598-2b5c39df-202b-42ed-abb9-f1b661a5afc9.png" alt="img"> </p><h1 id="中断的作用"><a href="#中断的作用" class="headerlink" title="中断的作用"></a>中断的作用</h1><p>CPU上会有两种程序</p><ul><li>操作系统内核程序</li><li>应用程序</li></ul><hr><p><strong>中断是让操作系统内核夺回CPU使用权的唯一途径</strong></p><p><strong>内核态 —-&gt; 用户态：</strong> 执行一条特权指令，—修改PSW的标志位为”用户态“， 这个动作意味着操作系统主动让出CPU使用权</p><p><strong>用户态 —-&gt; 内核态：</strong> 由中断引发， 硬件自动完成变态的过程 ，触发中断信号意味着操作系统将强行夺回CPU的使用权。</p><hr><h1 id="中断的类型"><a href="#中断的类型" class="headerlink" title="中断的类型"></a>中断的类型</h1><p><img src="/images/1687183996936-a020343a-51bf-4223-b65d-cbd38446491b.png" alt="img"></p><h2 id="内中断（异常）"><a href="#内中断（异常）" class="headerlink" title="内中断（异常）"></a>内中断（异常）</h2><p>与当前执行的<strong>指令有关</strong>， 中断信号来源于CPU<strong>内部</strong></p><ol><li><strong>陷阱、 陷入（trap ）</strong></li></ol><p>由陷入指令引发的， 是应用程序故意引起的</p><ol><li><strong>故障 （ fault  ）</strong></li></ol><p>由错误条件引起的 ， 可能被内核程序修改 ，内核程序修复后会把cpu的使用权交给应用程序， 让他继续执行。</p><ol><li><strong>终止 （ abort ）</strong></li></ol><p>由致命错误引起的 ， 内核程序无法修复的错误。 所以内核就不会将cpu使用权交给应用程序 。 </p><p>如： 非法的使用特权指令。</p><h2 id="外中断"><a href="#外中断" class="headerlink" title="外中断"></a>外中断</h2><p>与当前执行的<strong>指令无关</strong>， 中断信号来源于CPU<strong>外部</strong></p><h1 id="中断机制的基本原理"><a href="#中断机制的基本原理" class="headerlink" title="中断机制的基本原理"></a>中断机制的基本原理</h1><p>不同的中断信号 ，需要用不同的中断处理程序来处理， 当cpu检测到中断信号后， 会根据中断信号的类型去查询”中断向量表“ ， 以此来找到相应的中断处理程序在内存中的存放位置。</p><p><img src="/images/1687184477546-42fd0581-0ba0-4edf-a215-1401123d343f.png" alt="img"></p><h1 id="什么是系统调用"><a href="#什么是系统调用" class="headerlink" title="什么是系统调用"></a>什么是系统调用</h1><p>操作系统作为用户 和 计算机硬件之间的接口， 需要向上提供一些 简单易用的服务接口。 主要包括 命令接口和程序接口， 其中程序接口 由一组系统调用组成。</p><h1 id="系统调用-和-库函数的区别"><a href="#系统调用-和-库函数的区别" class="headerlink" title="系统调用 和 库函数的区别"></a>系统调用 和 库函数的区别</h1><p><img src="/images/1687184854726-f8757271-f9ca-49fa-932b-4782aeb6a4e5.png" alt="img"></p><h1 id="例子-，为什么系统调用是必须的-？"><a href="#例子-，为什么系统调用是必须的-？" class="headerlink" title="例子 ，为什么系统调用是必须的 ？"></a>例子 ，为什么系统调用是必须的 ？</h1><p>需要通过系统调用来达到对共享资源的一种调度的作用。</p><h1 id="什么功能要用系统调用实现"><a href="#什么功能要用系统调用实现" class="headerlink" title="什么功能要用系统调用实现  ?"></a>什么功能要用系统调用实现  ?</h1><p>应用程序通过<strong>系统调用</strong>请求操作系统的服务， 而系统中的各个共享资源都由操作系统内核统一进行掌管， 因此 ，<strong>凡是与共享资源有关的操作</strong> （如： 内存分配， IO操作，文件管理等） <strong>，都必须通过系统调用的方式像操作系统内核提出服务请求</strong>， 由操作系统内核代为完成 。 这样<strong>可以保证系统的稳定性和安全性</strong>。 防止用户进行非法操作。</p><p><img src="/images/1687185331421-6ea5ef82-fddd-439a-8097-bbeaa56f5e52.png" alt="img"></p><h1 id="系统调用的过程"><a href="#系统调用的过程" class="headerlink" title="系统调用的过程"></a>系统调用的过程</h1><p>重听， 相对来说是重点1.3_3_系统调用</p><p>6.10</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 操作系统 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 操作系统 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>操作系统的概念、功能、目标</title>
       <link href="/post/5d5d6d5e.html"/>
       <url>/post/5d5d6d5e.html</url>
