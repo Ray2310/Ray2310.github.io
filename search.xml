@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>初识微服务</title>
+      <link href="/post/6c845d13.html"/>
+      <url>/post/6c845d13.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="单体架构与微服务架构的区别"><a href="#单体架构与微服务架构的区别" class="headerlink" title="单体架构与微服务架构的区别"></a>单体架构与微服务架构的区别</h1><h2 id="单体架构"><a href="#单体架构" class="headerlink" title="单体架构"></a>单体架构</h2><p><img src="/images/1688992745502-af6d58bd-27bb-46df-87aa-c3d4dd05eaff.png" alt="img"></p><p>将所有的业务功能都集中在一个项目中开发， 打包成一个包部署。</p><p>优点： 就是成本低， 架构简单</p><p>缺点：  耦合度极高</p><h2 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h2><p><img src="/images/1688992835763-75903c12-f007-44ce-aedb-77ab1e2473eb.png" alt="img"></p><p>根据业务功能对系统进行拆分，每个业务模块作为独立项目开发，称为一个服务。</p><p>优点： 降低服务的耦合； 有利于升级拓展项目</p><h3 id="这样的微服务架构的问题一："><a href="#这样的微服务架构的问题一：" class="headerlink" title="这样的微服务架构的问题一："></a>这样的微服务架构的问题一：</h3><p>业务越多 ，项目结构越复杂， 那么服务与服务之间的业务关系调用就会越来越复杂。 </p><p>如此复杂的业务关系， 想要靠人来解决是不可能的， 所以微服务提供了一个组件—–注册中心</p><h3 id="注册中心解决问题一"><a href="#注册中心解决问题一" class="headerlink" title="注册中心解决问题一"></a>注册中心解决问题一</h3><p>注册中心可以记录微服务中 ，每个服务的IP、端口、及其他们的作用（能干什么）</p><p>如果一个服务想要调用另一个服务，那么想要知道该服务的作用， 就直接找到他的注册中心就可以得到对应的服务信息。</p><h3 id="出现的问题二：-多个服务引起的很多配置文件的修改问题"><a href="#出现的问题二：-多个服务引起的很多配置文件的修改问题" class="headerlink" title="出现的问题二： 多个服务引起的很多配置文件的修改问题"></a>出现的问题二： 多个服务引起的很多配置文件的修改问题</h3><p>随着服务的增多， 配置信息也会海量的上升， 对于我们的管理是非常不利的。所以微服务提供了配置中心， 他可以管理这些服务中的所有配置</p><h3 id="解决问题二-：配置中心解决。"><a href="#解决问题二-：配置中心解决。" class="headerlink" title="解决问题二 ：配置中心解决。"></a>解决问题二 ：配置中心解决。</h3><p>配置中心可以管理所有我们的配置文件。</p><p>如果以后需要有配置进行变更， 我们<strong>只需要通知配置中心即可 。它可以通知相关的微服务，实现配置的热更新。</strong></p><h3 id="问题三：-微服务过多，用户访问的时候不知道访问哪个"><a href="#问题三：-微服务过多，用户访问的时候不知道访问哪个" class="headerlink" title="问题三： 微服务过多，用户访问的时候不知道访问哪个"></a>问题三： 微服务过多，用户访问的时候不知道访问哪个</h3><p>微服务数量达到一定的数量 ，靠我们人为的去维护管理是不可能的， 同时也不是任何用户来都能够访问我们的服务。所以需要进行管理。</p><h3 id="服务网关-解决问题三"><a href="#服务网关-解决问题三" class="headerlink" title="服务网关 解决问题三"></a>服务网关 解决问题三</h3><p>服务网关可以实现对进入服务的用户身份进行认证管理</p><p>同时还可以将用户的请求 转发到具体的请求。（<strong>请求路由</strong>）</p><p>通过上述的服务网关， 我们就可以将得到的用户请求发送到对应的服务上， 然后服务就可以通过数据库等查询到对应的信息返回给用户。</p><h3 id="问题四：-不可能所有的请求都访问数据库吧-？"><a href="#问题四：-不可能所有的请求都访问数据库吧-？" class="headerlink" title="问题四： 不可能所有的请求都访问数据库吧 ？"></a>问题四： 不可能所有的请求都访问数据库吧 ？</h3><p>通过服务网关， 我们就可以将得到的用户请求发送到对应的服务上， 然后服务就可以通过数据库等查询到对应的信息返回给用户。</p><p>但是 ，这么多的请求， 这么多的服务。如果全部打到数据库上， 那么对于数据库的压力将是恐怖的。 所以我们需要将数据进行缓存。</p><h3 id="分布式缓存解决问题四。"><a href="#分布式缓存解决问题四。" class="headerlink" title="分布式缓存解决问题四。"></a>分布式缓存解决问题四。</h3><p>对于分布式的集群任务， 我们需要对应的缓存来缓解数据库的访问压力。所以就需要分布式缓存。</p><p>分布式集群的请求 ，先打到分布式缓存中， 缓存未命中，再访问数据库。</p><h3 id="问题五：-分布式集群中的请求往往覆盖多个服务，如何解决-？"><a href="#问题五：-分布式集群中的请求往往覆盖多个服务，如何解决-？" class="headerlink" title="问题五： 分布式集群中的请求往往覆盖多个服务，如何解决 ？"></a>问题五： 分布式集群中的请求往往覆盖多个服务，如何解决 ？</h3><p>对于分布式集群来说， 我们的请求可能需要调用不同的集群才能完成一个任务，那么如何处理分配这些请求的执行顺序（执行时间等等），如何分配这些时常，就是我们需要解决的问题。</p><p>如果无法很好的分配这些任务的执行 ， 对于系统的性能是有极大影响的</p><h3 id="消息队列解决问题五"><a href="#消息队列解决问题五" class="headerlink" title="消息队列解决问题五."></a>消息队列解决问题五.</h3><p>消息对列就可以很好的解决这些请求的调度。</p><p>提高服务的并发。</p><h3 id="问题六：-服务出现问题如何解决。"><a href="#问题六：-服务出现问题如何解决。" class="headerlink" title="问题六： 服务出现问题如何解决。"></a>问题六： 服务出现问题如何解决。</h3><p>如此庞大的集群， 一旦出现问题那将是致命的， 所以我们需要一些东西来维护定位，乃至追踪这些问题。 所以就引入了分布式服务日志 &amp;&amp; 系统监控链路追踪。</p><h3 id="分布式日志服务解决问题六"><a href="#分布式日志服务解决问题六" class="headerlink" title="分布式日志服务解决问题六"></a>分布式日志服务解决问题六</h3><p>通过分布式日志服务， 我们可以解决对于出现问题的定位， 但是我们还需要监控来定位乃至观察这些服务的运行情况， 这就用到了系统监控和链路追踪</p><h3 id="问题七：-微服务的部署"><a href="#问题七：-微服务的部署" class="headerlink" title="问题七： 微服务的部署"></a>问题七： 微服务的部署</h3><p>服务集群达到这样的量级， 如果还是通过人工部署那当然是不现实的， 所以就需要用到自动化集群的部署 </p><h3 id><a href="#" class="headerlink" title></a></h3><h3 id="Jenkins解决问题七"><a href="#Jenkins解决问题七" class="headerlink" title="Jenkins解决问题七"></a>Jenkins解决问题七</h3><p>通过Jenkins来实现对微服务进行自动化的编译， 基于Docker进行打包形成镜像。再通过K8s 或者 RANCHER这样的技术实现微服务的集成部署。</p><h2 id="微服务架构总结图"><a href="#微服务架构总结图" class="headerlink" title="微服务架构总结图"></a>微服务架构总结图</h2><p><img src="/images/1688995010678-73ad042e-59b4-4d33-808f-125916f61358.png" alt="img"></p><p><img src="/images/1688995233004-a1f18a75-ce10-4ec2-b128-30f9f43add8e.png" alt="img"></p><h1 id="-1"><a href="#-1" class="headerlink" title></a></h1><h1 id="微服务技术的划分"><a href="#微服务技术的划分" class="headerlink" title="微服务技术的划分"></a>微服务技术的划分</h1><h2 id="微服务治理SpringCloud"><a href="#微服务治理SpringCloud" class="headerlink" title="微服务治理SpringCloud"></a>微服务治理SpringCloud</h2><p><strong>SpringCloud是目前国内使用最广泛的微服务框架。官网地址：</strong><a href="https://spring.io/projects/spring-cloud"><strong>https://spring.io/projects/spring-cloud</strong></a><strong>。</strong></p><p><strong>SpringCloud集成了各种微服务功能组件，并基于SpringBoot实现了这些组件的自动装配，从而提供了良好的开箱即用体验：</strong></p><p><img src="/images/1688995099438-9fa692ec-1358-4262-bbd9-5bac8c343e63.png" alt="img"></p><h2 id="分布式的缓存"><a href="#分布式的缓存" class="headerlink" title="分布式的缓存"></a>分布式的缓存</h2><p><img src="/images/1688995284927-778374c6-ff94-4acc-b669-71114e2f1d56.png" alt="img"></p><h2 id="异步通信技术"><a href="#异步通信技术" class="headerlink" title="异步通信技术"></a>异步通信技术</h2><p><img src="/images/1688995299497-7eb1f526-c055-4469-952d-36dc5acbef27.png" alt="img"></p><h2 id="分布式搜索的技术"><a href="#分布式搜索的技术" class="headerlink" title="分布式搜索的技术"></a>分布式搜索的技术</h2><p><img src="/images/1688995330410-cce990a5-3093-4503-8edc-e61e16803894.png" alt="img"></p><h2 id="持续集成DevOps技术"><a href="#持续集成DevOps技术" class="headerlink" title="持续集成DevOps技术"></a>持续集成DevOps技术</h2><p><img src="/images/1688995366939-9d2715b3-bd76-4c96-a45e-4a521c92e5b9.png" alt="img"></p><h1 id="hm的学习大纲"><a href="#hm的学习大纲" class="headerlink" title="hm的学习大纲"></a>hm的学习大纲</h1><p><img src="/images/1688995589351-408af337-9032-4a67-9615-786f7b7e436d.png" alt="img"></p><p><img src="/images/1688995626482-72d19447-5678-46d9-9cec-5e9975d10745.png" alt="img"></p><p><img src="/images/1688995650922-a045dd11-ebef-4531-afe5-f26d8da50711.png" alt="img"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 后端 </category>
+          
+          <category> java </category>
+          
+          <category> SpringCloud </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SpringCloud </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>文件系统</title>
       <link href="/post/1b9c8662.html"/>
       <url>/post/1b9c8662.html</url>
