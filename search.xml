@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>TCP&amp;&amp;UDP套接字编程</title>
+      <link href="/post/452b164d.html"/>
+      <url>/post/452b164d.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="Socket编程"><a href="#Socket编程" class="headerlink" title="Socket编程"></a>Socket编程</h1><h2 id="应用的实现"><a href="#应用的实现" class="headerlink" title="应用的实现"></a>应用的实现</h2><p>应用是如何实现的 ？ </p><blockquote><p>答：  应用进程使用传输层提供的服务才能够交换报文，实现应用协议，实现应用  </p></blockquote><p>报文的传输是通过下层的通信及其下层的服务来完成<br>** TCP&#x2F;IP：应用进程使用 Socket API 访问传输服务   **<br>在什么地方将报文传输下去？  什么形式 ？<br><strong>地点：</strong>界面上的SAP(Socket）** 方式：**Socket API  </p><ul><li><strong>目标: 学习如何构建能借助sockets进行通信的C&#x2F;S应用程序</strong></li><li>**socket: 分布式应用进程之间的门，传输层协议提供的端到端 服务接口  **</li></ul><p><img src="/images/1690282078697-fd9bf6e1-2f86-4dc7-99d0-d52fc1b7b5d7.png" alt="image.png"></p><blockquote><p>具体的socket在下层收到之后如何来做， 是由后面的内容讲的<br>本章主要学习的是 ：<br>应用如何使用层间接口Socket上的SocketAPI来创建Socket 、使用Socket、操作Socket等等， 从而让两个应用进程之间可以逻辑的交换应用报文，实现应用协议， 实现各种的网络应用。</p></blockquote><p>我们都知道本层协议的实现是为了更好的向上层提供服务。而应用层是Top层，但是应用层也可以有上层 ，就比如是用户、其他应用等等。</p><h2 id="Socket的两种传输层类型"><a href="#Socket的两种传输层类型" class="headerlink" title="Socket的两种传输层类型"></a>Socket的两种传输层类型</h2><ul><li>**TCP: 可靠的、字节流的服务 **</li><li>**UDP: 不可靠（数据UDP数据报）服务  **</li></ul><h2 id="TCP套接字编程"><a href="#TCP套接字编程" class="headerlink" title="TCP套接字编程"></a>TCP套接字编程</h2><p>**套接字：应用进程与端到端传输协议（TCP或UDP）之间 的门户 **<br>**TCP服务：从一个进程向另一个进程可靠地传输字节流  **<br><img src="/images/1690282542024-8f44dccc-94e0-4cc4-bd27-9941a011c280.png" alt="image.png"></p><h3 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h3><blockquote><p> 服务器首先运行，等待连接建立  </p></blockquote><ol><li>** 服务器进程必须先处于运行状态 **</li></ol><blockquote><p>创建欢迎socket<br>和<strong>本地端口</strong>捆绑<br>在欢迎socket上阻塞式等待接收 用户的连接  </p></blockquote><p>** 客户端主动和服务器建立连接：（Accept接收其他人与他建立的连接）**<br>如果没有那就会阻塞</p><ol start="2"><li>** 创建客户端本地套接字（隐式捆 绑到本地port）  **</li></ol><blockquote><p>** 指定服务器进程的IP地址和端口 号，与服务器进程连接  **</p></blockquote><ol start="3"><li>** 当与客户端连接请求到来时  **</li></ol><blockquote><p>** 服务器接受来自用户端的请求 ，解除阻塞式等待，返回一个 新的socket（与欢迎socket不 一样），与客户端通信  **</p></blockquote><ul><li>允许服务器与多个客户端 通信</li><li>使用源IP和源端口来区分 不同的客户端</li></ul><ol start="4"><li>** 连接API调用有效时，客户端P与 服务器建立了TCP连接  **</li></ol><p>**注意： **</p><blockquote><p>本地的welcome Socket代表的是本地的80号端口和其他的几个值 ，通过这个端口来建立与其他client的连接<br><strong>80端口可以被不同的线程共享，有socket值来区分不同的线程</strong></p></blockquote><h3 id="TCP-Socket编程（C-x2F-S模式交互样例）"><a href="#TCP-Socket编程（C-x2F-S模式交互样例）" class="headerlink" title="TCP Socket编程（C&#x2F;S模式交互样例）"></a>TCP Socket编程（C&#x2F;S模式交互样例）</h3><ol><li>客户端从标准输入装置读 取一行字符，发送给服务 器 </li><li>服务器从socket读取字符 </li><li>服务器将字符转换成大写 ，然后返回给客户端</li><li>客户端从socket中读取一 行字符，然后打印出来<br><img src="/images/1690283231335-b7f51599-2131-4527-b456-b02875d65a95.png" alt="image.png"></li></ol><blockquote><p>** **实际上，这里描述了C-S之间交互的动作次序 140  </p></blockquote><p><strong>这里需要重新回顾</strong></p><h2 id="UDP套接字编程"><a href="#UDP套接字编程" class="headerlink" title="UDP套接字编程"></a>UDP套接字编程</h2><p>从进程的角度看u的udp编程： </p><blockquote><p>UDP 为客户端和服务器提供 不可靠的字节组的传送服务  </p></blockquote><blockquote><p>**UDP: 传送的数据可能乱序， 也可能丢失( 不可靠、无连接的 )  **</p></blockquote><p>** UDP: 在客户端和服务器之间 没有连接  **<br>• 没有握手<br>• 发送端在每一个报文中明确 地指定目标的IP地址和端口 号<br>• 服务器必须从收到的分组中 提取出发送端的IP地址和端 口号  </p><h3 id="Client-x2F-server-socket-交互-UDP-（过程图）"><a href="#Client-x2F-server-socket-交互-UDP-（过程图）" class="headerlink" title="Client&#x2F;server socket 交互: UDP  （过程图）"></a>Client&#x2F;server socket 交互: UDP  （过程图）</h3><p><img src="/images/1690285657845-ccb34bb3-d6b6-4b07-887e-e047b5c91939.png" alt="image.png"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 计算机网络 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机网络 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Nacos注册中心</title>
       <link href="/post/173be129.html"/>
       <url>/post/173be129.html</url>
