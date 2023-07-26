@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>传输层Stu</title>
+      <link href="/post/7985ef27.html"/>
+      <url>/post/7985ef27.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="概述和传输层服务"><a href="#概述和传输层服务" class="headerlink" title="概述和传输层服务"></a>概述和传输层服务</h1><blockquote><p>本章学习的重点： </p><ol><li>理解传输层的工作原理<ol><li>多路复用&#x2F;解复用 </li><li>可靠数据传输</li><li>流量控制 (发送方和接收方的问题)</li><li>拥塞控制</li></ol></li><li>学习Internet的传输层协议<ol><li>UDP：无连接传输</li><li>TCP：面向连接的可靠传输</li><li>TCP的拥塞控制</li></ol></li></ol></blockquote><h2 id="传输服务和相关协议"><a href="#传输服务和相关协议" class="headerlink" title="传输服务和相关协议"></a>传输服务和相关协议</h2><p>** 为运行在不同主机上的应 用进程提供逻辑通信  **<br>** 传输协议运行在端系统  **</p><ul><li><strong>发送方：</strong>将应用层的报 文分成报文段，然后传 递给网络层 </li><li><strong>接收方：</strong>将报文段重组 成报文，然后传递给应 用层</li></ul><p>** 有多个传输层协议可供应 用选择 ** </p><ol><li>Internet: TCP 和 UDP</li></ol><h2 id="传输层和网络层比较"><a href="#传输层和网络层比较" class="headerlink" title="传输层和网络层比较"></a>传输层和网络层比较</h2><ol><li><strong>网络层服务： 主机之间的逻辑通信</strong></li><li><strong>传输层服务： 进程之间的逻辑通信</strong></li></ol><ul><li>依赖于网络层的服务  </li><li>并对网络层的服务进行 增强</li></ul><h2 id="Internet传输层协议"><a href="#Internet传输层协议" class="headerlink" title="Internet传输层协议"></a>Internet传输层协议</h2><p><img src="/images/1690373273674-708c290d-f8bf-424e-996a-3468fce79fd5.png" alt="image.png"></p><blockquote><p><strong>传输层向上层应用进程提供逻辑的通信服务</strong><br><strong>在物理上</strong>就是通过层间接口传给传输层，由传输层之间的相互配合 将massage 传输给对方的应用进程。</p></blockquote><h3 id="三个协议"><a href="#三个协议" class="headerlink" title="三个协议"></a>三个协议</h3><ol><li>** 可靠的、保序的传输： TCP  **</li></ol><p>原理 ： </p><ul><li>多路复用、解复用</li><li>拥塞控制</li><li>流量控制</li><li>建立连接</li></ul><ol start="2"><li>** 不可靠、不保序的传输：UDP  **</li></ol><blockquote><p>多路复用、解复用</p></blockquote><blockquote><p> 没有为尽力而为的IP服务添加更 多的其它额外服务  </p></blockquote><ol start="3"><li>**都不提供的服务：  **</li></ol><ul><li><strong>延迟保证（主机之间的延迟上层无法加强）</strong></li><li><strong>带宽保证（ip主机上的带宽无法加强）</strong></li></ul><h1 id="多路复用与解复用"><a href="#多路复用与解复用" class="headerlink" title="多路复用与解复用"></a>多路复用与解复用</h1><h1 id="无连接传输：UDP"><a href="#无连接传输：UDP" class="headerlink" title="无连接传输：UDP"></a>无连接传输：UDP</h1><h1 id="可靠数据传输的原理"><a href="#可靠数据传输的原理" class="headerlink" title="可靠数据传输的原理"></a>可靠数据传输的原理</h1><h1 id="面向连接的传输：-TCP"><a href="#面向连接的传输：-TCP" class="headerlink" title="面向连接的传输：  TCP"></a>面向连接的传输：  TCP</h1><h2 id="段结构"><a href="#段结构" class="headerlink" title="段结构"></a>段结构</h2><h2 id="可靠数据传输"><a href="#可靠数据传输" class="headerlink" title="可靠数据传输"></a>可靠数据传输</h2><h2 id="流量控制"><a href="#流量控制" class="headerlink" title="流量控制"></a>流量控制</h2><h2 id="连接管理"><a href="#连接管理" class="headerlink" title="连接管理"></a>连接管理</h2><h1 id="拥塞控制原理"><a href="#拥塞控制原理" class="headerlink" title="拥塞控制原理"></a>拥塞控制原理</h1><h1 id="TCP-拥塞控制"><a href="#TCP-拥塞控制" class="headerlink" title="TCP 拥塞控制"></a>TCP 拥塞控制</h1>]]></content>
+      
+      
+      <categories>
+          
+          <category> 计算机网络 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机网络 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>TCP&amp;&amp;UDP套接字编程</title>
       <link href="/post/452b164d.html"/>
       <url>/post/452b164d.html</url>
