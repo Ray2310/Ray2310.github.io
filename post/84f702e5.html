@@ -1,0 +1,622 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>可靠数据传输(Rdt)的原理 | Rayce. Blogs</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="可靠数据传输（rdt）的原理★★ ★ ★ ★background：    rdt在应用层、传输层和数据链路层都很重要    是网络Top 10问题之一    信道的不可靠特点决定了可靠数据传输协议（ rdt ）的复杂性    rdt所要面临的问题(也是人面临的问题) ：&#x3D;&#x3D;在下层提供的服务不可靠的情况下， 本层的协议机制、协议实体要通过哪些时空资源的安排、要靠哪些机制的安排，要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="可靠数据传输(Rdt)的原理">
+<meta property="og:url" content="https://ray2310.github.io/post/84f702e5.html">
+<meta property="og:site_name" content="Rayce. Blogs">
+<meta property="og:description" content="可靠数据传输（rdt）的原理★★ ★ ★ ★background：    rdt在应用层、传输层和数据链路层都很重要    是网络Top 10问题之一    信道的不可靠特点决定了可靠数据传输协议（ rdt ）的复杂性    rdt所要面临的问题(也是人面临的问题) ：&#x3D;&#x3D;在下层提供的服务不可靠的情况下， 本层的协议机制、协议实体要通过哪些时空资源的安排、要靠哪些机制的安排，要">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.google.com/url?sa=i&url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&ust=1672760873466000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD">
+<meta property="article:published_time" content="2023-07-29T05:11:01.000Z">
+<meta property="article:modified_time" content="2023-07-29T05:16:57.044Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.google.com/url?sa=i&url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&ust=1672760873466000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD"><link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQHlJW3iX0eSx0YEsPnrToEC7iKW4m3TEgiQ&usqp=CAU"><link rel="canonical" href="https://ray2310.github.io/post/84f702e5.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. Blogs","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '可靠数据传输(Rdt)的原理',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-07-29 13:16:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">89</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">33</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">22</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&amp;psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&amp;ust=1672760873466000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. Blogs"><span class="site-name">Rayce. Blogs</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">可靠数据传输(Rdt)的原理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-07-29T05:11:01.000Z" title="发表于 2023-07-29 13:11:01">2023-07-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-07-29T05:16:57.044Z" title="更新于 2023-07-29 13:16:57">2023-07-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="可靠数据传输(Rdt)的原理"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="可靠数据传输（rdt）的原理★★-★-★-★"><a href="#可靠数据传输（rdt）的原理★★-★-★-★" class="headerlink" title="可靠数据传输（rdt）的原理★★ ★ ★ ★"></a>可靠数据传输（rdt）的原理★★ ★ ★ ★</h1><p><strong>background：</strong> </p>
+<blockquote>
+<p> <strong>rdt在应用层、传输层和数据链路层都很重要</strong>  </p>
+<p> 是网络Top 10问题之一  </p>
+<p> 信道的不可靠特点决定了可靠数据传输协议（ rdt ）的复杂性  </p>
+</blockquote>
+<h3 id="rdt所要面临的问题-也是人面临的问题-："><a href="#rdt所要面临的问题-也是人面临的问题-：" class="headerlink" title="rdt所要面临的问题(也是人面临的问题) ："></a>rdt所要面临的问题(也是人面临的问题) ：</h3><p><strong>&#x3D;&#x3D;在下层提供的服务不可靠的情况下， 本层的协议机制、协议实体要通过哪些时空资源的安排、要靠哪些机制的安排，要向上层提供可靠的服务。&#x3D;&#x3D;</strong></p>
+<p><img src="/post/84f702e5/1690596858638-d70e0117-6ccb-476f-8d7c-1b7eb006b9ad.png" alt="img"></p>
+<h2 id="可靠数据传输：-问题描述"><a href="#可靠数据传输：-问题描述" class="headerlink" title="可靠数据传输： 问题描述"></a>可靠数据传输： 问题描述</h2><p><img src="/post/84f702e5/1690596147186-7b48421c-4301-4e15-b1ed-382bd84f25f7.png" alt="img"></p>
+<p>图片中的</p>
+<p><strong>rdt_send() 和 deliver_data( ) 是本层和上层的接口</strong></p>
+<p><strong>udt_send()  和 udt_rcv( ) 是本层协议实体 跟下层的原语的形式</strong></p>
+<blockquote>
+<p>原语：上层使用下层服务的形式</p>
+</blockquote>
+<p><strong>底层的可靠性与否决定了上层rdt的复杂性。</strong></p>
+<p>逻辑的理解过程： </p>
+<ol>
+<li><strong>渐增式地开发可靠数据传输协议（ rdt ）的发送方和接收方</strong></li>
+<li>只考虑<strong>单向数据传输</strong> - 但控制信息是双向流动的！</li>
+<li>双向的数据传输问题实际上是2个单向数据传输问题的综合</li>
+<li>使用<strong>有限状态机 (FSM)</strong> [描述协议工作状态的转移之类的]来描述发送方和接收方</li>
+</ol>
+<p><img src="/post/84f702e5/1690597396649-94a4d134-b349-47e2-b8f7-277b5e53bf8d.png" alt="img"></p>
+<h2 id="Rdt1-0：-在可靠信道上的可靠数据传输"><a href="#Rdt1-0：-在可靠信道上的可靠数据传输" class="headerlink" title="Rdt1.0： 在可靠信道上的可靠数据传输"></a>Rdt1.0： 在可靠信道上的可靠数据传输</h2><ol>
+<li><strong>下层的信道是完全可靠的</strong></li>
+</ol>
+<ul>
+<li>没有比特出错</li>
+<li>没有分组丢失</li>
+</ul>
+<ol>
+<li><strong>发送方和接收方的FSM</strong></li>
+</ol>
+<ul>
+<li>发送方将数据发送到下层信道</li>
+<li>接收方从下层信道接收数据</li>
+</ul>
+<p><img src="/post/84f702e5/1690596299844-129f6445-9ae4-4874-95d4-8a6f1f68f81f.png" alt="img"></p>
+<ol>
+<li>发送方发送package</li>
+<li>接收方接收后，校验是否出错， 如果不出错那么就发送一个<strong>控制报文（ACK），</strong>发送方就不用做什么了</li>
+<li>如果出错， 那么就发送一个<strong>控制报文（NCK）,</strong> 然后发送方再将副本传输过去（检错重传）</li>
+</ol>
+<h2 id="Rdt2-0：具有比特差错的信道"><a href="#Rdt2-0：具有比特差错的信道" class="headerlink" title="Rdt2.0：具有比特差错的信道"></a>Rdt2.0：具有比特差错的信道</h2><p>Rdt1.0 的问题 ：</p>
+<ul>
+<li>下层信道可能会出错：将分组中的比特翻转 。可以用校验和来检测比特 差错  </li>
+<li>怎样从差错中恢复：</li>
+</ul>
+<p><strong>Rdt2.0 的改进：</strong> </p>
+<p> <strong>采用差错控制编码进行差错检测</strong>  </p>
+<ol>
+<li>发送方差错控制编码、缓存 </li>
+<li>接收方使用编码检错</li>
+<li>接收方的反馈：<strong>控制报文（ACK，NAK）</strong>：接收方-&gt;发送方 </li>
+<li>发送方收到反馈相应的动作</li>
+</ol>
+<h3 id="有限状态机（FSM）描述："><a href="#有限状态机（FSM）描述：" class="headerlink" title="有限状态机（FSM）描述："></a><strong>有限状态机（</strong>FSM）描述：</h3><p><img src="/post/84f702e5/1690596446675-835e3e36-cbdc-4e39-b5e9-81cfb27fb77d.png" alt="img"></p>
+<ol>
+<li>发送方发送package</li>
+<li>接收方接收后，校验是否出错， 如果不出错那么就发送一个<strong>控制报文（ACK），</strong>发送方就不用做什么了</li>
+<li>如果出错， 那么就发送一个<strong>控制报文（NCK）,</strong> 然后发送方再将副本传输过去（检错重传）</li>
+</ol>
+<h3 id="Rdt2-0：-没有差错时的操作"><a href="#Rdt2-0：-没有差错时的操作" class="headerlink" title="Rdt2.0： 没有差错时的操作"></a>Rdt2.0： 没有差错时的操作</h3><p><img src="/post/84f702e5/1690598581363-25a4195b-6bb4-4c79-9e90-d2f511928c9e.png" alt="img"></p>
+<h3 id="rdt2-0：有差错时"><a href="#rdt2-0：有差错时" class="headerlink" title="rdt2.0：有差错时"></a>rdt2.0：有差错时</h3><p><img src="/post/84f702e5/1690598586724-9f69db14-1b7c-4f8b-aa5e-5e723cc02f71.png" alt="img"></p>
+<h2 id="rdt2-0的致命缺陷！-gt-rdt2-1"><a href="#rdt2-0的致命缺陷！-gt-rdt2-1" class="headerlink" title="rdt2.0的致命缺陷！-&gt; rdt2.1"></a>rdt2.0的致命缺陷！-&gt; rdt2.1</h2><h3 id="如果ACK-x2F-NAK出错？发送方该如何？"><a href="#如果ACK-x2F-NAK出错？发送方该如何？" class="headerlink" title="如果ACK&#x2F;NAK出错？发送方该如何？"></a>如果ACK&#x2F;NAK出错？发送方该如何？</h3><blockquote>
+<p> 发送方不知道接收方发 生了什么事情！  然后也不知道如果操作</p>
+</blockquote>
+<p><strong>如何处理：</strong> </p>
+<p> <strong>引入新的机制 ： 序号 （有点麻烦，因为要发送两次确认是否重复）</strong></p>
+<ol>
+<li>发送方在每个分组中加 入序号 </li>
+<li>如果ACK&#x2F;NAK出错，<strong>发送方重传当前分组</strong> </li>
+<li>接收方丢弃（不发给上 层）重复分组</li>
+</ol>
+<p>如果发送方出错 ：</p>
+<p><img src="/post/84f702e5/1690598783706-5f9ca1eb-844f-472c-b794-8927c94f4da9.png" alt="img"></p>
+<p> <strong>停止等待协议：</strong> <strong>发送方发送一个分组， 然后等待接收方的关于这个分组的应答</strong>  </p>
+<h3 id="如果ACK-x2F-NAK出错，接收方如何处理？"><a href="#如果ACK-x2F-NAK出错，接收方如何处理？" class="headerlink" title="如果ACK&#x2F;NAK出错，接收方如何处理？"></a>如果ACK&#x2F;NAK出错，接收方如何处理？</h3><p> <strong>必须检测接收到的分组 是否是重复的</strong>  </p>
+<blockquote>
+<p><strong>注意：接收方并不知道 发送方是否正确收到了 其ACK&#x2F;NAK</strong>  </p>
+</blockquote>
+<p> <strong>发送方：</strong></p>
+<ul>
+<li><p>在分组中加入序列号</p>
+</li>
+<li><p><strong>两个序列号（0，1）</strong>就 足够了 </p>
+</li>
+<li><ul>
+<li>一次只发送一个未经确认的分组</li>
+</ul>
+</li>
+<li><p>必须检测ACK&#x2F;NAK是否 出错（需要EDC ）</p>
+</li>
+<li><p>状态数变成了两倍 </p>
+</li>
+<li><ul>
+<li>必须记住当前分组的序列 号为0还是1</li>
+</ul>
+</li>
+</ul>
+<p><strong>接收方：</strong> </p>
+<p> 必须检测接收到的分组 是否是重复的  </p>
+<ul>
+<li>状态会指示希望接收到的 分组的序号为0还是1</li>
+</ul>
+<blockquote>
+<p>注意：接收方并不知道 发送方是否正确收到了 其ACK&#x2F;NAK</p>
+<p>没有安排确认的确认  </p>
+</blockquote>
+<p><img src="/post/84f702e5/1690598872663-4a361820-98fd-44c2-9f17-e2ee95546a9e.png" alt="img"></p>
+<p>如果说本次发送出错了 。然后接收方就给出 nak， 但是发送方没有停止等待继续发送错误的，因为要实现重复校验， 所以发送方将下一次的data发送过去了 ，结果就是接收方需要0 ， 但是你发送了个1。</p>
+<p><strong>所以 上述的问题还是难以解决。我们就需要引入2.2</strong></p>
+<h2 id="rdt2-1的运行"><a href="#rdt2-1的运行" class="headerlink" title="rdt2.1的运行"></a>rdt2.1的运行</h2><p><img src="/post/84f702e5/1690598936621-f8c50493-50dc-4ec8-b5ef-2433f188d613.png" alt="img"></p>
+<p> 接收方不知道它最后发送的ACK&#x2F;NAK是否被正确地收到  </p>
+<ul>
+<li><p>发送方不对收到的ack&#x2F;nak给确认，没有所谓的确认的确认；</p>
+</li>
+<li><p><strong>接收方发送ack，如果后面接收方收到的是：</strong>    </p>
+</li>
+<li><ul>
+<li><strong>老分组p0？则ack 错误</strong> </li>
+<li><strong>下一个分组？P1，ack正确</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="rdt2-2：无NAK的协议"><a href="#rdt2-2：无NAK的协议" class="headerlink" title="rdt2.2：无NAK的协议"></a>rdt2.2：无NAK的协议</h2><ul>
+<li><p>*<em>功能同rdt2.1，但只使用ACK(<strong><strong>ack 要编号</strong></strong>）</em>*</p>
+</li>
+<li><p><strong>接收方对最后正确接收的分组发ACK，以替代NAK</strong></p>
+</li>
+<li><p>接收方必须显式地包含被正确接收分组的序号</p>
+</li>
+<li><p>当收到重复的ACK（如：再次收到ack0）时，发送 方与收到NAK采取相同的动作：重传当前分组</p>
+</li>
+<li><p><strong>为后面的一次发送多个数据单位做一个准备</strong></p>
+</li>
+<li><ul>
+<li>一次能够发送多个</li>
+<li>每一个的应答都有：ACK，NACK；麻烦</li>
+<li>使用对前一个数据单位的ACK，代替本数据单位的nak</li>
+<li>确认信息减少一半，协议处理简单</li>
+</ul>
+</li>
+</ul>
+<p><img src="/post/84f702e5/1690600314902-6ecfa495-a41b-4ee9-bb27-219dc69d062e.png" alt="img"></p>
+<p>&#x3D;&#x3D;<strong>就相当于如果出现错误， 接收方不返回NCK， 而是返回上一次的ACK。(<strong>你要这次的结果， 但是这次的结果是出错的。 所以我只能返回你上一次的正确结果咯。 所以由于停止等待协议， 这次的结果没有返回，那么就得重新放， 知道返回本次得ACK</strong>)</strong>&#x3D;&#x3D;</p>
+<h3 id="rdt2-2的运行"><a href="#rdt2-2的运行" class="headerlink" title="rdt2.2的运行"></a>rdt2.2的运行</h3><p><img src="/post/84f702e5/1690600676105-e7cd653d-60fe-4aaa-930a-a797e16cf405.png" alt="img"></p>
+<p><img src="/post/84f702e5/1690600689762-fb372aed-223d-475c-8fa6-19f8e85cff33.png" alt="img"></p>
+<h3 id="rdt2-2bug：发送方和接收方片断"><a href="#rdt2-2bug：发送方和接收方片断" class="headerlink" title="rdt2.2bug：发送方和接收方片断"></a>rdt2.2bug：发送方和接收方片断</h3><p><img src="/post/84f702e5/1690600727082-da657206-32c8-426a-8c10-fffec28a33a9.png" alt="img"></p>
+<h2 id="rdt3-0：具有比特差错和分组丢失的信道"><a href="#rdt3-0：具有比特差错和分组丢失的信道" class="headerlink" title="rdt3.0：具有比特差错和分组丢失的信道"></a>rdt3.0：具有比特差错和分组丢失的信道</h2><p> <strong>新的假设：下层信道可 能会丢失分组（数据 或ACK）</strong>  </p>
+<ul>
+<li>会死锁</li>
+<li>机制还不够处理这种 状况：   • 检验	和 • 序列号 • ACK • 重传</li>
+</ul>
+<p><strong>超时重传机制：</strong> </p>
+<p> <strong>方法：发送方等待ACK一段 合理的时间</strong>  </p>
+<blockquote>
+<p><strong>链路层的timeout时间确定的 传输层timeout时间是适应式的</strong>  </p>
+</blockquote>
+<ul>
+<li><p><strong>发送端超时重传：如果到时没有 收到ACK-&gt;重传</strong></p>
+</li>
+<li><p><strong>问题：</strong>如果分组（或ACK ）只 是被延迟了： </p>
+</li>
+<li><ul>
+<li>重传将会导致数据重复，但 利用序列号已经可以处理这 个问题</li>
+<li>接收方必须指明被正确接收 的序列号</li>
+</ul>
+</li>
+<li><p>需要一个倒计数定时器</p>
+</li>
+</ul>
+<p><img src="/post/84f702e5/1690600991494-47c065c8-b0cc-44a3-b536-1acf7fa9fcf1.png" alt="img"></p>
+<p><strong>之前得2.0 我们知道</strong></p>
+<p><strong>(<strong>你要这次的结果， 但是这次的结果是出错的。 所以我只能返回你上一次的正确结果咯。 所以由于停止等待协议， 这次的结果没有返回，那么就得重新放， 知道返回本次得ACK</strong>)</strong></p>
+<p><strong>对于3.0 来说 ，他不会立马就重放本次结果， 他会等待不同（等着超时定时器的启动） 。超时定时器启动之后就会将再一个时间段内重放本次。</strong></p>
+<blockquote>
+<p><strong>相对2.0 来说就是反应慢了点而已，其他没啥了</strong></p>
+</blockquote>
+<h3 id="rdt3-0的运行"><a href="#rdt3-0的运行" class="headerlink" title="rdt3.0的运行"></a>rdt3.0的运行</h3><p><img src="/post/84f702e5/1690601008793-ca4ed59f-fcc4-4d91-8371-0ff6306a8cc8.png" alt="img"></p>
+<p><strong>（c）超时定时器丢失</strong></p>
+<p><strong>（d）情况就是超时计数器设置不合理</strong></p>
+<p><img src="/post/84f702e5/1690601023384-cfe176f3-c843-457c-8df8-7b05d278ee5f.png" alt="img"> </p>
+<h2 id="rdt3-0的性能"><a href="#rdt3-0的性能" class="headerlink" title="rdt3.0的性能"></a>rdt3.0的性能</h2><p><strong>rdt3.0可以工作，但链路容量比较大的情况下，性能很差</strong>  </p>
+<ul>
+<li>链路容量比较大，一次发一个PDU 的不能够充分利用链路的传输能力</li>
+</ul>
+<p>例题</p>
+<p><img src="/post/84f702e5/1690601887470-a975a126-79ba-4756-a710-f5bf67f0ab2a.png" alt="img"></p>
+<p><strong>上述也就是 99%的时间都是空的 ， 只有 0.00027%的时间才是在干正事。可想而知利用率是非常非常低的。</strong></p>
+<h3 id="停等操作"><a href="#停等操作" class="headerlink" title="停等操作"></a>停等操作</h3><p><img src="/post/84f702e5/1690602080008-26860dd9-c784-404c-b74e-2d5f38a5adc7.png" alt="img"></p>
+<p>停止等待协议 在局域网的场景下（往返反应是比较低 ，容量较小）一次发一个。</p>
+<p>但是如果是长途的链路（链路容量非常大），此时一次只发送一个那么就是杀鸡用牛刀，且非常低效。那么就需要一次发送多个未经确认的分组。而且需要对这个分组做一个长比特的编号。 （这样才能区分不同的分组）。—<strong>-这种能一次发送多个未确认分组的协议叫流水线协议</strong></p>
+<h3 id="流水线：提高链路利用率"><a href="#流水线：提高链路利用率" class="headerlink" title="流水线：提高链路利用率"></a>流水线：提高链路利用率</h3><p><img src="/post/84f702e5/1690602132208-da13fd7e-191f-490e-aff7-e924de2952e1.png" alt="img"></p>
+<h2 id="流水线协议—（提高链路利用率）"><a href="#流水线协议—（提高链路利用率）" class="headerlink" title="流水线协议—（提高链路利用率）"></a>流水线协议—（提高链路利用率）</h2><blockquote>
+<p>作为一个缓冲区： </p>
+<p>目的是 发送方 发送的速率 和 接收方接收的速率是不一致的。</p>
+<p>需要有一个缓冲来对抗这两者的速度不一致性。（就像从高速公路到市里的路段 需要过一个安检口一样）</p>
+<p>我们<strong>把一次能够发送多个未经确认分组的协议叫做流水线协议</strong></p>
+</blockquote>
+<p><strong>流水线：允许发送方在未得到对方确认的情况下一次发送多个 分组</strong> </p>
+<ul>
+<li><p><strong>必须增加序号的范围:用多个bit表示分组的序号</strong></p>
+</li>
+<li><p><strong>在发送方&#x2F;接收方要有缓冲区</strong> </p>
+</li>
+<li><ul>
+<li>• 发送方缓冲：未得到确认，可能需要重传；</li>
+<li>• 接收方缓存：上层用户取用数据的速率≠接收到的数据速率；接收到的数据可 能乱序，排序交付（可靠）</li>
+</ul>
+</li>
+</ul>
+<p><img src="/post/84f702e5/1690602967581-34c222d7-99b1-42f4-8d51-e6359fbd4c52.png" alt="img"></p>
+<blockquote>
+<p>两种通用的流水线协议：<strong>回退N步(GBN)和选择重传(SR)</strong>  </p>
+</blockquote>
+<h3 id="通用：滑动窗口-slide-window-协议"><a href="#通用：滑动窗口-slide-window-协议" class="headerlink" title="通用：滑动窗口(slide window)协议"></a>通用：滑动窗口(slide window)协议</h3><p>发送方和接收方的窗口不一致。</p>
+<ol>
+<li><strong>发送缓冲区</strong></li>
+</ol>
+<ul>
+<li>形式：内存中的一个区域，落入缓冲区的分组可以发送 </li>
+<li>功能：用于存放已发送，但是没有得到确认的分组 </li>
+<li>必要性：需要超时重发时可用</li>
+</ul>
+<ol>
+<li><strong>发送缓冲区的大小：一次最多可以发送多少个未经确认的分组（上限）</strong></li>
+</ol>
+<ul>
+<li>停止等待协议&#x3D;1</li>
+<li>流水线协议 &gt; 1，合理的值，不能很大，链路利用率不能够超100%</li>
+</ul>
+<ol>
+<li><strong>发送缓冲区中的分组</strong></li>
+</ol>
+<ul>
+<li>未发送的：落入发送缓冲区的分组，可以连续发送出去； </li>
+<li>已经发送出去的、等待对方确认的分组：发送缓冲区的分组只有得到确认 才能删除</li>
+</ul>
+<p> <strong>发送窗口滑动过程-相对表示方法</strong> </p>
+<ul>
+<li><strong>采用相对移动方式表示，分组不动</strong> </li>
+<li><strong>可缓冲范围移动，代表一段可以发送的权力</strong></li>
+</ul>
+<p><img src="/post/84f702e5/1690603093451-74522bee-c768-4cdb-bd15-84bd76a8542e.png" alt="img"></p>
+<blockquote>
+<p> 图中的粉红色就是一个已发送但是未确认的窗口，两三个连在一块就构成了这个发送缓冲窗口的范围。</p>
+</blockquote>
+<ul>
+<li><p><strong>&#x3D;&#x3D;发送窗口&#x3D;&#x3D;：发送缓冲区内容的一个范围</strong> </p>
+</li>
+<li><ul>
+<li>&#x3D;&#x3D;那些<strong>已发送但是未经确认分组</strong>的序号构成的空间&#x3D;&#x3D;</li>
+</ul>
+</li>
+<li><p>发送窗口的最大值&lt;&#x3D;发送缓冲区的值</p>
+</li>
+<li><p><strong>一开始：没有发送任何一个分组</strong></p>
+</li>
+<li><ul>
+<li>后沿&#x3D;前沿 </li>
+<li>之间为发送窗口的尺寸&#x3D;0</li>
+</ul>
+</li>
+<li><p><strong>每发送一个分组，前沿前移一个单位</strong></p>
+</li>
+</ul>
+<p><img src="/post/84f702e5/1690603167284-95f0ec63-55b2-46e5-9cdc-5fb726183a4d.png" alt="img"></p>
+<p> <strong>发送窗口前沿移动的极限：不能够超过发送缓冲区</strong>  </p>
+<p><img src="/post/84f702e5/1690603942569-9a3b92a7-d994-4836-8877-c5a4b832ff54.png" alt="img"><img src="/post/84f702e5/1690603987028-9fb9070e-0222-43cc-a9fb-0e1bea9bccfc.png" alt="img"></p>
+<p> <strong>发送窗口后沿移动  就是发送窗口的移动</strong></p>
+<ul>
+<li><strong>条件：收到老分组的确认</strong></li>
+<li><strong>结果：发送缓冲区罩住新的分组，来了分组可以发送</strong></li>
+<li><strong>移动的极限：不能够超过前沿</strong></li>
+</ul>
+<p><img src="/post/84f702e5/1690604039564-4c785e3c-8c16-40ec-b5f4-b04ea52d6e52.png" alt="img"></p>
+<p><img src="/post/84f702e5/1690604075258-b565100c-f3e9-4823-b051-32b3f1ee8434.png" alt="img"></p>
+<h3 id="发送窗口的滑动"><a href="#发送窗口的滑动" class="headerlink" title="发送窗口的滑动"></a>发送窗口的滑动</h3><p>还得多听几遍： </p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1JV411t7ow/?p=26&spm_id_from=pageDriver&vd_source=fbbe87e6ad798358722a945dd1377672">https://www.bilibili.com/video/BV1JV411t7ow/?p=26&amp;spm_id_from=pageDriver&amp;vd_source=fbbe87e6ad798358722a945dd1377672</a>    【1：27分处】</p>
+<ol>
+<li>发送滑动窗口</li>
+</ol>
+<p><img src="/post/84f702e5/1690604127263-be43149a-2a72-4bd7-aaa7-9cf73114e237.png" alt="img"></p>
+<p><strong>接收窗口 (receiving window)&#x3D;接收缓冲区</strong> </p>
+<p><strong>接收窗口用于控制哪些分组可以接收；</strong> </p>
+<p>• 只有收到的分组序号落入接收窗口内才允许接收 </p>
+<p>• 若序号在接收窗口之外，则丢弃； </p>
+<p><strong>接收窗口尺寸Wr&#x3D;1，则只能顺序接收；</strong></p>
+<p><strong>接收窗口尺寸Wr&gt;1 ，则可以乱序接收</strong> </p>
+<p>• 但提交给上层的分组，要按序  </p>
+<p><img src="/post/84f702e5/1690604206019-6407264e-b8c4-4a07-af27-ff4f1f2782b0.png" alt="img"></p>
+<h3 id="接收滑动窗口"><a href="#接收滑动窗口" class="headerlink" title="接收滑动窗口"></a>接收滑动窗口</h3><p><strong>接收窗口的滑动和发送确认</strong></p>
+<p><strong>滑动：</strong> </p>
+<p>• 低序号的分组到来，接收窗口移动； </p>
+<p>• 高序号分组乱序到，缓存但不交付（因为要实现rdt，不允许失序），不滑动 </p>
+<p><strong>发送确认：</strong> </p>
+<p>• 接收窗口尺寸&#x3D;1 ； 发送连续收到的最大的分组确认（累计确认） </p>
+<p>• 接收窗口尺寸&gt;1 ； 收到分组，发送那个分组的确认（非累计确认  <img src="/post/84f702e5/1690604325590-de134e90-18ac-449c-84a2-19f54b301fdd.png" alt="img"></p>
+<p><img src="/post/84f702e5/1690604341016-a9478ec0-ec02-466d-b19a-cb3118b8f052.png" alt="img"></p>
+<h3 id="正常情况下的2个窗口互动"><a href="#正常情况下的2个窗口互动" class="headerlink" title="正常情况下的2个窗口互动"></a>正常情况下的2个窗口互动</h3><p><strong>发送窗口</strong></p>
+<ul>
+<li>有新的分组落入发送缓冲区范围，发送-&gt;前沿滑动 </li>
+<li>来了老的低序号分组的确认-&gt;后沿向前滑动-&gt;新的分组可以落入发送缓冲区的范围</li>
+</ul>
+<p><strong>接收窗口</strong></p>
+<ul>
+<li>收到分组，落入到接收窗口范围内，接收</li>
+<li>由于是低序号 ，所以发送确认给对方</li>
+</ul>
+<p><strong>发送端上面来了分组-&gt;发送窗口滑动-&gt;接收窗口滑动-&gt;发确认</strong>  </p>
+<h2 id><a href="#" class="headerlink" title></a></h2><h3 id="异常情况下GBN-一种协议-的2窗口互动"><a href="#异常情况下GBN-一种协议-的2窗口互动" class="headerlink" title="异常情况下GBN(一种协议)的2窗口互动"></a>异常情况下GBN(一种协议)的2窗口互动</h3><p>异常情况的说明： </p>
+<blockquote>
+<ol>
+<li>传输的分组在传输过程中出现了错误或者丢失</li>
+<li>接收方给的ACK 确认没有给到发送方</li>
+</ol>
+</blockquote>
+<p> <strong>发送窗口</strong> </p>
+<ul>
+<li>新分组落入发送缓冲区范围，发送-&gt;前沿滑动 </li>
+<li>超时重发机制让发送端将发送窗口中的所有分组发送出去</li>
+<li>来了老分组的重复确认-&gt;后沿不向前滑动-&gt;新的分组无法 落入发送缓冲区的范围（此时如果发送缓冲区有新的分组 可以发送）</li>
+</ul>
+<p><strong>接收窗口</strong> </p>
+<ul>
+<li>收到乱序分组，没有落入到接收窗口范围内，抛弃</li>
+<li>（重复）发送老分组的确认，累计确认；</li>
+</ul>
+<h3 id="异常情况下SR（一种协议）的2窗口互动"><a href="#异常情况下SR（一种协议）的2窗口互动" class="headerlink" title="异常情况下SR（一种协议）的2窗口互动"></a>异常情况下SR（一种协议）的2窗口互动</h3><p>异常说明 ：</p>
+<blockquote>
+<p> 分组是乱序的到达接收方。</p>
+</blockquote>
+<p><strong>发送窗口</strong> </p>
+<p>每发送一个，发送方就需要启动一个超时定时器， 哪个倒是就重新发送那个</p>
+<ul>
+<li>新分组落入发送缓冲区范围，发送-&gt;前沿滑动 </li>
+<li><strong>超时重发机制让发送端将超时的分组重新发送出去</strong></li>
+<li>来了乱序分组的确认-&gt;后沿不向前滑动-&gt;新的分组无法落 入发送缓冲区的范围（此时如果发送缓冲区有新的分组可 以发送）</li>
+</ul>
+<p><strong>接收窗口</strong></p>
+<ul>
+<li>收到乱序分组，落入到接收窗口范围内，接收。 然后关闭定时超时计数器</li>
+<li>发送该分组的确认，单独确认；</li>
+</ul>
+<h3 id="GBN协议和SR协议的异同"><a href="#GBN协议和SR协议的异同" class="headerlink" title="GBN协议和SR协议的异同"></a>GBN协议和SR协议的异同</h3><p><strong>不同之处：</strong> </p>
+<ul>
+<li><strong>&#x3D;&#x3D;SR协议 大致就是那个分组超时了 ， 就单独发送那个分组。而GBN协议 则是， 如果某个分组超时了， 会将它的滑动窗口中的所有已发送、未发送的分组全部重新发送一边&#x3D;&#x3D;</strong></li>
+</ul>
+<p><strong>相同之处:</strong></p>
+<ul>
+<li><strong>发送窗口&gt;1</strong> </li>
+<li><strong>一次能够可发送多个 未经确认的分组</strong></li>
+</ul>
+<h2 id="流水线协议：总结★★★★"><a href="#流水线协议：总结★★★★" class="headerlink" title="流水线协议：总结★★★★"></a>流水线协议：总结★★★★</h2><h3 id="Go-back-N-协议："><a href="#Go-back-N-协议：" class="headerlink" title="Go-back-N  协议："></a>Go-back-N  协议：</h3><ul>
+<li><p><strong>发送端最多在流水线 中有N个未确认的分 组</strong> </p>
+</li>
+<li><p><strong>接收端只是发送累计 型确认cumulative ack</strong></p>
+</li>
+<li><ul>
+<li>接收端如果发现gap， 不确认新到来的分组</li>
+</ul>
+</li>
+<li><p><strong>发送端拥有对最老的 未确认分组的定时器</strong></p>
+</li>
+<li><ul>
+<li>只需设置一个定时器 </li>
+<li>当定时器到时时，重 传所有未确认分组</li>
+</ul>
+</li>
+</ul>
+<h4 id="GBN：发送方扩展的FSM"><a href="#GBN：发送方扩展的FSM" class="headerlink" title="GBN：发送方扩展的FSM"></a>GBN：发送方扩展的FSM</h4><p><img src="/post/84f702e5/1690606083987-222880d4-a559-41e6-bf1e-d67aa1c4774c.png" alt="img"></p>
+<h4 id="GBN：接收方扩展的FSM"><a href="#GBN：接收方扩展的FSM" class="headerlink" title="GBN：接收方扩展的FSM"></a>GBN：接收方扩展的FSM</h4><p><img src="/post/84f702e5/1690606105945-b05201cf-82ee-4ca0-8311-3b59e0b82225.png" alt="img"></p>
+<p><strong>只发送ACK：对顺序接收的最高序号的分组</strong></p>
+<ul>
+<li>可能会产生重复的ACK </li>
+<li>只需记住expectedseqnum；接收窗口&#x3D;1</li>
+</ul>
+<p>• 只一个变量就可表示接收窗口 </p>
+<p><strong>对乱序的分组：</strong> </p>
+<ul>
+<li>丢弃（不缓存）</li>
+<li>在接收方不被缓存！ </li>
+<li>对顺序接收的最高序号的分组进行确认-累计确认</li>
+</ul>
+<h4 id="运行中的GBN★★★★★★"><a href="#运行中的GBN★★★★★★" class="headerlink" title="运行中的GBN★★★★★★"></a>运行中的GBN★★★★★★</h4><p>这个图再加上老师的讲解 基本可以透彻的理解一丝了。</p>
+<p><img src="/post/84f702e5/1690606181783-f64ee393-5d15-4b85-9395-4c0e970888a2.png" alt="img"></p>
+<h4 id="选择重传"><a href="#选择重传" class="headerlink" title="选择重传"></a>选择重传</h4><p><img src="/post/84f702e5/1690606294758-c807559f-cb70-429a-ae10-31471a610cf5.png" alt="img"></p>
+<h3 id="Selective-Repeat-协议"><a href="#Selective-Repeat-协议" class="headerlink" title="Selective Repeat 协议"></a>Selective Repeat 协议</h3><ul>
+<li><p>发送端最多在流水线中 有N个未确认的分组 </p>
+</li>
+<li><p>接收方对每个到来的分 组单独确认<strong>individual ack（非累计确认）</strong> </p>
+</li>
+<li><p><strong>发送方为每个未确认的 分组保持一个定时器</strong> </p>
+</li>
+<li><ul>
+<li>当超时定时器到时，只是 重发到时的未确认分组</li>
+</ul>
+</li>
+</ul>
+<h4 id="选择重传SR"><a href="#选择重传SR" class="headerlink" title="选择重传SR"></a>选择重传SR</h4><ol>
+<li><strong>接收方对每个正确接收的分组，分别发送 ACKn（非累积确认）</strong></li>
+</ol>
+<ul>
+<li>接收窗口&gt;1     • 可以缓存乱序的分组 </li>
+<li>最终将分组按顺序交付给上层</li>
+</ul>
+<ol>
+<li><strong>发送方只对那些没有收到ACK的分组进行重 发-选择性重发</strong></li>
+</ol>
+<ul>
+<li>发送方为每个未确认的分组设定一个定时器</li>
+</ul>
+<ol>
+<li><strong>发送窗口的最大值（发送缓冲区）限制发送 未确认分组的个数</strong></li>
+</ol>
+<h4 id="选择重传SR的运行★★★★★★"><a href="#选择重传SR的运行★★★★★★" class="headerlink" title="选择重传SR的运行★★★★★★"></a>选择重传SR的运行★★★★★★</h4><p>这个图再加上老师的讲解 基本也可以透彻的理解一丝了。</p>
+<p><img src="/post/84f702e5/1690606318930-82aba626-86ca-47f3-b8a9-5b4144853f7a.png" alt="img"></p>
+<h3 id="对比GBN和SR"><a href="#对比GBN和SR" class="headerlink" title="对比GBN和SR"></a>对比GBN和SR</h3><p><img src="/post/84f702e5/1690606349046-8b216429-7771-4911-ad54-bccead0958c9.png" alt="img"></p>
+<p> <strong>适用范围</strong>  </p>
+<ul>
+<li><strong>出错率低：比较适合GBN，出错非常罕见，没有必 要用复杂的SR，为罕见的事件做日常的准备和复杂 处理</strong> </li>
+<li><strong>链路容量大（延迟大、带宽大）：比较适合SR而不 是GBN，一点出错代价太大</strong></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://Ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/84f702e5.html">https://ray2310.github.io/post/84f702e5.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ray2310.github.io" target="_blank">Rayce. Blogs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></div><div class="post_share"><div class="social-share" data-image="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&amp;psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&amp;ust=1672760873466000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/7985ef27.html" title="传输层Stu"><img class="cover" src="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fdesk.3gbizhi.com%2Fdeskjy%2F905.html&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAY" onerror="onerror=null;src='/img/second.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">传输层Stu</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/7985ef27.html" title="传输层Stu"><img class="cover" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fdesk.3gbizhi.com%2Fdeskjy%2F905.html&psig=AOvVaw3c6ZALefYz1O2l67XhTguu&ust=1672761033715000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAY" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-07-26</div><div class="title">传输层Stu</div></div></a></div><div><a href="/post/452b164d.html" title="TCP&amp;&amp;UDP套接字编程"><img class="cover" src="https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d058ccbf6c81800ae9cb0e37b83533fa828b47d9.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-07-25</div><div class="title">TCP&amp;&amp;UDP套接字编程</div></div></a></div><div><a href="/post/70dbcc05.html" title="应用层续"><img class="cover" src="https://www.google.com/imgres?imgurl=https%3A%2F%2Ftmpl.downzz.com%2Fsucai%2Fcontent%2F0tf4t1r53js.jpg&imgrefurl=https%3A%2F%2Fwww.downzz.com%2Fjianyuebizhi%2F36732.html&tbnid=O22DjUrs0X8icM&vet=12ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ..i&docid=Xc2fZTMSl7dnDM&w=1202&h=676&q=%E7%AE%80%E7%BA%A6%20%E7%94%B5%E8%84%91%20%E5%A3%81%E7%BA%B8%204k&ved=2ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-07-24</div><div class="title">应用层续</div></div></a></div><div><a href="/post/3c40bcf4.html" title="应用层"><img class="cover" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&ust=1672760873466000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-07-19</div><div class="title">应用层</div></div></a></div><div><a href="/post/7c4ca347.html" title="计算机网络概述"><img class="cover" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcGq1FpSxF0qUTqQbAkH_2uaT-SVYw7DP9eQ&usqp=CAU" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-07-16</div><div class="title">计算机网络概述</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">89</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">33</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">22</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center">我拼尽全力是为了赢</p> <p align="center">  不是为了虽败犹荣</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%AF%E9%9D%A0%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%EF%BC%88rdt%EF%BC%89%E7%9A%84%E5%8E%9F%E7%90%86%E2%98%85%E2%98%85-%E2%98%85-%E2%98%85-%E2%98%85"><span class="toc-number">1.</span> <span class="toc-text">可靠数据传输（rdt）的原理★★ ★ ★ ★</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#rdt%E6%89%80%E8%A6%81%E9%9D%A2%E4%B8%B4%E7%9A%84%E9%97%AE%E9%A2%98-%E4%B9%9F%E6%98%AF%E4%BA%BA%E9%9D%A2%E4%B8%B4%E7%9A%84%E9%97%AE%E9%A2%98-%EF%BC%9A"><span class="toc-number">1.0.1.</span> <span class="toc-text">rdt所要面临的问题(也是人面临的问题) ：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E9%9D%A0%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%EF%BC%9A-%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">可靠数据传输： 问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rdt1-0%EF%BC%9A-%E5%9C%A8%E5%8F%AF%E9%9D%A0%E4%BF%A1%E9%81%93%E4%B8%8A%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93"><span class="toc-number">1.2.</span> <span class="toc-text">Rdt1.0： 在可靠信道上的可靠数据传输</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rdt2-0%EF%BC%9A%E5%85%B7%E6%9C%89%E6%AF%94%E7%89%B9%E5%B7%AE%E9%94%99%E7%9A%84%E4%BF%A1%E9%81%93"><span class="toc-number">1.3.</span> <span class="toc-text">Rdt2.0：具有比特差错的信道</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA%EF%BC%88FSM%EF%BC%89%E6%8F%8F%E8%BF%B0%EF%BC%9A"><span class="toc-number">1.3.1.</span> <span class="toc-text">有限状态机（FSM）描述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rdt2-0%EF%BC%9A-%E6%B2%A1%E6%9C%89%E5%B7%AE%E9%94%99%E6%97%B6%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">1.3.2.</span> <span class="toc-text">Rdt2.0： 没有差错时的操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rdt2-0%EF%BC%9A%E6%9C%89%E5%B7%AE%E9%94%99%E6%97%B6"><span class="toc-number">1.3.3.</span> <span class="toc-text">rdt2.0：有差错时</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rdt2-0%E7%9A%84%E8%87%B4%E5%91%BD%E7%BC%BA%E9%99%B7%EF%BC%81-gt-rdt2-1"><span class="toc-number">1.4.</span> <span class="toc-text">rdt2.0的致命缺陷！-&gt; rdt2.1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E6%9E%9CACK-x2F-NAK%E5%87%BA%E9%94%99%EF%BC%9F%E5%8F%91%E9%80%81%E6%96%B9%E8%AF%A5%E5%A6%82%E4%BD%95%EF%BC%9F"><span class="toc-number">1.4.1.</span> <span class="toc-text">如果ACK&#x2F;NAK出错？发送方该如何？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E6%9E%9CACK-x2F-NAK%E5%87%BA%E9%94%99%EF%BC%8C%E6%8E%A5%E6%94%B6%E6%96%B9%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%EF%BC%9F"><span class="toc-number">1.4.2.</span> <span class="toc-text">如果ACK&#x2F;NAK出错，接收方如何处理？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rdt2-1%E7%9A%84%E8%BF%90%E8%A1%8C"><span class="toc-number">1.5.</span> <span class="toc-text">rdt2.1的运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rdt2-2%EF%BC%9A%E6%97%A0NAK%E7%9A%84%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.6.</span> <span class="toc-text">rdt2.2：无NAK的协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#rdt2-2%E7%9A%84%E8%BF%90%E8%A1%8C"><span class="toc-number">1.6.1.</span> <span class="toc-text">rdt2.2的运行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rdt2-2bug%EF%BC%9A%E5%8F%91%E9%80%81%E6%96%B9%E5%92%8C%E6%8E%A5%E6%94%B6%E6%96%B9%E7%89%87%E6%96%AD"><span class="toc-number">1.6.2.</span> <span class="toc-text">rdt2.2bug：发送方和接收方片断</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rdt3-0%EF%BC%9A%E5%85%B7%E6%9C%89%E6%AF%94%E7%89%B9%E5%B7%AE%E9%94%99%E5%92%8C%E5%88%86%E7%BB%84%E4%B8%A2%E5%A4%B1%E7%9A%84%E4%BF%A1%E9%81%93"><span class="toc-number">1.7.</span> <span class="toc-text">rdt3.0：具有比特差错和分组丢失的信道</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#rdt3-0%E7%9A%84%E8%BF%90%E8%A1%8C"><span class="toc-number">1.7.1.</span> <span class="toc-text">rdt3.0的运行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rdt3-0%E7%9A%84%E6%80%A7%E8%83%BD"><span class="toc-number">1.8.</span> <span class="toc-text">rdt3.0的性能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%9C%E7%AD%89%E6%93%8D%E4%BD%9C"><span class="toc-number">1.8.1.</span> <span class="toc-text">停等操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E6%B0%B4%E7%BA%BF%EF%BC%9A%E6%8F%90%E9%AB%98%E9%93%BE%E8%B7%AF%E5%88%A9%E7%94%A8%E7%8E%87"><span class="toc-number">1.8.2.</span> <span class="toc-text">流水线：提高链路利用率</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E6%B0%B4%E7%BA%BF%E5%8D%8F%E8%AE%AE%E2%80%94%EF%BC%88%E6%8F%90%E9%AB%98%E9%93%BE%E8%B7%AF%E5%88%A9%E7%94%A8%E7%8E%87%EF%BC%89"><span class="toc-number">1.9.</span> <span class="toc-text">流水线协议—（提高链路利用率）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%EF%BC%9A%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3-slide-window-%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.9.1.</span> <span class="toc-text">通用：滑动窗口(slide window)协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E7%AA%97%E5%8F%A3%E7%9A%84%E6%BB%91%E5%8A%A8"><span class="toc-number">1.9.2.</span> <span class="toc-text">发送窗口的滑动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E6%94%B6%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="toc-number">1.9.3.</span> <span class="toc-text">接收滑动窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%B8%B8%E6%83%85%E5%86%B5%E4%B8%8B%E7%9A%842%E4%B8%AA%E7%AA%97%E5%8F%A3%E4%BA%92%E5%8A%A8"><span class="toc-number">1.9.4.</span> <span class="toc-text">正常情况下的2个窗口互动</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.10.</span> <span class="toc-text"></span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E6%83%85%E5%86%B5%E4%B8%8BGBN-%E4%B8%80%E7%A7%8D%E5%8D%8F%E8%AE%AE-%E7%9A%842%E7%AA%97%E5%8F%A3%E4%BA%92%E5%8A%A8"><span class="toc-number">1.10.1.</span> <span class="toc-text">异常情况下GBN(一种协议)的2窗口互动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E6%83%85%E5%86%B5%E4%B8%8BSR%EF%BC%88%E4%B8%80%E7%A7%8D%E5%8D%8F%E8%AE%AE%EF%BC%89%E7%9A%842%E7%AA%97%E5%8F%A3%E4%BA%92%E5%8A%A8"><span class="toc-number">1.10.2.</span> <span class="toc-text">异常情况下SR（一种协议）的2窗口互动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GBN%E5%8D%8F%E8%AE%AE%E5%92%8CSR%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%BC%82%E5%90%8C"><span class="toc-number">1.10.3.</span> <span class="toc-text">GBN协议和SR协议的异同</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E6%B0%B4%E7%BA%BF%E5%8D%8F%E8%AE%AE%EF%BC%9A%E6%80%BB%E7%BB%93%E2%98%85%E2%98%85%E2%98%85%E2%98%85"><span class="toc-number">1.11.</span> <span class="toc-text">流水线协议：总结★★★★</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Go-back-N-%E5%8D%8F%E8%AE%AE%EF%BC%9A"><span class="toc-number">1.11.1.</span> <span class="toc-text">Go-back-N  协议：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#GBN%EF%BC%9A%E5%8F%91%E9%80%81%E6%96%B9%E6%89%A9%E5%B1%95%E7%9A%84FSM"><span class="toc-number">1.11.1.1.</span> <span class="toc-text">GBN：发送方扩展的FSM</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GBN%EF%BC%9A%E6%8E%A5%E6%94%B6%E6%96%B9%E6%89%A9%E5%B1%95%E7%9A%84FSM"><span class="toc-number">1.11.1.2.</span> <span class="toc-text">GBN：接收方扩展的FSM</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E4%B8%AD%E7%9A%84GBN%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85"><span class="toc-number">1.11.1.3.</span> <span class="toc-text">运行中的GBN★★★★★★</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E9%87%8D%E4%BC%A0"><span class="toc-number">1.11.1.4.</span> <span class="toc-text">选择重传</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Selective-Repeat-%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.11.2.</span> <span class="toc-text">Selective Repeat 协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E9%87%8D%E4%BC%A0SR"><span class="toc-number">1.11.2.1.</span> <span class="toc-text">选择重传SR</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E9%87%8D%E4%BC%A0SR%E7%9A%84%E8%BF%90%E8%A1%8C%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85"><span class="toc-number">1.11.2.2.</span> <span class="toc-text">选择重传SR的运行★★★★★★</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E6%AF%94GBN%E5%92%8CSR"><span class="toc-number">1.11.3.</span> <span class="toc-text">对比GBN和SR</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/84f702e5.html" title="可靠数据传输(Rdt)的原理"><img src="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&amp;psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&amp;ust=1672760873466000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="可靠数据传输(Rdt)的原理"/></a><div class="content"><a class="title" href="/post/84f702e5.html" title="可靠数据传输(Rdt)的原理">可靠数据传输(Rdt)的原理</a><time datetime="2023-07-29T05:11:01.000Z" title="发表于 2023-07-29 13:11:01">2023-07-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/7985ef27.html" title="传输层Stu"><img src="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fdesk.3gbizhi.com%2Fdeskjy%2F905.html&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAY" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="传输层Stu"/></a><div class="content"><a class="title" href="/post/7985ef27.html" title="传输层Stu">传输层Stu</a><time datetime="2023-07-26T13:52:28.000Z" title="发表于 2023-07-26 21:52:28">2023-07-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/452b164d.html" title="TCP&amp;&amp;UDP套接字编程"><img src="https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d058ccbf6c81800ae9cb0e37b83533fa828b47d9.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="TCP&amp;&amp;UDP套接字编程"/></a><div class="content"><a class="title" href="/post/452b164d.html" title="TCP&amp;&amp;UDP套接字编程">TCP&amp;&amp;UDP套接字编程</a><time datetime="2023-07-25T11:51:48.000Z" title="发表于 2023-07-25 19:51:48">2023-07-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/173be129.html" title="Nacos注册中心"><img src="https://th.bing.com/th/id/R.1adcbe85544d76e1e2e31d2683253438?rik=rtegGZrm6rdgzw&amp;riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f2271e3d6ed6618845ff8cf4bdeeed33184e23d08.jpg&amp;ehk=1sjnDT9IMMCM15%2fS4Pinlh5dZABRnayTAPoUKHeEeGs%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Nacos注册中心"/></a><div class="content"><a class="title" href="/post/173be129.html" title="Nacos注册中心">Nacos注册中心</a><time datetime="2023-07-23T08:42:11.000Z" title="发表于 2023-07-23 16:42:11">2023-07-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/70dbcc05.html" title="应用层续"><img src="https://www.google.com/imgres?imgurl=https%3A%2F%2Ftmpl.downzz.com%2Fsucai%2Fcontent%2F0tf4t1r53js.jpg&amp;imgrefurl=https%3A%2F%2Fwww.downzz.com%2Fjianyuebizhi%2F36732.html&amp;tbnid=O22DjUrs0X8icM&amp;vet=12ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ..i&amp;docid=Xc2fZTMSl7dnDM&amp;w=1202&amp;h=676&amp;q=%E7%AE%80%E7%BA%A6%20%E7%94%B5%E8%84%91%20%E5%A3%81%E7%BA%B8%204k&amp;ved=2ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="应用层续"/></a><div class="content"><a class="title" href="/post/70dbcc05.html" title="应用层续">应用层续</a><time datetime="2023-07-20T12:49:24.000Z" title="发表于 2023-07-20 20:49:24">2023-07-20</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&amp;psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&amp;ust=1672760873466000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a><a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a><a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> <a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: '',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: '',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
