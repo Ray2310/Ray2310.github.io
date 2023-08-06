@@ -1,0 +1,487 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>拥塞控制 | Rayce. Blogs</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="拥塞控制原理（网络的问题） 拥塞:  非正式的定义: “太多的数据需要网络传输，超过了网络的处理能力”   与流量控制不同   拥塞的表现:    分组丢失 (路由器缓冲区溢出) **分组经历比较长的延迟(**在路由器的队列中排队)    拥塞的原因&#x2F;代价1. 场景一：主机A 向 C发送； 主机B向D 发送。都通过一个路由器，路由器的容量(带宽)  是：R (单位: bps)   2个发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="拥塞控制">
+<meta property="og:url" content="https://ray2310.github.io/post/e7bfc9f.html">
+<meta property="og:site_name" content="Rayce. Blogs">
+<meta property="og:description" content="拥塞控制原理（网络的问题） 拥塞:  非正式的定义: “太多的数据需要网络传输，超过了网络的处理能力”   与流量控制不同   拥塞的表现:    分组丢失 (路由器缓冲区溢出) **分组经历比较长的延迟(**在路由器的队列中排队)    拥塞的原因&#x2F;代价1. 场景一：主机A 向 C发送； 主机B向D 发送。都通过一个路由器，路由器的容量(带宽)  是：R (单位: bps)   2个发">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&rs=1">
+<meta property="article:published_time" content="2023-08-06T04:04:25.000Z">
+<meta property="article:modified_time" content="2023-08-06T04:05:15.266Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&rs=1"><link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQHlJW3iX0eSx0YEsPnrToEC7iKW4m3TEgiQ&usqp=CAU"><link rel="canonical" href="https://ray2310.github.io/post/e7bfc9f.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. Blogs","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '拥塞控制',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-08-06 12:05:15'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">92</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">33</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">22</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&amp;rs=1')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. Blogs"><span class="site-name">Rayce. Blogs</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">拥塞控制</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-08-06T04:04:25.000Z" title="发表于 2023-08-06 12:04:25">2023-08-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-08-06T04:05:15.266Z" title="更新于 2023-08-06 12:05:15">2023-08-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="拥塞控制"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="拥塞控制原理（网络的问题）"><a href="#拥塞控制原理（网络的问题）" class="headerlink" title="拥塞控制原理（网络的问题）"></a>拥塞控制原理（网络的问题）</h1><p> <strong>拥塞:</strong></p>
+<ul>
+<li><p>非正式的定义: “太多的数据需要网络传输，超过了网络的处理能力” </p>
+</li>
+<li><p>与流量控制不同 </p>
+</li>
+<li><p><strong>拥塞的表现:</strong> </p>
+</li>
+<li><ul>
+<li><strong>分组丢失</strong> (路由器缓冲区溢出)</li>
+<li>**分组经历比较长的延迟(**在路由器的队列中排队)</li>
+</ul>
+</li>
+</ul>
+<h2 id="拥塞的原因-x2F-代价"><a href="#拥塞的原因-x2F-代价" class="headerlink" title="拥塞的原因&#x2F;代价"></a>拥塞的原因&#x2F;代价</h2><h3 id="1-场景一："><a href="#1-场景一：" class="headerlink" title="1. 场景一："></a>1. 场景一：</h3><p>主机A 向 C发送； 主机B向D 发送。都通过一个路由器，路由器的容量(带宽)  是：R (单位: bps)</p>
+<p><img src="/images/1691287258953-ae436a3f-a821-4df9-ab57-b06308d7a0a9.png" alt="img"></p>
+<ul>
+<li>2个发送端，2个接 收端</li>
+<li>一个路由器，具备 无限大的缓冲</li>
+<li>输出链路带宽：R</li>
+<li>没有重传</li>
+</ul>
+<p><img src="/images/1691287269162-92c14de6-95a7-4ba3-96ce-fdb0faa9b34c.png" alt="img"></p>
+<h3 id="2-场景2："><a href="#2-场景2：" class="headerlink" title="2. 场景2："></a>2. 场景2：</h3><p><img src="/images/1691287679063-dc258bfb-b79b-485a-89c2-e9faf4839e04.png" alt="img"></p>
+<ul>
+<li>一个路由器，有限的缓冲</li>
+<li>分组丢失时，发送端重传 </li>
+<li>应用层的输入&#x3D;应用层输出: <img src="/images/1691287708969-042e5d15-ccaa-4933-8eed-39b9292b6b18.png" alt="img"></li>
+<li>传输层的输入包括重传:<img src="/images/1691287718220-4837f2f6-7824-4bc8-8ee3-47166583103c.png" alt="img"></li>
+</ul>
+<h4 id="缓冲区无限和有限的情况下"><a href="#缓冲区无限和有限的情况下" class="headerlink" title="缓冲区无限和有限的情况下 :"></a>缓冲区无限和有限的情况下 :</h4><p> <strong>理想化: 发送端有完美的信息 发送端知道什么时候路由器的缓冲是可用的</strong>  </p>
+<p><img src="/images/1691287746988-491cd804-b26c-422d-98e9-c9aa4d239e34.png" alt="img"></p>
+<p><img src="/images/1691287875340-656e421f-8feb-49db-8183-3316c3995f0e.png" alt="img"></p>
+<p><img src="/images/1691287917243-93e4d2b0-faca-4c1c-adbd-fae73064c83c.png" alt="img">输入输出变了， 但是延迟并没有改变。和场景一中的延迟图是一样的。</p>
+<p><img src="/images/1691288810018-bff59a65-2d6d-40de-aac5-eed1e1c520c6.png" alt="img"></p>
+<p><strong>现实情况： 重复</strong></p>
+<ul>
+<li>分组可能丢失，由于缓冲器 满而被丢弃</li>
+<li>发送端最终超时，发送第2 个拷贝，2个分组都被传出</li>
+</ul>
+<p><img src="/images/1691288868026-1a371874-d7a2-446d-af33-718365417517.png" alt="img"></p>
+<p> <strong>输出比输入少原因：1）重传的丢失分组；2） 没有必要重传的重复分组</strong>  </p>
+<p> <strong>拥塞的“代价”:</strong>   </p>
+<p>因为有大量的重传， 所以我们并不知道网络中传输的有效数据是多少， 类比平时使用激光枪时应该是指哪打哪， 但是在月球上， 失重之后，为了打中目标，就需要抬高枪口。所以这里我们为了达到有效数据的传输量(理想的蹦出)， 但是传输中又有大量的重传数据， 所以就需加大输出的量。</p>
+<h3 id="3-场景3"><a href="#3-场景3" class="headerlink" title="3. 场景3"></a>3. 场景3</h3><p>4个发送端；多重路径；超时重传</p>
+<p><img src="/images/1691288981250-561408a2-6af3-42ef-83de-8426307e4d39.png" alt="img"></p>
+<p>当lamda in 等都增加时， 所有的蓝色分组都在最上方的队列中丢失，蓝色的吞吐 -&gt; 0</p>
+<p> <strong>又一个拥塞的代价:</strong> </p>
+<p><strong>当分组丢失时，任何“关于这个分组的上游传输能力” 都被浪费了</strong>  </p>
+<p><img src="/images/1691289042224-289b0ead-bce0-4cf8-a55a-32498134d316.png" alt="img"></p>
+<h2 id="拥塞控制方法"><a href="#拥塞控制方法" class="headerlink" title="拥塞控制方法"></a>拥塞控制方法</h2><h3 id="1-端到端拥塞控制"><a href="#1-端到端拥塞控制" class="headerlink" title="1.  端到端拥塞控制:"></a>1.  端到端拥塞控制:</h3><ul>
+<li><strong>没有来自网络的显式反馈（从而端系统决定加大或者降低发送速率）</strong></li>
+<li><strong>端系统根据延迟和 丢失事件推断是否 有拥塞</strong> </li>
+<li><strong>TCP采用的方法</strong></li>
+</ul>
+<h3 id="2-网络辅助的拥塞控制"><a href="#2-网络辅助的拥塞控制" class="headerlink" title="2.  网络辅助的拥塞控制:"></a>2.  网络辅助的拥塞控制:</h3><ul>
+<li><p><strong>路由器提供给端系统以 反馈信息</strong> </p>
+</li>
+<li><ul>
+<li><strong>单个bit置位，显示有 拥塞 (SNA, DECbit, TCP&#x2F;IP ECN, ATM)</strong> </li>
+<li><strong>显式提供发送端可以 采用的速率</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="案例：-ATM的异步传输网络的-ABR拥塞控制"><a href="#案例：-ATM的异步传输网络的-ABR拥塞控制" class="headerlink" title="案例： ATM的异步传输网络的 ABR拥塞控制"></a>案例： ATM的异步传输网络的 ABR拥塞控制</h4><p> <strong>ABR: available bit rate:</strong>  </p>
+<ul>
+<li><p><strong>提供的服务是 “弹性服务”</strong> </p>
+</li>
+<li><p><strong>如果发送端的路径“轻载 ”</strong></p>
+</li>
+<li><ul>
+<li>发送方使用可用带宽</li>
+</ul>
+</li>
+<li><p><strong>如果发送方的路径拥塞了</strong></p>
+</li>
+<li><ul>
+<li>发送方限制其发送的 速度到一个最小保障（1兆bps） 速率上</li>
+</ul>
+</li>
+</ul>
+<p> <strong>RM (资源管理) 信元:</strong>  一个小的分组， 只有53个字节（5个字节的头部，48个字节的数据载荷部分）</p>
+<p>信元的范围： <strong>bit &lt; 信元 &lt; 分组</strong></p>
+<p>信元在每个单位节点中仅仅耽误53个bit ， 没有分组的那么大。</p>
+<ul>
+<li><p>由发送端发送,在数据信元中 间隔插入</p>
+</li>
+<li><p>RM信元中的比特被交换机设 置 (“网络辅助”) </p>
+</li>
+<li><ul>
+<li>NI bit: no increase in rate (轻微拥塞)速率不要 增加了 [拥塞就扔 ]</li>
+<li>CI bit: congestion indication 拥塞指示</li>
+</ul>
+</li>
+<li><p>发送端发送的RM 信元被接 收端返回, 接收端不做任何 改变</p>
+</li>
+</ul>
+<p><img src="/images/1691290138400-795513b9-0fb7-4bfe-a661-a992d92d2294.png" alt="img"> </p>
+<ul>
+<li><p><strong>在RM信元中的2个字节 ER (explicit rate)字段</strong> </p>
+</li>
+<li><ul>
+<li>拥塞的交换机可能会降低信元中ER的值 </li>
+<li>发送端发送速度因此是最低的可支持速率</li>
+</ul>
+</li>
+<li><p><strong>数据信元中的EFCI bit: 被拥塞的交换机设置成1</strong> </p>
+</li>
+<li><ul>
+<li>如果在管理信元RM前面的数据信元EFCI被设置成了1, 接收端在 返回的RM信元中设置CI bit</li>
+</ul>
+</li>
+</ul>
+<h1 id="TCP-拥塞控制"><a href="#TCP-拥塞控制" class="headerlink" title="TCP 拥塞控制"></a>TCP 拥塞控制</h1><h3 id="端到端的拥塞控制机制"><a href="#端到端的拥塞控制机制" class="headerlink" title="端到端的拥塞控制机制"></a>端到端的拥塞控制机制</h3><p>如果每次都反馈相关的信息 ，那么对网络的负担就非常大了</p>
+<ul>
+<li><p><strong>路由器不向主机有关拥塞的反馈信息</strong></p>
+</li>
+<li><ul>
+<li>• 路由器的负担较轻 </li>
+<li>• 符合网络核心简单的 TCP&#x2F;IP架构原则</li>
+</ul>
+</li>
+<li><p><strong>端系统根据自身得到的信息 ，判断是否发生拥塞，从而 采取动作</strong></p>
+</li>
+</ul>
+<h3 id="拥塞控制的几个问题"><a href="#拥塞控制的几个问题" class="headerlink" title="拥塞控制的几个问题"></a>拥塞控制的几个问题</h3><ol>
+<li>如何检测拥塞 【轻微拥塞 &#x2F; 拥塞】</li>
+<li>控制的策略是什么？  </li>
+<li>在拥塞发送时如何动 作，降低速率  【 在轻微拥塞 &#x2F; 拥塞 如何降低 ？   】</li>
+<li>在拥塞缓解时如何动 作，增加速率</li>
+</ol>
+<h2 id="拥塞感知"><a href="#拥塞感知" class="headerlink" title="拥塞感知"></a>拥塞感知</h2><p><strong>发送端如何探测到拥塞?</strong>  </p>
+<ol>
+<li><strong>某个段超时了（丢失事件 ）：****拥塞</strong></li>
+</ol>
+<p> <img src="/images/1691291080380-55f11a02-653d-4b91-b2d4-c98157977b8a.png" alt="img"></p>
+<ul>
+<li>超时时间到，某个段的确认没有来 (一直重读ACK &#x3D;3460的确认，只有一个正常，剩下都是冗余）</li>
+<li>原因1：网络拥塞（某个路由器缓冲区没空间了，被丢弃）概率大</li>
+<li>原因2：出错被丢弃了（各级错误，传输过程中没有通过校验，被丢弃）概率小 </li>
+<li>一旦超时，就认为拥塞了，有一定误判，但是总体控制方向是对的</li>
+</ul>
+<ol>
+<li><strong>有关某个段的3次重复ACK：****轻微拥塞</strong></li>
+</ol>
+<ul>
+<li>段的第1个ack，正常，确认绿段，期待红段</li>
+<li>段的第2个重复ack，意味着红段的后一段收到了，蓝段乱序到达</li>
+<li>段的第2、3、4个ack重复，意味着红段的后第2、3、4个段收到了 ，橙段乱序到达，同时红段丢失的可能性很大（后面3个段都到了， 红段都没到）</li>
+<li>网络这时还能够进行一定程度的传输，拥塞但情况要比第一种好</li>
+</ul>
+<h2 id="速率控制的方法："><a href="#速率控制的方法：" class="headerlink" title="速率控制的方法："></a>速率控制的方法：</h2><p> <strong>如何控制发送端发送的速率</strong>  </p>
+<p><img src="/images/1691291607738-687cb677-510e-4c20-bc58-3a4658a44416.png" alt="img"></p>
+<ul>
+<li><strong>维持一个拥塞窗口的值：CongWin</strong> </li>
+<li>发送端限制已发送但是未确认的数据量（的上限）: LastByteSent-LastByteAcked &lt;&#x3D; CongWin</li>
+<li>从而<strong>粗略地控制发送方的往网络中注入的速率</strong></li>
+</ul>
+<p><strong>CongWin是动态的，是感知到的网络拥塞程度的函数</strong>  </p>
+<ul>
+<li><p><strong>超时或者3个重复ack，CongWin↓</strong>  </p>
+</li>
+<li><ul>
+<li><strong>超时时：CongWin降为1MSS,进入SS阶段然后再倍增到 CongWin&#x2F;2（每个RTT），从而进入CA阶段 （</strong>MSS：最大报文段大小 .**往返延时（RTT)**） </li>
+<li><strong>3个重复ack ：CongWin降为CongWin&#x2F;2,CA阶段(CA: 拥塞避免)</strong></li>
+</ul>
+</li>
+<li><p><strong>否则（正常收到Ack，没有发送以上情况）：CongWin跃跃欲试↑</strong>  </p>
+</li>
+<li><ul>
+<li><strong>SS阶段：加倍增加(每个RTT) （SS: 慢启动）</strong></li>
+<li><strong>CA阶段：线性增加(每个RTT)</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="联合控制的方法"><a href="#联合控制的方法" class="headerlink" title="联合控制的方法:"></a>联合控制的方法:</h2><p> <strong>发送端控制发送但是未确认的量同时也不能够超过接收 窗口，满足流量控制要求</strong>   </p>
+<ul>
+<li><strong>SendWin&#x3D;min{CongWin, RecvWin}</strong> </li>
+<li><strong>同时满足 拥塞控制和流量控制要求</strong></li>
+</ul>
+<p> <strong>拥塞控制策略:</strong>  </p>
+<ul>
+<li><strong>慢启动</strong> </li>
+<li><strong>AIMD：线性增、乘性减少</strong> </li>
+<li><strong>超时事件后的保守策略</strong></li>
+</ul>
+<h3 id="TCP拥塞控制：-慢启动"><a href="#TCP拥塞控制：-慢启动" class="headerlink" title="TCP拥塞控制： 慢启动"></a>TCP拥塞控制： 慢启动</h3><ol>
+<li><strong>连接刚建立, CongWin &#x3D; 1 MSS</strong></li>
+</ol>
+<ul>
+<li>如: MSS &#x3D; 1460bytes &amp; RTT &#x3D; 200 msec</li>
+<li>初始速率 &#x3D; 58.4kbps</li>
+</ul>
+<ol>
+<li><strong>可用带宽可能&gt;&gt; MSS&#x2F;RTT</strong></li>
+</ol>
+<ul>
+<li>应该尽快加速，到达希望的 速率</li>
+</ul>
+<ol>
+<li><strong>当连接开始时，指数性增 加发送速率，直到发生丢 失的事件</strong></li>
+</ol>
+<ul>
+<li>启动初值很低</li>
+<li>但是速度很快</li>
+</ul>
+<p><img src="/images/1691292246501-c4a46d6b-e0d6-4fdb-bc5a-cfc423c3f6e6.png" alt="img"></p>
+<h3 id="TCP-拥塞控制：AIMD"><a href="#TCP-拥塞控制：AIMD" class="headerlink" title="TCP 拥塞控制：AIMD"></a>TCP 拥塞控制：AIMD</h3><ol>
+<li><strong>乘性减:</strong></li>
+</ol>
+<p> 丢失事件后将CongWin降为1， 将CongWin&#x2F;2作为阈值，进 入慢启动阶段（倍增直到 CongWin&#x2F;2）</p>
+<ol>
+<li><strong>加性增：</strong></li>
+</ol>
+<p>当CongWin&gt;阈值时，一个 RTT如没有发生丢失事件 ,将CongWin加1MSS: 探 测  </p>
+<p><img src="/images/1691292328065-4a498608-9ac9-4f77-a8e4-94fb203cbdc3.png" alt="img"></p>
+<p><strong>当收到3个重复的ACKs:</strong></p>
+<ul>
+<li>CongWin 减半 </li>
+<li>窗口（缓冲区大小）之后 线性增长</li>
+</ul>
+<p><strong>当超时事件发生时:</strong> </p>
+<ul>
+<li>CongWin被设置成 1 MSS，进入SS阶段</li>
+<li>之后窗口指数增长 </li>
+<li>增长到一个阈值（上次发 生拥塞的窗口的一半）时 ，再线性增加</li>
+</ul>
+<p> <strong>3个重复的ACK表示网络 还有一定的段传输能力</strong> </p>
+<p><strong>超时之前的3个重复的 ACK表示“警报”</strong>  </p>
+<h3 id="TCP-拥塞控制：超时事件后的保守策略"><a href="#TCP-拥塞控制：超时事件后的保守策略" class="headerlink" title="TCP 拥塞控制：超时事件后的保守策略"></a>TCP 拥塞控制：<strong>超时事件后的保守策略</strong></h3><p> <strong>问： 什么时候应该将 指数性增长变成 线性？</strong>  </p>
+<p> <strong>答： 在超时之前，当 CongWin变成上 次发生超时的窗口的一半</strong>  </p>
+<p><img src="/images/1691292470656-c78db29b-5097-4cff-b7e2-ea0dbe5cbb04.png" alt="img"></p>
+<p> <strong>实现:</strong>  </p>
+<ul>
+<li>变量：Threshold</li>
+<li>出现丢失，Threshold设置成 CongWin的1&#x2F;2</li>
+</ul>
+<h3 id="总结：-TCP拥塞控制"><a href="#总结：-TCP拥塞控制" class="headerlink" title="总结： TCP拥塞控制"></a>总结： TCP拥塞控制</h3><ul>
+<li><strong>当CongWin＜Threshold, 发送端处于慢启动阶段（ slow-start）, 窗口指数性增长.</strong> </li>
+<li><strong>当CongWin〉Threshold, 发送端处于拥塞避免阶段 （congestion-avoidance）, 窗口线性增长.</strong> </li>
+<li><strong>当收到三个重复的ACKs (triple duplicate ACK), Threshold设置成 CongWin&#x2F;2， CongWin&#x3D;Threshold+3.</strong> </li>
+<li><strong>当超时事件发生时timeout, Threshold&#x3D;CongWin&#x2F;2 CongWin&#x3D;1 MSS，进入SS阶段</strong></li>
+</ul>
+<p><img src="/images/1691292690461-c2d4c845-fc6f-48b3-a61d-ec5b01224fe5.png" alt="img"></p>
+<p><img src="/images/1691293769860-a1112775-9a2d-420e-8d35-6db7ef8546f1.png" alt="img"></p>
+<h2 id="TCP吞吐量"><a href="#TCP吞吐量" class="headerlink" title="TCP吞吐量"></a>TCP吞吐量</h2><p> <strong>TCP的平均吞吐量是多少，使用窗口window尺寸W和RTT来 描述?</strong>  </p>
+<p> <strong>忽略慢启动阶段，假设发送端总有数据传输</strong>  </p>
+<p> <strong>W：发生丢失事件时的窗口尺寸（单位：字节）</strong>  </p>
+<ul>
+<li><strong>平均窗口尺寸（#in-flight字节）：3&#x2F;4W</strong>  </li>
+<li><strong>平均吞吐量：RTT时间吞吐3&#x2F;4W</strong></li>
+</ul>
+<p><img src="/images/1691293829136-f323f59b-1c56-4833-bbdb-2135e1422731.png" alt="img"></p>
+<h2 id="TCP的公平性"><a href="#TCP的公平性" class="headerlink" title="TCP的公平性"></a>TCP的公平性</h2><p> <strong>公平性目标: 如果 K个TCP会话分享一个链路带宽为R的 瓶颈，每一个会话的有效带宽为 R&#x2F;K</strong>  </p>
+<p><img src="/images/1691294032349-9b243e5e-bb25-44fc-a0f9-f8ac6dc688c8.png" alt="img"></p>
+<h3 id="为什么TCP是公平的-？"><a href="#为什么TCP是公平的-？" class="headerlink" title="为什么TCP是公平的 ？"></a>为什么TCP是公平的 ？</h3><p> 2个竞争的TCP会话: </p>
+<ul>
+<li>加性增加，斜率为1, 吞吐量增加 </li>
+<li>乘性减，吞吐量比例减少</li>
+</ul>
+<p><img src="/images/1691294103411-1b96cb60-6c3a-4dfb-aec6-d0eb2bc31db5.png" alt="img"></p>
+<h3 id="公平性和-UDP"><a href="#公平性和-UDP" class="headerlink" title="公平性和 UDP"></a>公平性和 UDP</h3><ul>
+<li><p><strong>多媒体应用通常不是用 TCP</strong></p>
+</li>
+<li><ul>
+<li>应用发送的数据速率希望 不受拥塞控制的节制</li>
+</ul>
+</li>
+<li><p><strong>使用UDP:</strong> </p>
+</li>
+<li><ul>
+<li>音视频应用泵出数据的速 率是恒定的, 忽略数据的 丢失</li>
+</ul>
+</li>
+<li><p>研究领域: TCP 友好性</p>
+</li>
+</ul>
+<h3 id="公平性和并行TCP连接"><a href="#公平性和并行TCP连接" class="headerlink" title="公平性和并行TCP连接"></a>公平性和并行TCP连接</h3><ul>
+<li><p><strong>2个主机间可以打开多个并行的TCP连接</strong> </p>
+</li>
+<li><p><strong>Web浏览器</strong> </p>
+</li>
+<li><p>例如: 带宽为R的链路支持了 9个连接; </p>
+</li>
+<li><ul>
+<li>如果新的应用要求建1个TCP连 接,获得带宽R&#x2F;10	</li>
+<li>如果新的应用要求建11个TCP连接,获得带宽R&#x2F;2</li>
+</ul>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://Ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/e7bfc9f.html">https://ray2310.github.io/post/e7bfc9f.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ray2310.github.io" target="_blank">Rayce. Blogs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></div><div class="post_share"><div class="social-share" data-image="https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&amp;rs=1" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/4199e55d.html" title="面向数据连接:TCP"><img class="cover" src="https://th.bing.com/th/id/R.1adcbe85544d76e1e2e31d2683253438?rik=rtegGZrm6rdgzw&amp;riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f2271e3d6ed6618845ff8cf4bdeeed33184e23d08.jpg&amp;ehk=1sjnDT9IMMCM15%2fS4Pinlh5dZABRnayTAPoUKHeEeGs%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" onerror="onerror=null;src='/img/second.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">面向数据连接:TCP</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/4199e55d.html" title="面向数据连接:TCP"><img class="cover" src="https://th.bing.com/th/id/R.1adcbe85544d76e1e2e31d2683253438?rik=rtegGZrm6rdgzw&riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f2271e3d6ed6618845ff8cf4bdeeed33184e23d08.jpg&ehk=1sjnDT9IMMCM15%2fS4Pinlh5dZABRnayTAPoUKHeEeGs%3d&risl=&pid=ImgRaw&r=0" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-08-05</div><div class="title">面向数据连接:TCP</div></div></a></div><div><a href="/post/84f702e5.html" title="可靠数据传输(Rdt)的原理"><img class="cover" src="https://img.51miz.com/Element/00/72/77/78/575accf3_E727778_6fadd380.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-07-29</div><div class="title">可靠数据传输(Rdt)的原理</div></div></a></div><div><a href="/post/7985ef27.html" title="传输层Stu"><img class="cover" src="https://gss0.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/96dda144ad34598213c81de20cf431adcbef8404.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-07-29</div><div class="title">传输层Stu</div></div></a></div><div><a href="/post/452b164d.html" title="TCP&amp;&amp;UDP套接字编程"><img class="cover" src="https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d058ccbf6c81800ae9cb0e37b83533fa828b47d9.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-07-25</div><div class="title">TCP&amp;&amp;UDP套接字编程</div></div></a></div><div><a href="/post/70dbcc05.html" title="应用层续"><img class="cover" src="https://www.google.com/imgres?imgurl=https%3A%2F%2Ftmpl.downzz.com%2Fsucai%2Fcontent%2F0tf4t1r53js.jpg&imgrefurl=https%3A%2F%2Fwww.downzz.com%2Fjianyuebizhi%2F36732.html&tbnid=O22DjUrs0X8icM&vet=12ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ..i&docid=Xc2fZTMSl7dnDM&w=1202&h=676&q=%E7%AE%80%E7%BA%A6%20%E7%94%B5%E8%84%91%20%E5%A3%81%E7%BA%B8%204k&ved=2ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-07-24</div><div class="title">应用层续</div></div></a></div><div><a href="/post/3c40bcf4.html" title="应用层"><img class="cover" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&ust=1672760873466000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-07-19</div><div class="title">应用层</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">92</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">33</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">22</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center">我拼尽全力是为了赢</p> <p align="center">  不是为了虽败犹荣</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E5%8E%9F%E7%90%86%EF%BC%88%E7%BD%91%E7%BB%9C%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">拥塞控制原理（网络的问题）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%A5%E5%A1%9E%E7%9A%84%E5%8E%9F%E5%9B%A0-x2F-%E4%BB%A3%E4%BB%B7"><span class="toc-number">1.1.</span> <span class="toc-text">拥塞的原因&#x2F;代价</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9C%BA%E6%99%AF%E4%B8%80%EF%BC%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. 场景一：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%9C%BA%E6%99%AF2%EF%BC%9A"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. 场景2：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%93%E5%86%B2%E5%8C%BA%E6%97%A0%E9%99%90%E5%92%8C%E6%9C%89%E9%99%90%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">缓冲区无限和有限的情况下 :</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%9C%BA%E6%99%AF3"><span class="toc-number">1.1.3.</span> <span class="toc-text">3. 场景3</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">拥塞控制方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%AB%AF%E5%88%B0%E7%AB%AF%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.  端到端拥塞控制:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%BD%91%E7%BB%9C%E8%BE%85%E5%8A%A9%E7%9A%84%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.  网络辅助的拥塞控制:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%EF%BC%9A-ATM%E7%9A%84%E5%BC%82%E6%AD%A5%E4%BC%A0%E8%BE%93%E7%BD%91%E7%BB%9C%E7%9A%84-ABR%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">案例： ATM的异步传输网络的 ABR拥塞控制</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TCP-%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-number">2.</span> <span class="toc-text">TCP 拥塞控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E6%9C%BA%E5%88%B6"><span class="toc-number">2.0.1.</span> <span class="toc-text">端到端的拥塞控制机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98"><span class="toc-number">2.0.2.</span> <span class="toc-text">拥塞控制的几个问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%A5%E5%A1%9E%E6%84%9F%E7%9F%A5"><span class="toc-number">2.1.</span> <span class="toc-text">拥塞感知</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9F%E7%8E%87%E6%8E%A7%E5%88%B6%E7%9A%84%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="toc-number">2.2.</span> <span class="toc-text">速率控制的方法：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%94%E5%90%88%E6%8E%A7%E5%88%B6%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">2.3.</span> <span class="toc-text">联合控制的方法:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%EF%BC%9A-%E6%85%A2%E5%90%AF%E5%8A%A8"><span class="toc-number">2.3.1.</span> <span class="toc-text">TCP拥塞控制： 慢启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP-%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%EF%BC%9AAIMD"><span class="toc-number">2.3.2.</span> <span class="toc-text">TCP 拥塞控制：AIMD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP-%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%EF%BC%9A%E8%B6%85%E6%97%B6%E4%BA%8B%E4%BB%B6%E5%90%8E%E7%9A%84%E4%BF%9D%E5%AE%88%E7%AD%96%E7%95%A5"><span class="toc-number">2.3.3.</span> <span class="toc-text">TCP 拥塞控制：超时事件后的保守策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A-TCP%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-number">2.3.4.</span> <span class="toc-text">总结： TCP拥塞控制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP%E5%90%9E%E5%90%90%E9%87%8F"><span class="toc-number">2.4.</span> <span class="toc-text">TCP吞吐量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP%E7%9A%84%E5%85%AC%E5%B9%B3%E6%80%A7"><span class="toc-number">2.5.</span> <span class="toc-text">TCP的公平性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88TCP%E6%98%AF%E5%85%AC%E5%B9%B3%E7%9A%84-%EF%BC%9F"><span class="toc-number">2.5.1.</span> <span class="toc-text">为什么TCP是公平的 ？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AC%E5%B9%B3%E6%80%A7%E5%92%8C-UDP"><span class="toc-number">2.5.2.</span> <span class="toc-text">公平性和 UDP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AC%E5%B9%B3%E6%80%A7%E5%92%8C%E5%B9%B6%E8%A1%8CTCP%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.5.3.</span> <span class="toc-text">公平性和并行TCP连接</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/e7bfc9f.html" title="拥塞控制"><img src="https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="拥塞控制"/></a><div class="content"><a class="title" href="/post/e7bfc9f.html" title="拥塞控制">拥塞控制</a><time datetime="2023-08-06T04:04:25.000Z" title="发表于 2023-08-06 12:04:25">2023-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/4199e55d.html" title="面向数据连接:TCP"><img src="https://th.bing.com/th/id/R.1adcbe85544d76e1e2e31d2683253438?rik=rtegGZrm6rdgzw&amp;riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f2271e3d6ed6618845ff8cf4bdeeed33184e23d08.jpg&amp;ehk=1sjnDT9IMMCM15%2fS4Pinlh5dZABRnayTAPoUKHeEeGs%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="面向数据连接:TCP"/></a><div class="content"><a class="title" href="/post/4199e55d.html" title="面向数据连接:TCP">面向数据连接:TCP</a><time datetime="2023-08-05T04:47:47.000Z" title="发表于 2023-08-05 12:47:47">2023-08-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/bf8bcde.html" title="Nacos集群搭建"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Nacos集群搭建"/></a><div class="content"><a class="title" href="/post/bf8bcde.html" title="Nacos集群搭建">Nacos集群搭建</a><time datetime="2023-08-01T13:10:55.000Z" title="发表于 2023-08-01 21:10:55">2023-08-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/84f702e5.html" title="可靠数据传输(Rdt)的原理"><img src="https://img.51miz.com/Element/00/72/77/78/575accf3_E727778_6fadd380.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="可靠数据传输(Rdt)的原理"/></a><div class="content"><a class="title" href="/post/84f702e5.html" title="可靠数据传输(Rdt)的原理">可靠数据传输(Rdt)的原理</a><time datetime="2023-07-29T05:11:01.000Z" title="发表于 2023-07-29 13:11:01">2023-07-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/7985ef27.html" title="传输层Stu"><img src="https://gss0.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/96dda144ad34598213c81de20cf431adcbef8404.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="传输层Stu"/></a><div class="content"><a class="title" href="/post/7985ef27.html" title="传输层Stu">传输层Stu</a><time datetime="2023-07-26T13:52:28.000Z" title="发表于 2023-07-26 21:52:28">2023-07-26</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&amp;rs=1')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a><a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a><a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> <a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: '',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: '',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
