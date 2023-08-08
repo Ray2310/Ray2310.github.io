@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>网络层</title>
+      <link href="/post/769365ef.html"/>
+      <url>/post/769365ef.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="导论"><a href="#导论" class="headerlink" title="导论"></a>导论</h1><p>学习目标： </p><blockquote><p> 理解网络服务的基本原理，聚焦于其数据平面</p><ul><li>网络服务模型 </li><li>转发和路由 </li><li>路由器工作原理 </li><li>通用转发</li><li>互联网中网络层协议的实例和实现</li></ul></blockquote><h3 id="网络层的服务"><a href="#网络层的服务" class="headerlink" title="网络层的服务"></a>网络层的服务</h3><p><img src="/images/1691495247944-ff8fe9e5-dd15-4352-94b8-639f2bd5adde.png" alt="image.png"></p><ol><li>在发送主机和接收主机对之间传送段(TCP&#x2F;UDP)（segment）  </li><li>在发送端将段封装到数据报(Datagram)中  </li><li>在接收端，将段上交给传输层 实体  </li><li>网络层协议存在于每一个主机 和路由器  </li><li>路由器检查每一个经过它的 IP 数据报的头部 </li><li>最后在目标端解封装数据包， 将其恢复。交给TCP&#x2F;UDP</li></ol><blockquote><p>转发</p></blockquote><h3 id="网络层的关键功能"><a href="#网络层的关键功能" class="headerlink" title="网络层的关键功能"></a>网络层的关键功能</h3><p>** 转发: 将分组从路由器 的输入接口转发到合适 的输出接口  **</p><blockquote><p> 转发是通过单个路口的 过程  。是局部的功能</p></blockquote><p>** 路由: 使用路由算法来 决定分组从发送主机到 目标接收主机的路径  **</p><blockquote><p>路由是从端到端的路径， 从源到目的的路 由路径规划过程  。从源主机发送到模板主机。 是一个全局的功能</p></blockquote><h2 id="网络层：-数据平面、控制平面"><a href="#网络层：-数据平面、控制平面" class="headerlink" title="网络层： 数据平面、控制平面"></a>网络层： 数据平面、控制平面</h2><h3 id="数据平面-（局部的功能）"><a href="#数据平面-（局部的功能）" class="headerlink" title="数据平面 （局部的功能）"></a>数据平面 （局部的功能）</h3><p><strong>转发是数据平面的功能</strong></p><blockquote><p>数据平面的作用是对每个到来的数据实现怎么样的处理</p></blockquote><ul><li>本地，每个路由器功能 </li><li>决定从路由器输入端口 到达的分组如何转发到 输出端口 </li><li>**转发功能： **<ul><li>**传统方式：基于目标地址+转发表 **</li><li>**SDN方式：基于多个 字段+流表  **</li></ul></li></ul><h3 id="控制平面-（全局的功能）"><a href="#控制平面-（全局的功能）" class="headerlink" title="控制平面  （全局的功能）"></a>控制平面  （全局的功能）</h3><ul><li>网络范围内的逻辑 </li><li>决定数据报如何在路由器之间 路由，决定数据报从源到目标 主机之间的端到端路径 </li><li>**2个控制平面方法: **<ul><li>** 传统的路由算法: 在路由器 中被实现 **</li><li>** software-defined networking (SDN): 在远程的服务器中 实现  **</li></ul></li></ul><p><strong>路由器是控制平面的功能， 而转发是数据平面的功能</strong><br><img src="/images/1691496808700-dcf4d5eb-4dc4-47da-b485-b7c52545a933.png" alt="image.png"><br>** SDN方式：逻辑集中的控制平面**</p><blockquote><p>一个不同的（通常是远程的）控制器与本地控制代理（CAs） 交互  </p></blockquote><p>** 传统方式：路由和转发的相互作用**  </p><blockquote><p>传统方式较为僵化，很难进行改变</p></blockquote><p><img src="/images/1691496326560-76c10b00-8ad3-488b-a0a3-dbfea9b6451f.png" alt="image.png"></p><h2 id="网络服务模型"><a href="#网络服务模型" class="headerlink" title="网络服务模型"></a>网络服务模型</h2><p> 从发送方主机到接收方主机传输数据报的“通道” ，网络提供对单个数据和数据报流的服务</p><ol><li>对于单个数据报的服务：</li></ol><blockquote><p>可靠传送；延迟保证</p></blockquote><ol start="2"><li>对于数据报流的服务：</li></ol><blockquote><p>保证数据报流传送； 保证流的最小带宽；分组之间的延迟差。</p></blockquote><h3 id="连接建立"><a href="#连接建立" class="headerlink" title="连接建立"></a>连接建立</h3><p>在某些网络架构中是<strong>网络连接建立第三个重要的功能， 例如： ATM、frame relay</strong><br>**在分组传输之前，在两个主机之间，在通过一些 路由器所构成的路径上建立一个网络层连接  **</p><p>** 网络层和传输层连接服务区别:  **</p><ul><li>网络层: 在2个主机之间，涉及到路径上的一些路由器 </li><li>传输层: 在2个进程之间，很可能只体现在端系统上 (TCP连接)</li></ul><h1 id="路由器的组成"><a href="#路由器的组成" class="headerlink" title="路由器的组成"></a>路由器的组成</h1><h1 id="IP：-Internet-Protocol"><a href="#IP：-Internet-Protocol" class="headerlink" title="IP： Internet Protocol"></a>IP： Internet Protocol</h1><h1 id="通用转发和SDN"><a href="#通用转发和SDN" class="headerlink" title="通用转发和SDN"></a>通用转发和SDN</h1>]]></content>
+      
+      
+      <categories>
+          
+          <category> 计算机网络 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机网络 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Docker学习</title>
       <link href="/post/6782be63.html"/>
       <url>/post/6782be63.html</url>
