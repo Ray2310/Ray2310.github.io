@@ -1,0 +1,467 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Internet Protocol | Rayce. Blogs</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="IP： Internet Protocol互联网中的网络层 主机,路由器中的网络层功能：ip协议主要规定了 数据平面的转发功能ICMP协议：   对于网络的信号，报错等的规定 路由器信令。  **ping应用程序的的本质：  **  形成ICMP分组， 发给目标节点 目标节点反转回来形成ping的request的对应的respose 然后就可以知道目标ip是活跃的。  ip数据报格式头部是可变长的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Internet Protocol">
+<meta property="og:url" content="https://ray2310.github.io/post/7b0ddfa2.html">
+<meta property="og:site_name" content="Rayce. Blogs">
+<meta property="og:description" content="IP： Internet Protocol互联网中的网络层 主机,路由器中的网络层功能：ip协议主要规定了 数据平面的转发功能ICMP协议：   对于网络的信号，报错等的规定 路由器信令。  **ping应用程序的的本质：  **  形成ICMP分组， 发给目标节点 目标节点反转回来形成ping的request的对应的respose 然后就可以知道目标ip是活跃的。  ip数据报格式头部是可变长的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAV5IsDhf40B0JNiTadUzM9WvxBWbE9ud8mw&usqp=CAU">
+<meta property="article:published_time" content="2023-08-12T09:34:31.000Z">
+<meta property="article:modified_time" content="2023-08-12T09:37:55.368Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAV5IsDhf40B0JNiTadUzM9WvxBWbE9ud8mw&usqp=CAU"><link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQHlJW3iX0eSx0YEsPnrToEC7iKW4m3TEgiQ&usqp=CAU"><link rel="canonical" href="https://ray2310.github.io/post/7b0ddfa2.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. Blogs","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Internet Protocol',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-08-12 17:37:55'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">95</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">33</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">22</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAV5IsDhf40B0JNiTadUzM9WvxBWbE9ud8mw&amp;usqp=CAU')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. Blogs"><span class="site-name">Rayce. Blogs</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Internet Protocol</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-08-12T09:34:31.000Z" title="发表于 2023-08-12 17:34:31">2023-08-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-08-12T09:37:55.368Z" title="更新于 2023-08-12 17:37:55">2023-08-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Internet Protocol"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="IP：-Internet-Protocol"><a href="#IP：-Internet-Protocol" class="headerlink" title="IP： Internet Protocol"></a>IP： Internet Protocol</h1><p>互联网中的网络层<br> 主机,路由器中的网络层功能：<br><img src="/images/1691820850682-97ccd5ae-1c9c-488d-bc59-207fe31ccd1c.png" alt="image.png"><br><strong>ip协议主要规定了 数据平面的转发功能</strong><br>ICMP协议： </p>
+<ul>
+<li>对于网络的信号，报错等的规定</li>
+<li>路由器信令。</li>
+</ul>
+<p>**ping应用程序的的本质：  **</p>
+<ol>
+<li>形成ICMP分组， 发给目标节点</li>
+<li>目标节点反转回来形成ping的request的对应的respose</li>
+<li>然后就可以知道目标ip是活跃的。</li>
+</ol>
+<h2 id="ip数据报格式"><a href="#ip数据报格式" class="headerlink" title="ip数据报格式"></a>ip数据报格式</h2><p><img src="/images/1691820916561-09e6c4cf-cb20-475b-9d63-f5595ca7b9ee.png" alt="image.png"><br>头部是可变长的，20字节的固定长度+ 选项部分<br>IP数据报的载荷部分（body）： 也就是数据部分。<br>16bit identifier： id表示 ； flgs ；fragment offset； 中间这三个字段是分片用的<br>ttl（time to live）：最大剩余段数，每经过一个路由器减一。<br>upper layer ：将载荷部分交给上层的哪个协议（TCP&#x2F;)<br>Internet CheckSum ： 校验和 ，校验数据报的头部<br>Options 经过路由器的时候，交换节点会将option打在ip之中</p>
+<h2 id="分片和重组"><a href="#分片和重组" class="headerlink" title="分片和重组"></a>分片和重组</h2><p>** 网络链路有MTU (最大传输单元) -链路层帧所携带的最大数据长度 **</p>
+<ul>
+<li>不同的链路类型 </li>
+<li>不同的MTU</li>
+</ul>
+<p>** 大的IP数据报在网络上被分片 (“fragmented”)  **</p>
+<blockquote>
+<p>一个数据报超过了最大载荷量(1500bit) 所以就需要进行分片传输， 按照不同的id、偏移量等等</p>
+</blockquote>
+<ul>
+<li>一个数据报被分割成若干个小 的数据报  <ul>
+<li>相同的ID </li>
+<li>不同的偏移量 </li>
+<li>最后一个分片标记为0</li>
+</ul>
+</li>
+<li>** “重组”只在最终的目标主机 进行  （最后到了目标主机，就会重组之前切分的部分）**</li>
+<li>**IP头部的信息被用于标识，排序相关分片  **</li>
+</ul>
+<h3 id="分片的细节："><a href="#分片的细节：" class="headerlink" title="分片的细节："></a>分片的细节：</h3><p> 例子 ：  4000 字节数据报  有20字节头部 、 3980字节数据  </p>
+<blockquote>
+<p>** MTU &#x3D; 1500 bytes  **</p>
+</blockquote>
+<p><img src="/images/1691823389419-c35d922c-62d6-4f7f-b087-49995c8edc40.png" alt="image.png"></p>
+<ul>
+<li>第一片：20字节头部+1480字 节数据  【 偏移量：0  】</li>
+<li>第二片：20字节头部+1480字 节数据（1480字节应用数据）  【 偏移量：1480&#x2F;8&#x3D;185  】</li>
+<li>第三片：20字节头部+1020字 节数据（应用数据）  【 偏移量：2960&#x2F;8&#x3D;370  】</li>
+</ul>
+<p><strong>路由器将每片都当成独立的分组进行转发， 最后所有的信息都到目标主机， ，到了目标主机之后就会进行重组</strong>（根据数据报的头部， 及其偏移量进行排序重组 ; fragflag&#x3D;0就是最后一片）</p>
+<h2 id="IPv4地址"><a href="#IPv4地址" class="headerlink" title="IPv4地址"></a>IPv4地址</h2><p>**IP地址: 32位标示（对设备进行标识），对主机或者路由器的接口 编址 **<br><img src="/images/1691823714304-4a8b2d56-d816-417d-9311-7a6543cd44e8.png" alt="image.png"><br><strong>接口: 主机&#x2F;路由器和物理链路的连接处(223.1.3.27)</strong></p>
+<ul>
+<li>路由器通常拥有多个接口 （多个路由器之间进行转发）</li>
+<li>主机也有可能有多个接口（多个网卡进行虚拟ip转发）</li>
+<li>IP地址和每一个接口关联</li>
+</ul>
+<p>** 一个IP地址和一个接口相关联  ,一个接口（接口）和多个IP相连**</p>
+<h3 id="子网"><a href="#子网" class="headerlink" title="子网"></a>子网</h3><p> 什么是子网(subnet) ?  </p>
+<blockquote>
+<p>一个子网内的节点（主 机或者路由器）它们的** IP地址的高位部分相同 **，这些节点构成的网络 的一部分叫做子网 </p>
+<p>**无需路由器介入，子网 内各主机可以在物理上 相互直接到达  **【在一个子网的内部，ip之间是一跳可达的。（具体的在链路层实现）】</p>
+</blockquote>
+<blockquote>
+<p><img src="/images/1691824268183-06eceebd-4e85-47fd-a9f3-3d21d2827241.png" alt="image.png"><br>包括三个子网网络</p>
+</blockquote>
+<p> **IP地址: **</p>
+<ul>
+<li>**子网部分(高位bits) **</li>
+<li>**主机部分(地位bits)  **</li>
+</ul>
+<h4 id="判断是否为子网的方法："><a href="#判断是否为子网的方法：" class="headerlink" title="判断是否为子网的方法："></a>判断是否为子网的方法：</h4><ol>
+<li>要判断一个子网, <strong>将每一个接口从主机或者路由器上分开</strong>,构成了一个个网络的孤岛</li>
+<li>**每一个孤岛（网络）都是一个都可以被称之为subnet（子网）.  **</li>
+</ol>
+<p>子网掩码：11111111 11111111 11111111 00000000<br> Subnet mask: &#x2F;24<br><img src="/images/1691824774246-a36381b2-75a5-434c-900e-d87c085a6bc8.png" alt="image.png"><br>图中有6个子网<br>子网孤岛： 几个主机构成的一个网络孤岛(相当于欧盟，对外就是一个整体)，网络的传输跳过了路由器。</p>
+<h3 id="IP地址分类"><a href="#IP地址分类" class="headerlink" title="IP地址分类"></a>IP地址分类</h3><ul>
+<li><strong>Class A：</strong>126 networks ，16 million hosts </li>
+<li><strong>Class B：</strong>16382networks ，64 K hosts </li>
+<li><strong>Class C：</strong>2 million networks ，254 host </li>
+<li><strong>Class D：</strong>multicast </li>
+<li><strong>Class E：</strong>reserved for future</li>
+</ul>
+<p><img src="/images/1691825024645-87423cf8-fbe1-44a6-86ce-8563511be53a.png" alt="image.png"></p>
+<h4 id="以A类为例解释："><a href="#以A类为例解释：" class="headerlink" title="以A类为例解释："></a>以A类为例解释：</h4><blockquote>
+<p><strong>地址的最高位为0；第一个字节的其他七个bit代表网络号 ； 后面三个字节的24个bit代表主机号</strong><br>A类地址一共2的7次方 - 2&#x3D; 126个网络（减少的2个是全0 和全1 的网络号不用）。每个网络有2的24次方 - 2 个主机。<br>同理 B类网络有 2的14次方 - 2 ； 主机有 2的16次方 -2<br>依次类比</p>
+</blockquote>
+<p><strong>C类IP地址有 200多万个网络， 一般我们获取到网络都是C类地址网络。（A、B类的都被分配完了）</strong><br><strong>D类部分是组波（</strong>具体有点不太明白，但是就是<strong>）</strong><br><strong>E类都是预留的</strong></p>
+<h4 id="特殊IP地址："><a href="#特殊IP地址：" class="headerlink" title="特殊IP地址："></a>特殊IP地址：</h4><blockquote>
+<p>一些约定：</p>
+</blockquote>
+<ul>
+<li>子网部分: 全为 0—<strong>本网络</strong> </li>
+<li>主机部分: 全为0—<strong>本主机</strong></li>
+<li>主机部分: 全为1–广播地址，这个网络的所有 主机</li>
+</ul>
+<blockquote>
+<p>所以全0 和 全1不被分配</p>
+</blockquote>
+<p>**特殊IP地址： **<br><img src="/images/1691825485660-0d64b49b-3c60-485a-870c-2c3c82c124c7.png" alt="image.png"></p>
+<h4 id="内网-专用-IP地址"><a href="#内网-专用-IP地址" class="headerlink" title="内网(专用)IP地址"></a>内网(专用)IP地址</h4><p><strong>专用地址：地址空间的一部份供专用地址使用</strong><br><strong>永远不会被当做公用地址来分配, 不会与公用地址重复</strong><br><strong>只在局部网络中有意义，区分不同的设备</strong><br><strong>路由器不对目标地址是专用地址的分组进行转发</strong><br>**专用地址范围 **</p>
+<ul>
+<li>Class A 10.0.0.0-10.255.255.255 MASK 255.0.0.0 </li>
+<li>Class B 172.16.0.0-172.31.255.255 MASK 255.255.0.0 </li>
+<li>Class C 192.168.0.0-192.168.255.255 MASK 255.255.255.0</li>
+</ul>
+<h3 id="IP-编址-CIDR-amp-amp-子网掩码"><a href="#IP-编址-CIDR-amp-amp-子网掩码" class="headerlink" title="IP 编址: CIDR&amp;&amp; 子网掩码"></a>IP 编址: CIDR&amp;&amp; 子网掩码</h3><p>** CIDR: Classless InterDomain Routing（无类域间路由）  **</p>
+<ul>
+<li>子网部分可以在任意的位置 </li>
+<li>**地址格式: a.b.c.d&#x2F;x, 其中 x 是 地址中子网号的长度  **</li>
+</ul>
+<p><img src="/images/1691826358777-b4c06cb6-f0f7-492d-85e8-fe9c515050df.png" alt="image.png"><br>可以自己分配机构的子网掩码</p>
+<h4 id="子网掩码-subnet-mask"><a href="#子网掩码-subnet-mask" class="headerlink" title="子网掩码(subnet mask)"></a>子网掩码(subnet mask)</h4><p>** 32bits , 0 or 1 in each bit **</p>
+<ul>
+<li><strong>1: bit位置表示子网部分 （代表网络号部分）</strong></li>
+<li><strong>0:bit位置表示主机部分（代表主机号部分）</strong></li>
+</ul>
+<p> <strong>原始的A、B、C类网络的子网掩码分别是</strong> </p>
+<ul>
+<li><strong>A类：255.0.0.0</strong> ：11111111 00000000 0000000 00000000 </li>
+<li><strong>B类：255.255.0.0</strong>：11111111 11111111 0000000 00000000 </li>
+<li><strong>C类：255.255.255.0</strong>：11111111 11111111 11111111 00000000</li>
+</ul>
+<p>** CIDR下的子网掩码例子：<strong>11111111 11111111 11111100 00000000<br>** 另外的一种表示子网掩码的表达方式  ： &#x2F;#</strong><br> 例：&#x2F;22：表示前面22个bit为子网部分  </p>
+<h3 id="转发表和转发算法"><a href="#转发表和转发算法" class="headerlink" title="转发表和转发算法"></a>转发表和转发算法</h3><p><img src="/images/1691827399655-4e3f0b12-d976-4531-8819-6e5a1e34026a.png" alt="image.png"></p>
+<blockquote>
+<p>图中的端口改为接口</p>
+</blockquote>
+<p>**获得IP数据报的目标地址（IP DesAddress） **<br>**对于转发表中的每一个表项  **</p>
+<ul>
+<li>如 (IP Des addr) &amp; (mask)&#x3D;&#x3D; destination 得到的是网号, 则按照表项对应的接口匹配并   转发该数据报 </li>
+<li>如果都没有找到,则使用默认表项转发数据报</li>
+</ul>
+<h3 id="如何获得一个IP地址"><a href="#如何获得一个IP地址" class="headerlink" title="如何获得一个IP地址"></a>如何获得一个IP地址</h3><p> 主机如何获得一个IP地址?<br> 系统管理员将地址配置在一个文件中  </p>
+<blockquote>
+<p>Wintel: control-panel-&gt;network- &gt;configuration-&gt;tcp&#x2F;ip-&gt;properties<br>UNIX: &#x2F;etc&#x2F;rc.config  </p>
+</blockquote>
+<p>** DHCP: Dynamic Host Configuration Protocol: 从服务器中动态获得一个IP地址  **<br><strong>“plug-and-play”—&gt; 动态主机配置协议</strong><br>**对于一个机构（ISP）怎么获取IP地址 ？ **</p>
+<ol>
+<li>首先某个机构会获取相对的一大块ip地址(前面若干位为网络号；后面的为主机号)</li>
+<li>就假设前20位为网络号， 后面的12位为主机号</li>
+<li>将后面的12位进行分割范围【前3位再表示网络号；后9位表示子网号】</li>
+<li>这样就有23位为网络号。 9位子网号。 然后再对9位进行分割</li>
+<li>分成2位为网络号，7为子网号</li>
+<li>…..</li>
+<li>按照这样进行无限的套娃， 最后得到的就是某个具体的IP地址。</li>
+</ol>
+<blockquote>
+<p>总的来说就是你的老大从国家那里申请了一个完整的蛋糕， 你想要拥有这块蛋糕的一部分，他人也想要，那就只能从这个老大那里去切了。除非你也能从国家那里获取最初的那块完整的蛋糕</p>
+</blockquote>
+<p> <strong>ISP’s block</strong> 11001000 00010111 00010000 00000000 200.23.16.0&#x2F;20 </p>
+<ul>
+<li>Organization 0 11001000 00010111 00010000 00000000 200.23.16.0&#x2F;23 </li>
+<li>Organization 1 11001000 00010111 00010010 00000000 200.23.18.0&#x2F;23 </li>
+<li>Organization 2 11001000 00010111 00010100 00000000 200.23.20.0&#x2F;23</li>
+<li>… ….. …. …. </li>
+<li><strong>Organization 7</strong> 11001000 00010111 00011110 00000000 200.23.30.0&#x2F;23</li>
+</ul>
+<p><strong>最初的ip地址(蛋糕)可以到ICANN机构去申请（这是在中国的）</strong></p>
+<h3 id="DHCP-Dynamic-Host-Configuration-Protocol-协议"><a href="#DHCP-Dynamic-Host-Configuration-Protocol-协议" class="headerlink" title="DHCP: Dynamic Host Configuration Protocol(协议)"></a>DHCP: Dynamic Host Configuration Protocol(协议)</h3><blockquote>
+<p>**允许主机在加入网络的时候，动态地从服务器那里获得IP地址：  **</p>
+</blockquote>
+<ul>
+<li>可以更新对主机在用IP地址的租用期-租期快到了</li>
+<li>重新启动时，允许重新使用以前用过的IP地址 </li>
+<li>支持移动用户加入到该网络（短期在网）</li>
+</ul>
+<p>** DHCP工作概况:  **</p>
+<ol>
+<li>主机广播“DHCP discover” 报文[可选] </li>
+<li>DHCP 服务器用 “DHCP offer”提供报文响应[可选] </li>
+<li>主机请求IP地址：发送 “DHCP request” 报文</li>
+<li>DHCP服务器发送地址：“DHCP ack” 报文</li>
+</ol>
+<p><img src="/images/1691828051066-3e7fdaa3-4b87-44e0-8dbc-590c70c2bd56.png" alt="image.png"><br>**上述的详细解释： **</p>
+<ol>
+<li>主机上线的时候要广播一下（寻找DHCP server）</li>
+<li>DHCP server收到之后，就会分配上网的一些子网掩码等等的配套信息</li>
+<li>主机向DHCP server发送单波的请求， 请求获取某个ip地址及其相应的配套信息。</li>
+<li>DHCPserver就会登记相应的信息(ip的租用日期)。如果过期就会收回这个ip</li>
+</ol>
+<p><img src="/images/1691828553414-d744f041-d0f3-4bc7-bb6d-ba7acf768ced.png" alt="image.png"></p>
+<p>** DHCP: 不仅仅是IP addresses   DHCP 返回的有:**</p>
+<ul>
+<li>IP 地址 </li>
+<li>第一跳路由器的IP地址（默认网关） </li>
+<li>DNS服务器的域名和IP地址 </li>
+<li>子网掩码 (指示地址部分的网络号和主机号)</li>
+</ul>
+<p><strong>实例：【解释上图中的两次交互】</strong><br><img src="/images/1691828742857-251d19e5-c8fe-47a0-bee9-2b6c3c68c6cf.png" alt="image.png"><br><img src="/images/1691828784835-d9803331-30e2-4cdf-9429-3132c018c9b3.png" alt="image.png"></p>
+<h4 id="层次编址-路由聚集（route-aggregation）"><a href="#层次编址-路由聚集（route-aggregation）" class="headerlink" title="层次编址: 路由聚集（route aggregation）"></a>层次编址: 路由聚集（route aggregation）</h4><p>** 层次编址允许路由信息的有效广播:  **<br><img src="/images/1691829689220-5f2c7b83-1145-4da5-b0bc-8f706db28abf.png" alt="image.png"><br><img src="/images/1691829698891-e16bcfaa-ab20-4a8b-895b-48d95bcc934a.png" alt="image.png"></p>
+<h2 id="NAT：-网络地址交换"><a href="#NAT：-网络地址交换" class="headerlink" title="NAT： 网络地址交换"></a>NAT： 网络地址交换</h2><p>** Network Address Translation  **<br><img src="/images/1691830172031-db6b6330-a706-4741-8851-707adc45aff4.png" alt="image.png"></p>
+<h3 id="动机-本地网络只有一个有效IP地址"><a href="#动机-本地网络只有一个有效IP地址" class="headerlink" title="动机: 本地网络只有一个有效IP地址:"></a>动机: 本地网络只有一个有效IP地址:</h3><ol>
+<li>不需要从ISP分配一块地址，可用一个IP地址用 于所有的（局域网）设备–省钱</li>
+<li>可以在局域网改变设备的地址情况下而无须通知 外界 </li>
+<li>可以改变<strong>ISP</strong>（地址变化）而不需要改变内部的 设备地址 </li>
+<li>**局域网内部的设备没有明确的地址，对外是不可见的–安全  **</li>
+</ol>
+<blockquote>
+<p><strong>相当于对外公开一个， 内部的ip是不需要分配的，用本地网络即可</strong><br><strong>当然，缺点就是外网的ip想要访问内网的ip建立连接是不行的， 需要进行内网的穿越</strong></p>
+</blockquote>
+<h3 id="实现-NAT-路由器必须"><a href="#实现-NAT-路由器必须" class="headerlink" title="实现: NAT 路由器必须:"></a>实现: NAT 路由器必须:</h3><ol>
+<li><strong>外出数据包：替换源地址和端口号为NAT IP地址 和新的端口号，目标IP和端口不变</strong> …远端的C&#x2F;S将会用NAP IP地址，新端口号作为目标地址  </li>
+<li>**记住每个转换替换对（在NAT转换表中）   <strong>.. 源IP，端口 vs NAP IP ，新端口</strong>  **</li>
+<li>** 进入数据包：替换目标IP地址和端口号，**采用存 储在NAT表中的mapping表项，用（源IP，端口）</li>
+</ol>
+<p><img src="/images/1691830602157-e190f0c9-b278-48bf-bc88-ad62e883aafc.png" alt="image.png"><br>** 16-bit端口字段:**    6万多个同时连接，一个局域网!<br>** 对NAT是有争议的:  **</p>
+<ol>
+<li>路由器只应该对第3层做信息处理，而这里对端口号（4层）作了处理（团长拆了师长的信…）</li>
+<li><strong>违反了end-to-end 原则（端到端的原则）</strong><ol>
+<li>端到端原则：复杂性放到网络边缘</li>
+<li>无需借助中转和变换，就可以直接传送到目标主机 </li>
+<li>NAT可能要被一些应用设计者考虑, eg, P2P applications</li>
+<li>外网的机器无法主动连接到内网的机器上</li>
+</ol>
+</li>
+<li><strong>地址短缺问题可以被IPv6 解决</strong></li>
+<li>**NAT穿越： 如果客户端需要连接在NAT后面的服务器，如何操作  **</li>
+</ol>
+<blockquote>
+<p>可以用IPv6的方式来解决内网穿越的问题</p>
+</blockquote>
+<h3 id="NAT-穿越问题"><a href="#NAT-穿越问题" class="headerlink" title="NAT 穿越问题"></a>NAT 穿越问题</h3><p><img src="/images/1691831224306-87db5f90-d1d5-4d79-a3a2-43fbe0f5da57.png" alt="image.png"><br>** 客户端需要连接地址为 10.0.0.1的服务器 **</p>
+<ul>
+<li>服务器地址10.0.0.1 LAN**本地地 址 **(<strong>客户端不能够使用其作为目标地址</strong>)  </li>
+<li>整网只有一个外部可见地址: 138.76.29.7</li>
+</ul>
+<h4 id="方案1-静态配置NAT：转发-进来的对服务器特定端口连接-请求"><a href="#方案1-静态配置NAT：转发-进来的对服务器特定端口连接-请求" class="headerlink" title="方案1: 静态配置NAT：转发 进来的对服务器特定端口连接 请求"></a>方案1: 静态配置NAT：转发 进来的对服务器特定端口连接 请求</h4><p> e.g., (123.76.29.7, port 2500) 总是转发到10.0.0.1 port 25000  </p>
+<h4 id="方案2-Universal-Plug-and-Play-UPnP-Internet-Gateway-Device-IGD-协议-允许-NATted主机可以"><a href="#方案2-Universal-Plug-and-Play-UPnP-Internet-Gateway-Device-IGD-协议-允许-NATted主机可以" class="headerlink" title="方案2: Universal Plug and Play (UPnP) Internet Gateway Device (IGD) 协议. 允许 NATted主机可以:"></a>方案2: Universal Plug and Play (UPnP) Internet Gateway Device (IGD) 协议. 允许 NATted主机可以:</h4><ul>
+<li>获知网络的公共 IP地址 (138.76.29.7)</li>
+<li>列举存在的端口映射 </li>
+<li>增&#x2F;删端口映射 (在租用时间内 )</li>
+</ul>
+<p> i.e., 自动化静态NAT端口映射配 置  </p>
+<h4 id="方案-3-中继-used-in-Skype"><a href="#方案-3-中继-used-in-Skype" class="headerlink" title="方案 3: 中继 (used in Skype)"></a>方案 3: 中继 (used in Skype)</h4><ul>
+<li>NAT后面的服务器建立和中继的连接 </li>
+<li>外部的客户端链接到中继 </li>
+<li>中继在2个连接之间桥接</li>
+</ul>
+<p><img src="/images/1691831345909-2f209d11-0c70-4e71-aa06-f0d129e7c77a.png" alt="image.png"></p>
+<h2 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h2><p>** 初始动机: 32-bit地址空间将会被很快用完  **<br>** 另外的动机:  **</p>
+<ul>
+<li>头部格式改变帮助加速处理和转发 <ul>
+<li>TTL-1 </li>
+<li>头部checksum </li>
+<li>分片</li>
+</ul>
+</li>
+<li>头部格式改变帮助QoS</li>
+</ul>
+<h2 id="IPv6-数据报格式"><a href="#IPv6-数据报格式" class="headerlink" title="IPv6 数据报格式:"></a>IPv6 数据报格式:</h2><ul>
+<li><strong>固定的40 字节头部</strong></li>
+<li>**数据报传输过程中，不允许分片 **</li>
+</ul>
+<p>Priority: 标示流中数据报的优先级<br>Flow Label: 标示数据报在一个“flow.” ( “flow”的概念没有被严格的定义)<br>Next header: 标示上层协议<br><img src="/images/1691831650544-bb570873-5b67-44ad-ba80-d0783a12903f.png" alt="image.png"></p>
+<h3 id="和IPv4的其它变化"><a href="#和IPv4的其它变化" class="headerlink" title="和IPv4的其它变化"></a>和IPv4的其它变化</h3><ul>
+<li>**Checksum: **被移除掉，降低在每一段中的处理 速度 </li>
+<li>**Options: **允许，但是在头部之外, 被 “Next Header” 字段标示</li>
+<li>**ICMPv6: **ICMP的新版本 <ul>
+<li>附加了报文类型, e.g. “Packet Too Big”</li>
+<li>多播组管理功能</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>IPv5是一个实验性的， 已经被废除</p>
+</blockquote>
+<p>** 从IPv4到IPv6的平移  **</p>
+<ul>
+<li>不是所有的路由器都能够同时升级的 </li>
+<li>没有一个标记日 “flag days” </li>
+<li>在IPv4和IPv6路由器混合时，网络如何运转?</li>
+</ul>
+<p>** 隧道: 在IPv4路由器之间传输的IPv4数据报中携 带IPv6数据报  **<br><img src="/images/1691831764983-ea2141ee-b25a-4e41-992b-4d0848eea921.png" alt="image.png"><br>**隧道： **<br><img src="/images/1691831808806-e20309f5-3400-4b14-b563-2be978720736.png" alt="image.png"></p>
+<h3 id="IPv6的应用"><a href="#IPv6的应用" class="headerlink" title="IPv6的应用"></a>IPv6的应用</h3><ul>
+<li>Google: 8% 的客户通过IPv6访问谷歌服务  </li>
+<li>NIST: 全美国1&#x2F;3的政府域支持IPv6 </li>
+<li>估计还需要很长时间进行部署</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://Ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/7b0ddfa2.html">https://ray2310.github.io/post/7b0ddfa2.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ray2310.github.io" target="_blank">Rayce. Blogs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></div><div class="post_share"><div class="social-share" data-image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAV5IsDhf40B0JNiTadUzM9WvxBWbE9ud8mw&amp;usqp=CAU" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/769365ef.html" title="网络层"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg - https://img.51miz.com/Element/00/72/77/78/575accf3_E727778_6fadd380.jpg - https://bpic.588ku.com/back_origin_min_pic/19/10/22/4b2ca2ba13a830385cd398820ef837e1.jpg - https://th.bing.com/th/id/R.fc3712934d3f14e93bb049cb3be0ee18?rik=0ZlOt7i89hWjVA&amp;riu=http%3a%2f%2fwww.kutoo8.com%2fupload%2fimage%2f17634230%2f5656000.jpg&amp;ehk=ecvpFWTMp4spOXJ7pxOpzNwsdlk591NfEtk31YSdogg%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0 - https://th.bing.com/th/id/OIP.F8Oa7hJkWSPopA80qdOHfAHaFS?pid=ImgDet&amp;rs=1 - https://th.bing.com/th/id/OIP.nZkOrLOn_bp0mLFxlK-x2wHaEK?pid=ImgDet&amp;rs=1 - https://i.pinimg.com/236x/0c/da/a8/0cdaa811391a4313baf1a2128a76baad.jpg - https://th.bing.com/th/id/R.0fc443a72d9db316bfde971a16183f0b?rik=PXfjJ755mSffZQ&amp;riu=http%3a%2f%2fpic.qqbizhi.com%2fallimg%2fbbpic%2f52%2f1152_1.jpg&amp;ehk=7rVKhOuGUW%2bcK6qwj4%2fmjwH1ZrDLF1e82i%2f09SqbqSE%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0 - https://th.bing.com/th/id/OIP.1tjF2kQmna-oY-8tTH5OQgHaE7?pid=ImgDet&amp;rs=1 - https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&amp;psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&amp;ust=1672760873466000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD - https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fwww.win3000.com%2Ftags%2Fjianyue%2F&amp;psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&amp;ust=1672760873466000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAH - https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcGq1FpSxF0qUTqQbAkH_2uaT-SVYw7DP9eQ&amp;usqp=CAU - https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAV5IsDhf40B0JNiTadUzM9WvxBWbE9ud8mw&amp;usqp=CAU - https://desk-fd.zol-img.com.cn/t_s208x130c5/g4/M08/00/0B/ChMly13CMDWIZfctAAvXuPJhBZEAAYRRQPV_woAC9fQ316.jpg - https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdBEWTRsoTmfSwHZizVfB5ULTdnM2HLfWx_A&amp;usqp=CAU - https://www.google.com/imgres?imgurl=https%3A%2F%2Ftmpl.downzz.com%2Fsucai%2Fcontent%2F0tf4t1r53js.jpg&amp;imgrefurl=https%3A%2F%2Fwww.downzz.com%2Fjianyuebizhi%2F36732.html&amp;tbnid=O22DjUrs0X8icM&amp;vet=12ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ..i&amp;docid=Xc2fZTMSl7dnDM&amp;w=1202&amp;h=676&amp;q=%E7%AE%80%E7%BA%A6%20%E7%94%B5%E8%84%91%20%E5%A3%81%E7%BA%B8%204k&amp;ved=2ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ - https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fwww.moyublog.com%2Fhdwallpapers%2F1293.html&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAD - https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fwww.99ziyuan.net%2Fgqbz%2F4kbj%2F38752.html&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAI - https://www.google.com/url?sa=i&amp;url=http%3A%2F%2Fwww.bizhi360.com%2Fweimei%2F&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAQ - https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fdesk.3gbizhi.com%2Fdeskjy%2F905.html&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAY - https://th.bing.com/th/id/OIP.IyVUba7h32yX0HI7AFFh2QHaEb?pid=ImgDet&amp;rs=1 - https://gss0.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/96dda144ad34598213c81de20cf431adcbef8404.jpg - https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&amp;rs=1 - https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d058ccbf6c81800ae9cb0e37b83533fa828b47d9.jpg - https://static-bbs.nubia.cn/forum/201705/11/212740nj1388z8351yy5yp.jpg - https://gss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e850352ac65c10386843e1f4be119313b07e89c2.jpg - https://th.bing.com/th/id/R.1adcbe85544d76e1e2e31d2683253438?rik=rtegGZrm6rdgzw&amp;riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f2271e3d6ed6618845ff8cf4bdeeed33184e23d08.jpg&amp;ehk=1sjnDT9IMMCM15%2fS4Pinlh5dZABRnayTAPoUKHeEeGs%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0 - https://gss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/78310a55b319ebc47c0169ab8526cffc1e171682.jpg - https://pic2.zhimg.com/v2-93d5754cb8c35c94f8ade4a5399929c1_r.jpg" onerror="onerror=null;src='/img/second.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">网络层</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/769365ef.html" title="网络层"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg - https://img.51miz.com/Element/00/72/77/78/575accf3_E727778_6fadd380.jpg - https://bpic.588ku.com/back_origin_min_pic/19/10/22/4b2ca2ba13a830385cd398820ef837e1.jpg - https://th.bing.com/th/id/R.fc3712934d3f14e93bb049cb3be0ee18?rik=0ZlOt7i89hWjVA&riu=http%3a%2f%2fwww.kutoo8.com%2fupload%2fimage%2f17634230%2f5656000.jpg&ehk=ecvpFWTMp4spOXJ7pxOpzNwsdlk591NfEtk31YSdogg%3d&risl=&pid=ImgRaw&r=0 - https://th.bing.com/th/id/OIP.F8Oa7hJkWSPopA80qdOHfAHaFS?pid=ImgDet&rs=1 - https://th.bing.com/th/id/OIP.nZkOrLOn_bp0mLFxlK-x2wHaEK?pid=ImgDet&rs=1 - https://i.pinimg.com/236x/0c/da/a8/0cdaa811391a4313baf1a2128a76baad.jpg - https://th.bing.com/th/id/R.0fc443a72d9db316bfde971a16183f0b?rik=PXfjJ755mSffZQ&riu=http%3a%2f%2fpic.qqbizhi.com%2fallimg%2fbbpic%2f52%2f1152_1.jpg&ehk=7rVKhOuGUW%2bcK6qwj4%2fmjwH1ZrDLF1e82i%2f09SqbqSE%3d&risl=&pid=ImgRaw&r=0 - https://th.bing.com/th/id/OIP.1tjF2kQmna-oY-8tTH5OQgHaE7?pid=ImgDet&rs=1 - https://www.google.com/url?sa=i&url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&ust=1672760873466000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD - https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.win3000.com%2Ftags%2Fjianyue%2F&psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&ust=1672760873466000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAH - https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcGq1FpSxF0qUTqQbAkH_2uaT-SVYw7DP9eQ&usqp=CAU - https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAV5IsDhf40B0JNiTadUzM9WvxBWbE9ud8mw&usqp=CAU - https://desk-fd.zol-img.com.cn/t_s208x130c5/g4/M08/00/0B/ChMly13CMDWIZfctAAvXuPJhBZEAAYRRQPV_woAC9fQ316.jpg - https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdBEWTRsoTmfSwHZizVfB5ULTdnM2HLfWx_A&usqp=CAU - https://www.google.com/imgres?imgurl=https%3A%2F%2Ftmpl.downzz.com%2Fsucai%2Fcontent%2F0tf4t1r53js.jpg&imgrefurl=https%3A%2F%2Fwww.downzz.com%2Fjianyuebizhi%2F36732.html&tbnid=O22DjUrs0X8icM&vet=12ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ..i&docid=Xc2fZTMSl7dnDM&w=1202&h=676&q=%E7%AE%80%E7%BA%A6%20%E7%94%B5%E8%84%91%20%E5%A3%81%E7%BA%B8%204k&ved=2ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ - https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.moyublog.com%2Fhdwallpapers%2F1293.html&psig=AOvVaw3c6ZALefYz1O2l67XhTguu&ust=1672761033715000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAD - https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.99ziyuan.net%2Fgqbz%2F4kbj%2F38752.html&psig=AOvVaw3c6ZALefYz1O2l67XhTguu&ust=1672761033715000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAI - https://www.google.com/url?sa=i&url=http%3A%2F%2Fwww.bizhi360.com%2Fweimei%2F&psig=AOvVaw3c6ZALefYz1O2l67XhTguu&ust=1672761033715000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAQ - https://www.google.com/url?sa=i&url=https%3A%2F%2Fdesk.3gbizhi.com%2Fdeskjy%2F905.html&psig=AOvVaw3c6ZALefYz1O2l67XhTguu&ust=1672761033715000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAY - https://th.bing.com/th/id/OIP.IyVUba7h32yX0HI7AFFh2QHaEb?pid=ImgDet&rs=1 - https://gss0.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/96dda144ad34598213c81de20cf431adcbef8404.jpg - https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&rs=1 - https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d058ccbf6c81800ae9cb0e37b83533fa828b47d9.jpg - https://static-bbs.nubia.cn/forum/201705/11/212740nj1388z8351yy5yp.jpg - https://gss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e850352ac65c10386843e1f4be119313b07e89c2.jpg - https://th.bing.com/th/id/R.1adcbe85544d76e1e2e31d2683253438?rik=rtegGZrm6rdgzw&riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f2271e3d6ed6618845ff8cf4bdeeed33184e23d08.jpg&ehk=1sjnDT9IMMCM15%2fS4Pinlh5dZABRnayTAPoUKHeEeGs%3d&risl=&pid=ImgRaw&r=0 - https://gss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/78310a55b319ebc47c0169ab8526cffc1e171682.jpg - https://pic2.zhimg.com/v2-93d5754cb8c35c94f8ade4a5399929c1_r.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-08-10</div><div class="title">网络层</div></div></a></div><div><a href="/post/e7bfc9f.html" title="拥塞控制"><img class="cover" src="https://www.google.com/url?sa=i&url=http%3A%2F%2Fwww.bizhi360.com%2Fweimei%2F&psig=AOvVaw3c6ZALefYz1O2l67XhTguu&ust=1672761033715000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAQ" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-08-06</div><div class="title">拥塞控制</div></div></a></div><div><a href="/post/4199e55d.html" title="面向数据连接:TCP"><img class="cover" src="https://th.bing.com/th/id/R.1adcbe85544d76e1e2e31d2683253438?rik=rtegGZrm6rdgzw&riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f2271e3d6ed6618845ff8cf4bdeeed33184e23d08.jpg&ehk=1sjnDT9IMMCM15%2fS4Pinlh5dZABRnayTAPoUKHeEeGs%3d&risl=&pid=ImgRaw&r=0" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-08-05</div><div class="title">面向数据连接:TCP</div></div></a></div><div><a href="/post/84f702e5.html" title="可靠数据传输(Rdt)的原理"><img class="cover" src="https://img.51miz.com/Element/00/72/77/78/575accf3_E727778_6fadd380.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-07-29</div><div class="title">可靠数据传输(Rdt)的原理</div></div></a></div><div><a href="/post/7985ef27.html" title="传输层Stu"><img class="cover" src="https://gss0.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/96dda144ad34598213c81de20cf431adcbef8404.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-07-29</div><div class="title">传输层Stu</div></div></a></div><div><a href="/post/452b164d.html" title="TCP&amp;&amp;UDP套接字编程"><img class="cover" src="https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d058ccbf6c81800ae9cb0e37b83533fa828b47d9.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-07-25</div><div class="title">TCP&amp;&amp;UDP套接字编程</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">95</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">33</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">22</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center">我拼尽全力是为了赢</p> <p align="center">  不是为了虽败犹荣</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#IP%EF%BC%9A-Internet-Protocol"><span class="toc-number">1.</span> <span class="toc-text">IP： Internet Protocol</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">ip数据报格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E7%89%87%E5%92%8C%E9%87%8D%E7%BB%84"><span class="toc-number">1.2.</span> <span class="toc-text">分片和重组</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%89%87%E7%9A%84%E7%BB%86%E8%8A%82%EF%BC%9A"><span class="toc-number">1.2.1.</span> <span class="toc-text">分片的细节：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IPv4%E5%9C%B0%E5%9D%80"><span class="toc-number">1.3.</span> <span class="toc-text">IPv4地址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E7%BD%91"><span class="toc-number">1.3.1.</span> <span class="toc-text">子网</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E4%B8%BA%E5%AD%90%E7%BD%91%E7%9A%84%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">判断是否为子网的方法：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IP%E5%9C%B0%E5%9D%80%E5%88%86%E7%B1%BB"><span class="toc-number">1.3.2.</span> <span class="toc-text">IP地址分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A5A%E7%B1%BB%E4%B8%BA%E4%BE%8B%E8%A7%A3%E9%87%8A%EF%BC%9A"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">以A类为例解释：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%B9%E6%AE%8AIP%E5%9C%B0%E5%9D%80%EF%BC%9A"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">特殊IP地址：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E7%BD%91-%E4%B8%93%E7%94%A8-IP%E5%9C%B0%E5%9D%80"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">内网(专用)IP地址</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IP-%E7%BC%96%E5%9D%80-CIDR-amp-amp-%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81"><span class="toc-number">1.3.3.</span> <span class="toc-text">IP 编址: CIDR&amp;&amp; 子网掩码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81-subnet-mask"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">子网掩码(subnet mask)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E5%8F%91%E8%A1%A8%E5%92%8C%E8%BD%AC%E5%8F%91%E7%AE%97%E6%B3%95"><span class="toc-number">1.3.4.</span> <span class="toc-text">转发表和转发算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%8E%B7%E5%BE%97%E4%B8%80%E4%B8%AAIP%E5%9C%B0%E5%9D%80"><span class="toc-number">1.3.5.</span> <span class="toc-text">如何获得一个IP地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DHCP-Dynamic-Host-Configuration-Protocol-%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.6.</span> <span class="toc-text">DHCP: Dynamic Host Configuration Protocol(协议)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B1%82%E6%AC%A1%E7%BC%96%E5%9D%80-%E8%B7%AF%E7%94%B1%E8%81%9A%E9%9B%86%EF%BC%88route-aggregation%EF%BC%89"><span class="toc-number">1.3.6.1.</span> <span class="toc-text">层次编址: 路由聚集（route aggregation）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NAT%EF%BC%9A-%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E4%BA%A4%E6%8D%A2"><span class="toc-number">1.4.</span> <span class="toc-text">NAT： 网络地址交换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%9C%BA-%E6%9C%AC%E5%9C%B0%E7%BD%91%E7%BB%9C%E5%8F%AA%E6%9C%89%E4%B8%80%E4%B8%AA%E6%9C%89%E6%95%88IP%E5%9C%B0%E5%9D%80"><span class="toc-number">1.4.1.</span> <span class="toc-text">动机: 本地网络只有一个有效IP地址:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0-NAT-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%BF%85%E9%A1%BB"><span class="toc-number">1.4.2.</span> <span class="toc-text">实现: NAT 路由器必须:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NAT-%E7%A9%BF%E8%B6%8A%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.3.</span> <span class="toc-text">NAT 穿越问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%A1%881-%E9%9D%99%E6%80%81%E9%85%8D%E7%BD%AENAT%EF%BC%9A%E8%BD%AC%E5%8F%91-%E8%BF%9B%E6%9D%A5%E7%9A%84%E5%AF%B9%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%89%B9%E5%AE%9A%E7%AB%AF%E5%8F%A3%E8%BF%9E%E6%8E%A5-%E8%AF%B7%E6%B1%82"><span class="toc-number">1.4.3.1.</span> <span class="toc-text">方案1: 静态配置NAT：转发 进来的对服务器特定端口连接 请求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%A1%882-Universal-Plug-and-Play-UPnP-Internet-Gateway-Device-IGD-%E5%8D%8F%E8%AE%AE-%E5%85%81%E8%AE%B8-NATted%E4%B8%BB%E6%9C%BA%E5%8F%AF%E4%BB%A5"><span class="toc-number">1.4.3.2.</span> <span class="toc-text">方案2: Universal Plug and Play (UPnP) Internet Gateway Device (IGD) 协议. 允许 NATted主机可以:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%A1%88-3-%E4%B8%AD%E7%BB%A7-used-in-Skype"><span class="toc-number">1.4.3.3.</span> <span class="toc-text">方案 3: 中继 (used in Skype)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IPv6"><span class="toc-number">1.5.</span> <span class="toc-text">IPv6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IPv6-%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.6.</span> <span class="toc-text">IPv6 数据报格式:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%92%8CIPv4%E7%9A%84%E5%85%B6%E5%AE%83%E5%8F%98%E5%8C%96"><span class="toc-number">1.6.1.</span> <span class="toc-text">和IPv4的其它变化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv6%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">1.6.2.</span> <span class="toc-text">IPv6的应用</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/7b0ddfa2.html" title="Internet Protocol"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAV5IsDhf40B0JNiTadUzM9WvxBWbE9ud8mw&amp;usqp=CAU" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Internet Protocol"/></a><div class="content"><a class="title" href="/post/7b0ddfa2.html" title="Internet Protocol">Internet Protocol</a><time datetime="2023-08-12T09:34:31.000Z" title="发表于 2023-08-12 17:34:31">2023-08-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/769365ef.html" title="网络层"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg - https://img.51miz.com/Element/00/72/77/78/575accf3_E727778_6fadd380.jpg - https://bpic.588ku.com/back_origin_min_pic/19/10/22/4b2ca2ba13a830385cd398820ef837e1.jpg - https://th.bing.com/th/id/R.fc3712934d3f14e93bb049cb3be0ee18?rik=0ZlOt7i89hWjVA&amp;riu=http%3a%2f%2fwww.kutoo8.com%2fupload%2fimage%2f17634230%2f5656000.jpg&amp;ehk=ecvpFWTMp4spOXJ7pxOpzNwsdlk591NfEtk31YSdogg%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0 - https://th.bing.com/th/id/OIP.F8Oa7hJkWSPopA80qdOHfAHaFS?pid=ImgDet&amp;rs=1 - https://th.bing.com/th/id/OIP.nZkOrLOn_bp0mLFxlK-x2wHaEK?pid=ImgDet&amp;rs=1 - https://i.pinimg.com/236x/0c/da/a8/0cdaa811391a4313baf1a2128a76baad.jpg - https://th.bing.com/th/id/R.0fc443a72d9db316bfde971a16183f0b?rik=PXfjJ755mSffZQ&amp;riu=http%3a%2f%2fpic.qqbizhi.com%2fallimg%2fbbpic%2f52%2f1152_1.jpg&amp;ehk=7rVKhOuGUW%2bcK6qwj4%2fmjwH1ZrDLF1e82i%2f09SqbqSE%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0 - https://th.bing.com/th/id/OIP.1tjF2kQmna-oY-8tTH5OQgHaE7?pid=ImgDet&amp;rs=1 - https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fm.duitang.com%2Fblogs%2Ftag%2F%3Fname%3D%25E7%25AE%2580%25E7%25BA%25A6%25E5%25A3%2581%25E7%25BA%25B8&amp;psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&amp;ust=1672760873466000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAD - https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fwww.win3000.com%2Ftags%2Fjianyue%2F&amp;psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&amp;ust=1672760873466000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAH - https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcGq1FpSxF0qUTqQbAkH_2uaT-SVYw7DP9eQ&amp;usqp=CAU - https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAV5IsDhf40B0JNiTadUzM9WvxBWbE9ud8mw&amp;usqp=CAU - https://desk-fd.zol-img.com.cn/t_s208x130c5/g4/M08/00/0B/ChMly13CMDWIZfctAAvXuPJhBZEAAYRRQPV_woAC9fQ316.jpg - https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdBEWTRsoTmfSwHZizVfB5ULTdnM2HLfWx_A&amp;usqp=CAU - https://www.google.com/imgres?imgurl=https%3A%2F%2Ftmpl.downzz.com%2Fsucai%2Fcontent%2F0tf4t1r53js.jpg&amp;imgrefurl=https%3A%2F%2Fwww.downzz.com%2Fjianyuebizhi%2F36732.html&amp;tbnid=O22DjUrs0X8icM&amp;vet=12ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ..i&amp;docid=Xc2fZTMSl7dnDM&amp;w=1202&amp;h=676&amp;q=%E7%AE%80%E7%BA%A6%20%E7%94%B5%E8%84%91%20%E5%A3%81%E7%BA%B8%204k&amp;ved=2ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ - https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fwww.moyublog.com%2Fhdwallpapers%2F1293.html&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAD - https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fwww.99ziyuan.net%2Fgqbz%2F4kbj%2F38752.html&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAI - https://www.google.com/url?sa=i&amp;url=http%3A%2F%2Fwww.bizhi360.com%2Fweimei%2F&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAQ - https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fdesk.3gbizhi.com%2Fdeskjy%2F905.html&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAY - https://th.bing.com/th/id/OIP.IyVUba7h32yX0HI7AFFh2QHaEb?pid=ImgDet&amp;rs=1 - https://gss0.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/96dda144ad34598213c81de20cf431adcbef8404.jpg - https://th.bing.com/th/id/OIP.tfFLWvWy8EniC-hp9L1zNgHaEK?pid=ImgDet&amp;rs=1 - https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d058ccbf6c81800ae9cb0e37b83533fa828b47d9.jpg - https://static-bbs.nubia.cn/forum/201705/11/212740nj1388z8351yy5yp.jpg - https://gss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e850352ac65c10386843e1f4be119313b07e89c2.jpg - https://th.bing.com/th/id/R.1adcbe85544d76e1e2e31d2683253438?rik=rtegGZrm6rdgzw&amp;riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f2271e3d6ed6618845ff8cf4bdeeed33184e23d08.jpg&amp;ehk=1sjnDT9IMMCM15%2fS4Pinlh5dZABRnayTAPoUKHeEeGs%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0 - https://gss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/78310a55b319ebc47c0169ab8526cffc1e171682.jpg - https://pic2.zhimg.com/v2-93d5754cb8c35c94f8ade4a5399929c1_r.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="网络层"/></a><div class="content"><a class="title" href="/post/769365ef.html" title="网络层">网络层</a><time datetime="2023-08-08T12:30:25.000Z" title="发表于 2023-08-08 20:30:25">2023-08-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/6782be63.html" title="Docker学习"><img src="https://th.bing.com/th/id/R.fc3712934d3f14e93bb049cb3be0ee18?rik=0ZlOt7i89hWjVA&amp;riu=http%3a%2f%2fwww.kutoo8.com%2fupload%2fimage%2f17634230%2f5656000.jpg&amp;ehk=ecvpFWTMp4spOXJ7pxOpzNwsdlk591NfEtk31YSdogg%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Docker学习"/></a><div class="content"><a class="title" href="/post/6782be63.html" title="Docker学习">Docker学习</a><time datetime="2023-08-07T12:38:07.000Z" title="发表于 2023-08-07 20:38:07">2023-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/e7bfc9f.html" title="拥塞控制"><img src="https://www.google.com/url?sa=i&amp;url=http%3A%2F%2Fwww.bizhi360.com%2Fweimei%2F&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAQ" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="拥塞控制"/></a><div class="content"><a class="title" href="/post/e7bfc9f.html" title="拥塞控制">拥塞控制</a><time datetime="2023-08-06T04:04:25.000Z" title="发表于 2023-08-06 12:04:25">2023-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/4199e55d.html" title="面向数据连接:TCP"><img src="https://th.bing.com/th/id/R.1adcbe85544d76e1e2e31d2683253438?rik=rtegGZrm6rdgzw&amp;riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2f2271e3d6ed6618845ff8cf4bdeeed33184e23d08.jpg&amp;ehk=1sjnDT9IMMCM15%2fS4Pinlh5dZABRnayTAPoUKHeEeGs%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="面向数据连接:TCP"/></a><div class="content"><a class="title" href="/post/4199e55d.html" title="面向数据连接:TCP">面向数据连接:TCP</a><time datetime="2023-08-05T04:47:47.000Z" title="发表于 2023-08-05 12:47:47">2023-08-05</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAV5IsDhf40B0JNiTadUzM9WvxBWbE9ud8mw&amp;usqp=CAU')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a><a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a><a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> <a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: '',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: '',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
