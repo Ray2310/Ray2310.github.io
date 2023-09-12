@@ -1,0 +1,440 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>力扣每日一刷(2023.9.12) | Rayce. Blogs</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="416 分割等和子集题目： 题目难易：中等 给定一个只包含正整数的非空数组。是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。 注意: 每个数组中的元素不会超过 100 数组的大小不会超过 200 示例 1:  输入: [1, 5, 11, 5] 输出: true 解释: 数组可以分割成 [1, 5, 5] 和 [11].  示例 2:  输入: [1, 2, 3, 5] 输出: fal">
+<meta property="og:type" content="article">
+<meta property="og:title" content="力扣每日一刷(2023.9.12)">
+<meta property="og:url" content="https://ray2310.github.io/post/4ee41ff3.html">
+<meta property="og:site_name" content="Rayce. Blogs">
+<meta property="og:description" content="416 分割等和子集题目： 题目难易：中等 给定一个只包含正整数的非空数组。是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。 注意: 每个数组中的元素不会超过 100 数组的大小不会超过 200 示例 1:  输入: [1, 5, 11, 5] 输出: true 解释: 数组可以分割成 [1, 5, 5] 和 [11].  示例 2:  输入: [1, 2, 3, 5] 输出: fal">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://th.bing.com/th/id/OIP.F8Oa7hJkWSPopA80qdOHfAHaFS?pid=ImgDet&rs=1">
+<meta property="article:published_time" content="2023-09-12T04:04:58.000Z">
+<meta property="article:modified_time" content="2023-09-12T06:12:36.873Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="动态规划">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://th.bing.com/th/id/OIP.F8Oa7hJkWSPopA80qdOHfAHaFS?pid=ImgDet&rs=1"><link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQHlJW3iX0eSx0YEsPnrToEC7iKW4m3TEgiQ&usqp=CAU"><link rel="canonical" href="https://ray2310.github.io/post/4ee41ff3.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. Blogs","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '力扣每日一刷(2023.9.12)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-09-12 14:12:36'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">108</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">23</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://th.bing.com/th/id/OIP.F8Oa7hJkWSPopA80qdOHfAHaFS?pid=ImgDet&amp;rs=1')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. Blogs"><span class="site-name">Rayce. Blogs</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">力扣每日一刷(2023.9.12)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-09-12T04:04:58.000Z" title="发表于 2023-09-12 12:04:58">2023-09-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-09-12T06:12:36.873Z" title="更新于 2023-09-12 14:12:36">2023-09-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="力扣每日一刷(2023.9.12)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="416-分割等和子集"><a href="#416-分割等和子集" class="headerlink" title="416 分割等和子集"></a>416 分割等和子集</h1><h2 id="题目："><a href="#题目：" class="headerlink" title="题目："></a>题目：</h2><blockquote>
+<p>题目难易：中等</p>
+<p>给定一个只包含正整数的非空数组。是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。</p>
+<p>注意: 每个数组中的元素不会超过 100 数组的大小不会超过 200</p>
+<p>示例 1:</p>
+<ul>
+<li>输入: [1, 5, 11, 5]</li>
+<li>输出: true</li>
+<li>解释: 数组可以分割成 [1, 5, 5] 和 [11].</li>
+</ul>
+<p>示例 2:</p>
+<ul>
+<li>输入: [1, 2, 3, 5]</li>
+<li>输出: false</li>
+<li>解释: 数组不能分割成两个元素和相等的子集.</li>
+</ul>
+<p>提示：</p>
+<ul>
+<li>1 &lt;&#x3D; nums.length &lt;&#x3D; 200</li>
+<li>1 &lt;&#x3D; nums[i] &lt;&#x3D; 100</li>
+</ul>
+</blockquote>
+<h2 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h2><p>题目中要求 ：<code>使得两个子集的元素和相等。</code> 那么就可以对数组中的所有元素求和， 如果<code>sum%2 != 0</code> ,那么就直接返回false 。原因这里就不多了， 奇数怎么可能有两个相等的子集和呢? </p>
+<p>如此一来就可以将本体转换为求数组中的元素之和能否等于 <code>sum/2</code>了。  这样就可以用到动态规划的思路来进行解题了。</p>
+<p><code>dp[i]</code> 表示 背包容量为 i 的背包， 所能容纳的物体的最大价值是 <code>dp[i]</code></p>
+<p>这里我们将数组中元素得到的最大子集和 抽象成为背包的最大价值 。 </p>
+<p>最后通过比较 <code>dp[target] == target</code> 来返回最后的结果即可。</p>
+<p>推导公式 可以通过<code>dp[j] = Math.max(dp[j], dp[j - weight[i]] + values[i])</code>(**放与不放的状态取最大值)**得出 ，因为这里获取的是数字， 所以他的weight 和 value都是<code>nums[i]</code> 。按照上述的推导公式就可以得出。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">canPartition</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="comment">//只需要找到每个数组中为sum/2的 ，如果出现sum为奇数，那么就返回false</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span><span class="number">0</span> ;i &lt;nums.length;i++)&#123;</span><br><span class="line">            sum += nums[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(sum % <span class="number">2</span> != <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//找到累加结果为target即可</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">target</span> <span class="operator">=</span> sum /<span class="number">2</span> ;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//dp[i]数组的含义是:容量为i 的背包 ，所能容纳的物品的最大价值为dp[i] </span></span><br><span class="line">        <span class="comment">//换算到本题就是 容量为i的背包， 所能累加的数字的最大和为dp[i] 最后如果dp[target] == target 那么就返回true else false  </span></span><br><span class="line">        <span class="type">int</span> []dp = <span class="keyword">new</span> <span class="title class_">int</span>[target+<span class="number">1</span>];</span><br><span class="line">        <span class="comment">//先遍历每一个数字</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span><span class="number">0</span>; i &lt; nums.length; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> target; j &gt;= nums[i] ;j--)&#123;</span><br><span class="line">                dp[j] = Math.max(dp[j] , dp[j-nums[i]] + nums[i]);</span><br><span class="line">                <span class="comment">// System.out.println(&quot;dp[&quot;+j+&quot;]的结果是= &quot;+dp[j]);</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">        <span class="keyword">return</span> target == dp[target];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="1049-最后一块石头的重量"><a href="#1049-最后一块石头的重量" class="headerlink" title="1049 最后一块石头的重量"></a>1049 最后一块石头的重量</h1><h2 id="题目：-1"><a href="#题目：-1" class="headerlink" title="题目："></a>题目：</h2><blockquote>
+<p>题目难度：中等</p>
+<p>有一堆石头，每块石头的重量都是正整数。</p>
+<p>每一回合，从中选出任意两块石头，然后将它们一起粉碎。假设石头的重量分别为 x 和 y，且 x &lt;&#x3D; y。那么粉碎的可能结果如下：</p>
+<p>如果 x &#x3D;&#x3D; y，那么两块石头都会被完全粉碎；</p>
+<p>如果 x !&#x3D; y，那么重量为 x 的石头将会完全粉碎，而重量为 y 的石头新重量为 y-x。</p>
+<p>最后，最多只会剩下一块石头。返回此石头最小的可能重量。如果没有石头剩下，就返回 0。</p>
+<p>示例：</p>
+<ul>
+<li>输入：[2,7,4,1,8,1]</li>
+<li>输出：1</li>
+</ul>
+<p>解释：</p>
+<ul>
+<li>组合 2 和 4，得到 2，所以数组转化为 [2,7,1,8,1]，</li>
+<li>组合 7 和 8，得到 1，所以数组转化为 [2,1,1,1]，</li>
+<li>组合 2 和 1，得到 1，所以数组转化为 [1,1,1]，</li>
+<li>组合 1 和 1，得到 0，所以数组转化为 [1]，这就是最优值。</li>
+</ul>
+<p>提示：</p>
+<ul>
+<li>1 &lt;&#x3D; stones.length &lt;&#x3D; 30</li>
+<li>1 &lt;&#x3D; stones[i] &lt;&#x3D; 1000</li>
+</ul>
+</blockquote>
+<h2 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h2><p> 本题和上道题是一摸一样的套路， 仅仅是最后取得结果不同， 这需要知道最后还剩的最小 ，那么就是使用<code>sum - dp[target] - dp[target]</code>从而得到。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">lastStoneWeightII</span><span class="params">(<span class="type">int</span>[] stones)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span> ;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i= <span class="number">0</span> ;i&lt;stones.length;i++)&#123;</span><br><span class="line">            sum += stones[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">target</span> <span class="operator">=</span> sum /<span class="number">2</span> ;</span><br><span class="line">        <span class="type">int</span> []dp = <span class="keyword">new</span> <span class="title class_">int</span>[target + <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span><span class="number">0</span> ;i&lt; stones.length;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> target; j &gt;= stones[i]; j--)&#123;</span><br><span class="line">                dp[j] = Math.max(dp[j] , dp[j-stones[i]] + stones[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum - dp[target] - dp[target];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="494-目标和"><a href="#494-目标和" class="headerlink" title="494 目标和"></a>494 目标和</h1><h2 id="题目：-2"><a href="#题目：-2" class="headerlink" title="题目："></a>题目：</h2><blockquote>
+<p>难度：中等</p>
+<p>给定一个非负整数数组，a1, a2, …, an, 和一个目标数，S。现在你有两个符号 + 和 -。对于数组中的任意一个整数，你都可以从 + 或 -中选择一个符号添加在前面。</p>
+<p>返回可以使最终数组和为目标数 S 的所有添加符号的方法数。</p>
+<p>示例：</p>
+<ul>
+<li>输入：nums: [1, 1, 1, 1, 1], S: 3</li>
+<li>输出：5</li>
+</ul>
+<p>解释：</p>
+<ul>
+<li>-1+1+1+1+1 &#x3D; 3</li>
+<li>+1-1+1+1+1 &#x3D; 3</li>
+<li>+1+1-1+1+1 &#x3D; 3</li>
+<li>+1+1+1-1+1 &#x3D; 3</li>
+<li>+1+1+1+1-1 &#x3D; 3</li>
+</ul>
+<p>一共有5种方法让最终目标和为3。</p>
+<p>提示：</p>
+<ul>
+<li>数组非空，且长度不会超过 20 。</li>
+<li>初始的数组的和不会超过 1000 。</li>
+<li>保证返回的最终结果能被 32 位整数存下</li>
+<li><strong>提示：</strong><ul>
+<li><code>1 &lt;= nums.length &lt;= 20</code></li>
+<li><code>0 &lt;= nums[i] &lt;= 1000</code></li>
+<li><code>0 &lt;= sum(nums[i]) &lt;= 1000</code></li>
+<li><code>-1000 &lt;= target &lt;= 1000</code></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h2 id="思路-："><a href="#思路-：" class="headerlink" title="思路 ："></a>思路 ：</h2><p>二刷才理解这道题的做法，所以本次刷题的时候还是没做出来。 因为单纯的从题目本身是无法联想到怎么应用到动态规划的。</p>
+<p><strong>从题目中看， 也就是一个两位数相减的问题， 加号我们这里省略， 所以 就可以通过 <code>left - right  == target </code>  left 是这个数组的一部分内容相加得到； 同理 right 是数组的另一部分相加得到 。然后就可以看出 目标数就是两个数组子集和 相减得到的。 同时，这两个数 相加的结果一定是整个数组的sum 。因此就可以得到<code>left + right == sum </code> sum是固定的。</strong></p>
+<p>从上述的两个式子中，我们可以得到<code>left = (sum + target) /2</code> 。<strong>突然间， 问题就回归到了 数组中的内容求和 等于 left 有几种方法了</strong>。 这样就可以联系到动态规划的思路了 。</p>
+<p><strong><code>dp[i]</code>表示 内容求和为 i 的方法有 <code>dp[i]</code>种</strong> .</p>
+<p>按照思路就可以得到递推公式 <code>dp[j] += dp[j - nums[i]]</code>。</p>
+<hr>
+<p>注意：这里需要排除<code>target &lt; 0 &amp;&amp; sum + target &lt; 0 </code>的情况， 因为数组中的每个数都是大于 0 的如果<code>sum + target &lt; 0</code> 那么就说明target 是小于 -sum的 。所以是不存在的。 </p>
+<h2 id="实现-2"><a href="#实现-2" class="headerlink" title="实现"></a>实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">        <span class="comment">//可以将本题看成两个数相减， left - right = target </span></span><br><span class="line">        <span class="comment">//因为两个数的 left + right = sum 这个sum是固定的 那么就可以通过这两个式子推导出 </span></span><br><span class="line">        <span class="comment">//left = ( sum + target ) /2</span></span><br><span class="line">        <span class="comment">//所以本题就变成了求和为left的种类数了  </span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findTargetSumWays</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">        <span class="comment">//dp数组的含义: 向背包容量为 i 的背包中添加nums[i] 的物品， 背包的最大价值是dp[i]</span></span><br><span class="line">        <span class="comment">//这里的最大价值就是表达式的种类数</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>; </span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span><span class="number">0</span> ;i &lt; nums.length;i++)&#123;</span><br><span class="line">            sum += nums[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> ( target &lt; <span class="number">0</span> &amp;&amp; sum &lt; -target) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>((sum + target)%<span class="number">2</span> != <span class="number">0</span> ) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> (sum + target) / <span class="number">2</span> ;</span><br><span class="line">        <span class="type">int</span> []dp = <span class="keyword">new</span> <span class="title class_">int</span>[left + <span class="number">1</span>];</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span><span class="number">0</span> ; i&lt; nums.length ; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j= left; j &gt;= nums[i];j--)&#123;</span><br><span class="line">                dp[j] += dp[j - nums[i]];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[left];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="474-一和零"><a href="#474-一和零" class="headerlink" title="474 一和零"></a>474 一和零</h1><h2 id="题目：-3"><a href="#题目：-3" class="headerlink" title="题目："></a>题目：</h2><blockquote>
+<p>给你一个二进制字符串数组 strs 和两个整数 m 和 n 。</p>
+<p>请你找出并返回 strs 的最大子集的大小，该子集中 最多 有 m 个 0 和 n 个 1 。</p>
+<p>如果 x 的所有元素也是 y 的元素，集合 x 是集合 y 的 子集 。</p>
+<p>示例 1：</p>
+<ul>
+<li>输入：strs &#x3D; [“10”, “0001”, “111001”, “1”, “0”], m &#x3D; 5, n &#x3D; 3</li>
+<li>输出：4</li>
+<li>解释：最多有 5 个 0 和 3 个 1 的最大子集是 {“10”,”0001”,”1”,”0”} ，因此答案是 4 。 其他满足题意但较小的子集包括 {“0001”,”1”} 和 {“10”,”1”,”0”} 。{“111001”} 不满足题意，因为它含 4 个 1 ，大于 n 的值 3 。</li>
+</ul>
+<p>示例 2：</p>
+<ul>
+<li>输入：strs &#x3D; [“10”, “0”, “1”], m &#x3D; 1, n &#x3D; 1</li>
+<li>输出：2</li>
+<li>解释：最大的子集是 {“0”, “1”} ，所以答案是 2 。</li>
+</ul>
+<p>提示：</p>
+<ul>
+<li>1 &lt;&#x3D; strs.length &lt;&#x3D; 600</li>
+<li>1 &lt;&#x3D; strs[i].length &lt;&#x3D; 100</li>
+<li>strs[i] 仅由 ‘0’ 和 ‘1’ 组成</li>
+<li>1 &lt;&#x3D; m, n &lt;&#x3D; 100</li>
+</ul>
+</blockquote>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>和上道题一样， 这道题还是2刷都未做出来 ，还是刚开始的固有思维没有发散到通过其他方法来转换到动态规划， 所以导致题目一转换就忘了怎么出发。</p>
+<p><code> strs 的最大子集的大小，该子集中 最多 有 m 个 0 和 n 个 1 。</code> 用滚动数组(一维数组)的方法是很难想出来的，还是需要使用二维数组 ，因为这里的变量有两个， 所以需要滚动二维数组(自创词) 来解决。 </p>
+<p><code>dp[i][j]</code> :  就可以表示为 有 i个 0 和 j 个 1 组成的最大子集的大小是<code>dp[i][j]</code></p>
+<p>但是这里子集的 0 和 1 都不好确定， 我这边使用的是一种笨办法 ，通过两个数组（zeroNum and oneNum）来记录 strs 中每个元素中的 0 和 1 的个数 </p>
+<p>这样我们在遍历的时候就可以直接拿来用了。（其实还有更好的）</p>
+<p>求的是最大子集的大小， 所以推导公式可以是<code>dp[i][j] = Math.max(dp[i][j], dp[i-zeroNum[i]][j-oneNum[i]])</code></p>
+<p>这里因为使用的滚动二维数组 ，所以需要for三层， 第一层循环数组中的内容， 后面两层循环背包。</p>
+<h2 id="实现-3"><a href="#实现-3" class="headerlink" title="实现"></a>实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findMaxForm</span><span class="params">(String[] strs, <span class="type">int</span> m, <span class="type">int</span> n)</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//dp[i][j] 表示最多有 i 个 0 和 j 个 1的最大子集长度为dp[i][j]</span></span><br><span class="line">        <span class="type">int</span> [][]dp = <span class="keyword">new</span> <span class="title class_">int</span>[m+<span class="number">1</span>][n+<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 所以递推公式：dp[i][j] = max(dp[i][j], dp[i - zeroNum][j - oneNum] + 1);</span></span><br><span class="line">        <span class="comment">//记录每个字符串中0 和 1 的数量</span></span><br><span class="line">        <span class="type">int</span> []zone = <span class="keyword">new</span> <span class="title class_">int</span>[strs.length];</span><br><span class="line">        <span class="type">int</span> []one = <span class="keyword">new</span> <span class="title class_">int</span>[strs.length];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i= <span class="number">0</span> ;i&lt;strs.length; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span><span class="number">0</span> ;j&lt;strs[i].length();j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(strs[i].charAt(j) == <span class="string">&#x27;0&#x27;</span>)&#123;</span><br><span class="line">                    zone[i]++;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(strs[i].charAt(j) == <span class="string">&#x27;1&#x27;</span>)&#123;</span><br><span class="line">                    one[i]++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i= <span class="number">0</span> ;i &lt; strs.length; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> m ; k &gt;= zone[i]; k--)&#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> n ;j&gt;=one[i] ;j--)&#123;</span><br><span class="line">                    dp[k][j] = Math.max(dp[k][j], dp[k-zone[i]][j-one[i]]+<span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[m][n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="518-零钱总换"><a href="#518-零钱总换" class="headerlink" title="518 零钱总换"></a>518 零钱总换</h1><h2 id="题目：-4"><a href="#题目：-4" class="headerlink" title="题目："></a>题目：</h2><blockquote>
+<p>给定不同面额的硬币和一个总金额。写出函数来计算可以凑成总金额的硬币组合数。假设每一种面额的硬币有无限个。</p>
+<p>示例 1:</p>
+<ul>
+<li>输入: amount &#x3D; 5, coins &#x3D; [1, 2, 5]</li>
+<li>输出: 4</li>
+</ul>
+<p>解释: 有四种方式可以凑成总金额:</p>
+<ul>
+<li>5&#x3D;5</li>
+<li>5&#x3D;2+2+1</li>
+<li>5&#x3D;2+1+1+1</li>
+<li>5&#x3D;1+1+1+1+1</li>
+</ul>
+<p>示例 2:</p>
+<ul>
+<li>输入: amount &#x3D; 3, coins &#x3D; [2]</li>
+<li>输出: 0</li>
+<li>解释: 只用面额2的硬币不能凑成总金额3。</li>
+</ul>
+<p>示例 3:</p>
+<ul>
+<li>输入: amount &#x3D; 10, coins &#x3D; [10]</li>
+<li>输出: 1</li>
+</ul>
+<p>注意，你可以假设：</p>
+<ul>
+<li>0 &lt;&#x3D; amount (总金额) &lt;&#x3D; 5000</li>
+<li>1 &lt;&#x3D; coin (硬币面额) &lt;&#x3D; 5000</li>
+<li>硬币种类不超过 500 种</li>
+<li>结果符合 32 位符号整数</li>
+</ul>
+</blockquote>
+<h2 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2><p>本题并不是我们之前做的 01 背包类型的问题 ，而是完全背包的问题。</p>
+<p>**完全背包 和 01 背包的区别就是 : 完全背包中的数可以重复使用， 而01 背包中的数只能使用1次， 所以01 背包中循环遍历背包的时候，我们都是从大到小遍历的， 这样可以使得每个数都使用一次， 但是 完全背包就需要从小到大遍历， 这样才能实现背包的大小这个变量重复使用。 **</p>
+<p><code>dp[i]</code> ： 表示凑成总金额为 i 的组合数 可以有<code>dp[i]</code>种</p>
+<p>由此推导出递推公式为 <code>dp[j] += dp[j-coins[i]]</code></p>
+<h2 id="实现-4"><a href="#实现-4" class="headerlink" title="实现"></a>实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">change</span><span class="params">(<span class="type">int</span> amount, <span class="type">int</span>[] coins)</span> &#123;</span><br><span class="line">        <span class="comment">//递推表达式</span></span><br><span class="line">        <span class="type">int</span>[] dp = <span class="keyword">new</span> <span class="title class_">int</span>[amount + <span class="number">1</span>];</span><br><span class="line">        <span class="comment">//初始化dp数组，表示金额为0时只有一种情况，也就是什么都不装</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; coins.length; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> coins[i]; j &lt;= amount; j++) &#123;</span><br><span class="line">                dp[j] += dp[j - coins[i]];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[amount];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://Ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/4ee41ff3.html">https://ray2310.github.io/post/4ee41ff3.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ray2310.github.io" target="_blank">Rayce. Blogs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></div><div class="post_share"><div class="social-share" data-image="https://th.bing.com/th/id/OIP.F8Oa7hJkWSPopA80qdOHfAHaFS?pid=ImgDet&amp;rs=1" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/65c94c30.html" title="力扣每日一刷(2023.9.11)"><img class="cover" src="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fwww.99ziyuan.net%2Fgqbz%2F4kbj%2F38752.html&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAI" onerror="onerror=null;src='/img/second.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">力扣每日一刷(2023.9.11)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/65c94c30.html" title="力扣每日一刷(2023.9.11)"><img class="cover" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.99ziyuan.net%2Fgqbz%2F4kbj%2F38752.html&psig=AOvVaw3c6ZALefYz1O2l67XhTguu&ust=1672761033715000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAI" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-09-11</div><div class="title">力扣每日一刷(2023.9.11)</div></div></a></div><div><a href="/post/9e7c24ab.html" title="买卖股票系列"><img class="cover" src="https://gss0.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/96dda144ad34598213c81de20cf431adcbef8404.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-04-17</div><div class="title">买卖股票系列</div></div></a></div><div><a href="/post/e86d25dc.html" title="打家劫舍篇"><img class="cover" src="https://www.google.com/url?sa=i&url=http%3A%2F%2Fwww.bizhi360.com%2Fweimei%2F&psig=AOvVaw3c6ZALefYz1O2l67XhTguu&ust=1672761033715000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAQ" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-04-13</div><div class="title">打家劫舍篇</div></div></a></div><div><a href="/post/fa1d06da.html" title="Dp练习"><img class="cover" src="https://th.bing.com/th/id/OIP.F8Oa7hJkWSPopA80qdOHfAHaFS?pid=ImgDet&rs=1" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-04-04</div><div class="title">Dp练习</div></div></a></div><div><a href="/post/231939d2.html" title="动归背包2"><img class="cover" src="https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d058ccbf6c81800ae9cb0e37b83533fa828b47d9.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-03-22</div><div class="title">动归背包2</div></div></a></div><div><a href="/post/32bb74e9.html" title="动态规划之----01背包题目解析"><img class="cover" src="https://th.bing.com/th/id/OIP.IyVUba7h32yX0HI7AFFh2QHaEb?pid=ImgDet&rs=1" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-03-15</div><div class="title">动态规划之----01背包题目解析</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">108</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">23</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center">我拼尽全力是为了赢</p> <p align="center">  不是为了虽败犹荣</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#416-%E5%88%86%E5%89%B2%E7%AD%89%E5%92%8C%E5%AD%90%E9%9B%86"><span class="toc-number">1.</span> <span class="toc-text">416 分割等和子集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">题目：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">思路：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.3.</span> <span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1049-%E6%9C%80%E5%90%8E%E4%B8%80%E5%9D%97%E7%9F%B3%E5%A4%B4%E7%9A%84%E9%87%8D%E9%87%8F"><span class="toc-number">2.</span> <span class="toc-text">1049 最后一块石头的重量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%EF%BC%9A-1"><span class="toc-number">2.1.</span> <span class="toc-text">题目：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0-1"><span class="toc-number">2.2.</span> <span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#494-%E7%9B%AE%E6%A0%87%E5%92%8C"><span class="toc-number">3.</span> <span class="toc-text">494 目标和</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%EF%BC%9A-2"><span class="toc-number">3.1.</span> <span class="toc-text">题目：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-%EF%BC%9A"><span class="toc-number">3.2.</span> <span class="toc-text">思路 ：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0-2"><span class="toc-number">3.3.</span> <span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#474-%E4%B8%80%E5%92%8C%E9%9B%B6"><span class="toc-number">4.</span> <span class="toc-text">474 一和零</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%EF%BC%9A-3"><span class="toc-number">4.1.</span> <span class="toc-text">题目：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">4.2.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0-3"><span class="toc-number">4.3.</span> <span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#518-%E9%9B%B6%E9%92%B1%E6%80%BB%E6%8D%A2"><span class="toc-number">5.</span> <span class="toc-text">518 零钱总换</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%EF%BC%9A-4"><span class="toc-number">5.1.</span> <span class="toc-text">题目：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-1"><span class="toc-number">5.2.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0-4"><span class="toc-number">5.3.</span> <span class="toc-text">实现</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/4ee41ff3.html" title="力扣每日一刷(2023.9.12)"><img src="https://th.bing.com/th/id/OIP.F8Oa7hJkWSPopA80qdOHfAHaFS?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="力扣每日一刷(2023.9.12)"/></a><div class="content"><a class="title" href="/post/4ee41ff3.html" title="力扣每日一刷(2023.9.12)">力扣每日一刷(2023.9.12)</a><time datetime="2023-09-12T04:04:58.000Z" title="发表于 2023-09-12 12:04:58">2023-09-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/65c94c30.html" title="力扣每日一刷(2023.9.11)"><img src="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fwww.99ziyuan.net%2Fgqbz%2F4kbj%2F38752.html&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAI" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="力扣每日一刷(2023.9.11)"/></a><div class="content"><a class="title" href="/post/65c94c30.html" title="力扣每日一刷(2023.9.11)">力扣每日一刷(2023.9.11)</a><time datetime="2023-09-11T10:53:47.000Z" title="发表于 2023-09-11 18:53:47">2023-09-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/62050984.html" title="网络通信协议整体框架"><img src="https://desk-fd.zol-img.com.cn/t_s208x130c5/g4/M08/00/0B/ChMly13CMDWIZfctAAvXuPJhBZEAAYRRQPV_woAC9fQ316.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="网络通信协议整体框架"/></a><div class="content"><a class="title" href="/post/62050984.html" title="网络通信协议整体框架">网络通信协议整体框架</a><time datetime="2023-09-09T02:59:19.000Z" title="发表于 2023-09-09 10:59:19">2023-09-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/b451a548.html" title="力扣每日一刷(2023.9.8)"><img src="https://i.pinimg.com/236x/0c/da/a8/0cdaa811391a4313baf1a2128a76baad.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="力扣每日一刷(2023.9.8)"/></a><div class="content"><a class="title" href="/post/b451a548.html" title="力扣每日一刷(2023.9.8)">力扣每日一刷(2023.9.8)</a><time datetime="2023-09-08T05:21:58.000Z" title="发表于 2023-09-08 13:21:58">2023-09-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/33c9b987.html" title="力扣每日一刷(2023.9.7)"><img src="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fwww.moyublog.com%2Fhdwallpapers%2F1293.html&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAD" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="力扣每日一刷(2023.9.7)"/></a><div class="content"><a class="title" href="/post/33c9b987.html" title="力扣每日一刷(2023.9.7)">力扣每日一刷(2023.9.7)</a><time datetime="2023-09-07T07:15:48.000Z" title="发表于 2023-09-07 15:15:48">2023-09-07</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://th.bing.com/th/id/OIP.F8Oa7hJkWSPopA80qdOHfAHaFS?pid=ImgDet&amp;rs=1')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a><a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a><a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> <a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: '',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: '',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
