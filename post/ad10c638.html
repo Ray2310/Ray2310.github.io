@@ -1,0 +1,293 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>力扣每日一刷(2023.9.19) | Rayce. Blogs</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="300 最长递增子序列题目： 给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。 子序列 是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。 示例 1： 123输入：nums &#x3D; [10,9,2,5,3,7,101,18]输出：4解释：最长递增子序列是 [2,3,7,101]，因此长">
+<meta property="og:type" content="article">
+<meta property="og:title" content="力扣每日一刷(2023.9.19)">
+<meta property="og:url" content="https://ray2310.github.io/post/ad10c638.html">
+<meta property="og:site_name" content="Rayce. Blogs">
+<meta property="og:description" content="300 最长递增子序列题目： 给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。 子序列 是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。 示例 1： 123输入：nums &#x3D; [10,9,2,5,3,7,101,18]输出：4解释：最长递增子序列是 [2,3,7,101]，因此长">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://th.bing.com/th/id/R.fc3712934d3f14e93bb049cb3be0ee18?rik=0ZlOt7i89hWjVA&riu=http%3a%2f%2fwww.kutoo8.com%2fupload%2fimage%2f17634230%2f5656000.jpg&ehk=ecvpFWTMp4spOXJ7pxOpzNwsdlk591NfEtk31YSdogg%3d&risl=&pid=ImgRaw&r=0">
+<meta property="article:published_time" content="2023-09-19T02:05:46.000Z">
+<meta property="article:modified_time" content="2023-09-19T06:17:39.311Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="动态规划">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://th.bing.com/th/id/R.fc3712934d3f14e93bb049cb3be0ee18?rik=0ZlOt7i89hWjVA&riu=http%3a%2f%2fwww.kutoo8.com%2fupload%2fimage%2f17634230%2f5656000.jpg&ehk=ecvpFWTMp4spOXJ7pxOpzNwsdlk591NfEtk31YSdogg%3d&risl=&pid=ImgRaw&r=0"><link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQHlJW3iX0eSx0YEsPnrToEC7iKW4m3TEgiQ&usqp=CAU"><link rel="canonical" href="https://ray2310.github.io/post/ad10c638.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. Blogs","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '力扣每日一刷(2023.9.19)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-09-19 14:17:39'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">110</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">23</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://th.bing.com/th/id/R.fc3712934d3f14e93bb049cb3be0ee18?rik=0ZlOt7i89hWjVA&amp;riu=http%3a%2f%2fwww.kutoo8.com%2fupload%2fimage%2f17634230%2f5656000.jpg&amp;ehk=ecvpFWTMp4spOXJ7pxOpzNwsdlk591NfEtk31YSdogg%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. Blogs"><span class="site-name">Rayce. Blogs</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">力扣每日一刷(2023.9.19)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-09-19T02:05:46.000Z" title="发表于 2023-09-19 10:05:46">2023-09-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-09-19T06:17:39.311Z" title="更新于 2023-09-19 14:17:39">2023-09-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="力扣每日一刷(2023.9.19)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="300-最长递增子序列"><a href="#300-最长递增子序列" class="headerlink" title="300 最长递增子序列"></a>300 最长递增子序列</h1><h2 id="题目："><a href="#题目：" class="headerlink" title="题目："></a>题目：</h2><blockquote>
+<p>给你一个整数数组 <code>nums</code> ，找到其中最长严格递增子序列的长度。</p>
+<p><strong>子序列</strong> 是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，<code>[3,6,2,7]</code> 是数组 <code>[0,3,1,6,2,2,7]</code> 的子序列。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [10,9,2,5,3,7,101,18]</span><br><span class="line">输出：4</span><br><span class="line">解释：最长递增子序列是 [2,3,7,101]，因此长度为 4 。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [0,1,0,3,2,3]</span><br><span class="line">输出：4</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 3：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [7,7,7,7,7,7,7]</span><br><span class="line">输出：1</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= nums.length &lt;= 2500</code></li>
+<li><code>-104 &lt;= nums[i] &lt;= 104</code></li>
+</ul>
+<p><strong>进阶：</strong></p>
+<ul>
+<li>你能将算法的时间复杂度降低到 <code>O(n log(n))</code> 吗?</li>
+</ul>
+</blockquote>
+<h2 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h2><p>本题刚开始其实我是按照双指针做的， 当时看到这道题想都没想 直接通过滑动窗口的方式确定最大的递增子序列。 结果看来用例才发现他找的是子序列， 不是连续子序列……</p>
+<p>所以滑动窗口的方式基本是不适用这道题的（就算适用我也没想出来思路）。 老老实实按照动态规划的思路</p>
+<p><code>dp[i]</code> 表示  i 之前的最长递增子序列的长度是<code>dp[i]</code> </p>
+<p>因为数组的长度最小是1， 并且无论怎么比， 最小的递增子序列长度肯定是1的。因为每个数都有可能是做最长子序列。所以就需要将dp数组全部初始化为1. </p>
+<p>然后通过两层for循环遍历， 外层遍历 nums数组中的数， 内层从 <code>0 </code>到 <code>i - 1</code>中找最长子序列。 没遍历完一次都需要更新最长子序列的长度。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">lengthOfLIS</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="comment">//dp[i] 表示  i 之前的最长递增子序列的长度是dp[i]</span></span><br><span class="line">        <span class="type">int</span> []dp = <span class="keyword">new</span> <span class="title class_">int</span>[nums.length];</span><br><span class="line">        <span class="comment">//因为数组大的长度最短都是1 ， 所以一定有一个最长的子序列</span></span><br><span class="line">        Arrays.fill(dp,<span class="number">1</span>);</span><br><span class="line">        <span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i= <span class="number">0</span>; i&lt; nums.length; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt;i; j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(nums[i] &gt; nums[j])&#123;</span><br><span class="line">                    dp[i] = Math.max(dp[i] ,dp[j] +<span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            max = Math.max(max, dp[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="674-最长连续递增子序列"><a href="#674-最长连续递增子序列" class="headerlink" title="674 最长连续递增子序列"></a>674 最长连续递增子序列</h1><h2 id="题目：-1"><a href="#题目：-1" class="headerlink" title="题目："></a>题目：</h2><blockquote>
+<p>给定一个未经排序的整数数组，找到最长且 <strong>连续递增的子序列</strong>，并返回该序列的长度。</p>
+<p><strong>连续递增的子序列</strong> 可以由两个下标 <code>l</code> 和 <code>r</code>（<code>l &lt; r</code>）确定，如果对于每个 <code>l &lt;= i &lt; r</code>，都有 <code>nums[i] &lt; nums[i + 1]</code> ，那么子序列 <code>[nums[l], nums[l + 1], ..., nums[r - 1], nums[r]]</code> 就是连续递增子序列。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [1,3,5,4,7]</span><br><span class="line">输出：3</span><br><span class="line">解释：最长连续递增序列是 [1,3,5], 长度为3。</span><br><span class="line">尽管 [1,3,5,7] 也是升序的子序列, 但它不是连续的，因为 5 和 7 在原数组里被 4 隔开。 </span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [2,2,2,2,2]</span><br><span class="line">输出：1</span><br><span class="line">解释：最长连续递增序列是 [2], 长度为1。</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= nums.length &lt;= 104</code></li>
+<li><code>-109 &lt;= nums[i] &lt;= 109</code></li>
+</ul>
+</blockquote>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>和上道题一样， 可以使用动态规划， 但是这道题最好的方法还是使用贪心算法，通过局部最优推导出全局。 但是核心思路都是一样的。没啥难的， 通过对比是否<code>nums[i] &gt; nums[i-1]</code> ，如果是， 那就累加即可。最后通过<code>Math.max()</code>得到最大的即可。</p>
+<h2 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findLengthOfLCIS</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="comment">//贪心算法实现</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> res= <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span><span class="number">1</span>; i &lt; nums.length; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i] &gt; nums[i-<span class="number">1</span>])&#123;</span><br><span class="line">                count++;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                count = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            res = Math.max(res, count);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//动态规划的方法</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">      public int findLengthOfLCIS(int[] nums) &#123;</span></span><br><span class="line"><span class="comment">        //dp[i]  表示 i 之前的最长连续子序列长度为 dp[i]</span></span><br><span class="line"><span class="comment">        int []dp = new int[nums.length];</span></span><br><span class="line"><span class="comment">        Arrays.fill(dp,1);</span></span><br><span class="line"><span class="comment">        int res = 1;</span></span><br><span class="line"><span class="comment">        for(int i =1 ;i&lt; nums.length; i++)&#123;</span></span><br><span class="line"><span class="comment">            if(nums[i] &gt; nums[i-1])&#123;</span></span><br><span class="line"><span class="comment">                dp[i] = dp[i-1] + 1;</span></span><br><span class="line"><span class="comment">            &#125;</span></span><br><span class="line"><span class="comment">            res = Math.max(res, dp[i]);</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">        return res;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="718-最长重复数组"><a href="#718-最长重复数组" class="headerlink" title="718 最长重复数组"></a>718 最长重复数组</h1><h2 id="题目：-2"><a href="#题目：-2" class="headerlink" title="题目："></a>题目：</h2><blockquote>
+<p>给两个整数数组 <code>nums1</code> 和 <code>nums2</code> ，返回 <em>两个数组中 <strong>公共的</strong> 、长度最长的子数组的长度</em> 。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：nums1 = [1,2,3,2,1], nums2 = [3,2,1,4,7]</span><br><span class="line">输出：3</span><br><span class="line">解释：长度最长的公共子数组是 [3,2,1] 。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums1 = [0,0,0,0,0], nums2 = [0,0,0,0,0]</span><br><span class="line">输出：5</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= nums1.length, nums2.length &lt;= 1000</code></li>
+<li><code>0 &lt;= nums1[i], nums2[i] &lt;= 100</code></li>
+</ul>
+</blockquote>
+<h2 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2><p>对于本题， 我首先想到的是暴力解法， 两层for循环一一对比， 如果上一个也相同 那么就进行累加，再对累加的结果取最大值。 当然这个思路是没问题， 但是最后也一定会超时。</p>
+<p>之后顺着代码随想录的动态规划思维， 按照动态规划的思维重新思考</p>
+<ol>
+<li><code> dp[i][j] ：以下标i - 1为结尾的A，和以下标j - 1为结尾的B，最长重复子数组长度为dp[i][j]。(“以下标i - 1为结尾的A” 标明一定是 以A[i-1]为结尾的字符串 )</code></li>
+</ol>
+<blockquote>
+<p>因为<code>dp[i][j]: </code> 是要通过上一个<code>dp[i-1][j-1]</code>推导出来的。 这是动态规划的本质， 每一步都是由上一步推导。所以我们需要考虑到上一步，所以dp的就是从(1，1) —&gt; <code>(dp[i-1][j-1],dp[i-1][j-1])</code> 。</p>
+</blockquote>
+<p>如果实在理解 可以通过打印dp数组来进行分析</p>
+<p><img src="/images/image-20230919141227475.png" alt="image-20230919141227475"></p>
+<p>中间的标准输出 就是dp数组的结果。</p>
+<ol start="2">
+<li>对于dp数组的初始化， 这里可以初始化称为0 ， 因为每一步都是通过上一步推导出来的， 如果本次的<code>nums1[i] ==nums2[j]</code> 那么就以上次的结果 + 1 就是这两次的次数。</li>
+</ol>
+<p>两层for循环遍历即可。</p>
+<h2 id="实现-2"><a href="#实现-2" class="headerlink" title="实现"></a>实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findLength</span><span class="params">(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//dp[i][j] ：以下标i - 1为结尾的A，和以下标j - 1为结尾的B，最长重复子数组长度为dp[i][j]。</span></span><br><span class="line">        <span class="type">int</span> [][]dp = <span class="keyword">new</span> <span class="title class_">int</span>[nums1.length+<span class="number">1</span>][nums2.length+<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i= <span class="number">1</span>; i &lt;= nums1.length ;i++)&#123;</span><br><span class="line">            <span class="comment">//nums1[i] 对比nums2[j]中的每一个</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt;= nums2.length ;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(nums1[i-<span class="number">1</span>] == nums2[j-<span class="number">1</span>])&#123;</span><br><span class="line">                    dp[i][j] = dp[i-<span class="number">1</span>][j-<span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                res = Math.max(res, dp[i][j]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i= <span class="number">0</span> ; i &lt;= nums1.length ;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span><span class="number">0</span> ; j&lt;= nums2.length;j++)&#123;</span><br><span class="line">                System.out.print(dp[i][j] + <span class="string">&quot;\t&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://Ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/ad10c638.html">https://ray2310.github.io/post/ad10c638.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ray2310.github.io" target="_blank">Rayce. Blogs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></div><div class="post_share"><div class="social-share" data-image="https://th.bing.com/th/id/R.fc3712934d3f14e93bb049cb3be0ee18?rik=0ZlOt7i89hWjVA&amp;riu=http%3a%2f%2fwww.kutoo8.com%2fupload%2fimage%2f17634230%2f5656000.jpg&amp;ehk=ecvpFWTMp4spOXJ7pxOpzNwsdlk591NfEtk31YSdogg%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/18beb875.html" title="力扣每日一刷(2023.9.14)"><img class="cover" src="https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d058ccbf6c81800ae9cb0e37b83533fa828b47d9.jpg" onerror="onerror=null;src='/img/second.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">力扣每日一刷(2023.9.14)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/18beb875.html" title="力扣每日一刷(2023.9.14)"><img class="cover" src="https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d058ccbf6c81800ae9cb0e37b83533fa828b47d9.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-09-14</div><div class="title">力扣每日一刷(2023.9.14)</div></div></a></div><div><a href="/post/4ee41ff3.html" title="力扣每日一刷(2023.9.12)"><img class="cover" src="https://th.bing.com/th/id/R.fc3712934d3f14e93bb049cb3be0ee18?rik=0ZlOt7i89hWjVA&riu=http%3a%2f%2fwww.kutoo8.com%2fupload%2fimage%2f17634230%2f5656000.jpg&ehk=ecvpFWTMp4spOXJ7pxOpzNwsdlk591NfEtk31YSdogg%3d&risl=&pid=ImgRaw&r=0" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-09-12</div><div class="title">力扣每日一刷(2023.9.12)</div></div></a></div><div><a href="/post/65c94c30.html" title="力扣每日一刷(2023.9.11)"><img class="cover" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.99ziyuan.net%2Fgqbz%2F4kbj%2F38752.html&psig=AOvVaw3c6ZALefYz1O2l67XhTguu&ust=1672761033715000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAI" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-09-11</div><div class="title">力扣每日一刷(2023.9.11)</div></div></a></div><div><a href="/post/9e7c24ab.html" title="力扣每日一刷(2023.9.18)"><img class="cover" src="https://gss0.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/96dda144ad34598213c81de20cf431adcbef8404.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-09-18</div><div class="title">力扣每日一刷(2023.9.18)</div></div></a></div><div><a href="/post/e86d25dc.html" title="力扣每日一刷(2023.9.15)"><img class="cover" src="https://th.bing.com/th/id/OIP.F8Oa7hJkWSPopA80qdOHfAHaFS?pid=ImgDet&rs=1" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-09-15</div><div class="title">力扣每日一刷(2023.9.15)</div></div></a></div><div><a href="/post/fa1d06da.html" title="Dp练习"><img class="cover" src="https://th.bing.com/th/id/OIP.F8Oa7hJkWSPopA80qdOHfAHaFS?pid=ImgDet&rs=1" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-04-04</div><div class="title">Dp练习</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">110</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">23</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center">我拼尽全力是为了赢</p> <p align="center">  不是为了虽败犹荣</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#300-%E6%9C%80%E9%95%BF%E9%80%92%E5%A2%9E%E5%AD%90%E5%BA%8F%E5%88%97"><span class="toc-number">1.</span> <span class="toc-text">300 最长递增子序列</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">题目：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">思路：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.3.</span> <span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#674-%E6%9C%80%E9%95%BF%E8%BF%9E%E7%BB%AD%E9%80%92%E5%A2%9E%E5%AD%90%E5%BA%8F%E5%88%97"><span class="toc-number">2.</span> <span class="toc-text">674 最长连续递增子序列</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%EF%BC%9A-1"><span class="toc-number">2.1.</span> <span class="toc-text">题目：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">2.2.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0-1"><span class="toc-number">2.3.</span> <span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#718-%E6%9C%80%E9%95%BF%E9%87%8D%E5%A4%8D%E6%95%B0%E7%BB%84"><span class="toc-number">3.</span> <span class="toc-text">718 最长重复数组</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%EF%BC%9A-2"><span class="toc-number">3.1.</span> <span class="toc-text">题目：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-1"><span class="toc-number">3.2.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0-2"><span class="toc-number">3.3.</span> <span class="toc-text">实现</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/ad10c638.html" title="力扣每日一刷(2023.9.19)"><img src="https://th.bing.com/th/id/R.fc3712934d3f14e93bb049cb3be0ee18?rik=0ZlOt7i89hWjVA&amp;riu=http%3a%2f%2fwww.kutoo8.com%2fupload%2fimage%2f17634230%2f5656000.jpg&amp;ehk=ecvpFWTMp4spOXJ7pxOpzNwsdlk591NfEtk31YSdogg%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="力扣每日一刷(2023.9.19)"/></a><div class="content"><a class="title" href="/post/ad10c638.html" title="力扣每日一刷(2023.9.19)">力扣每日一刷(2023.9.19)</a><time datetime="2023-09-19T02:05:46.000Z" title="发表于 2023-09-19 10:05:46">2023-09-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/18beb875.html" title="力扣每日一刷(2023.9.14)"><img src="https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d058ccbf6c81800ae9cb0e37b83533fa828b47d9.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="力扣每日一刷(2023.9.14)"/></a><div class="content"><a class="title" href="/post/18beb875.html" title="力扣每日一刷(2023.9.14)">力扣每日一刷(2023.9.14)</a><time datetime="2023-09-14T02:53:10.000Z" title="发表于 2023-09-14 10:53:10">2023-09-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/4ee41ff3.html" title="力扣每日一刷(2023.9.12)"><img src="https://th.bing.com/th/id/R.fc3712934d3f14e93bb049cb3be0ee18?rik=0ZlOt7i89hWjVA&amp;riu=http%3a%2f%2fwww.kutoo8.com%2fupload%2fimage%2f17634230%2f5656000.jpg&amp;ehk=ecvpFWTMp4spOXJ7pxOpzNwsdlk591NfEtk31YSdogg%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="力扣每日一刷(2023.9.12)"/></a><div class="content"><a class="title" href="/post/4ee41ff3.html" title="力扣每日一刷(2023.9.12)">力扣每日一刷(2023.9.12)</a><time datetime="2023-09-12T04:04:58.000Z" title="发表于 2023-09-12 12:04:58">2023-09-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/65c94c30.html" title="力扣每日一刷(2023.9.11)"><img src="https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Fwww.99ziyuan.net%2Fgqbz%2F4kbj%2F38752.html&amp;psig=AOvVaw3c6ZALefYz1O2l67XhTguu&amp;ust=1672761033715000&amp;source=images&amp;cd=vfe&amp;ved=0CA0QjRxqFwoTCOjMxNSeqfwCFQAAAAAdAAAAABAI" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="力扣每日一刷(2023.9.11)"/></a><div class="content"><a class="title" href="/post/65c94c30.html" title="力扣每日一刷(2023.9.11)">力扣每日一刷(2023.9.11)</a><time datetime="2023-09-11T10:53:47.000Z" title="发表于 2023-09-11 18:53:47">2023-09-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/62050984.html" title="网络通信协议整体框架"><img src="https://desk-fd.zol-img.com.cn/t_s208x130c5/g4/M08/00/0B/ChMly13CMDWIZfctAAvXuPJhBZEAAYRRQPV_woAC9fQ316.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="网络通信协议整体框架"/></a><div class="content"><a class="title" href="/post/62050984.html" title="网络通信协议整体框架">网络通信协议整体框架</a><time datetime="2023-09-09T02:59:19.000Z" title="发表于 2023-09-09 10:59:19">2023-09-09</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://th.bing.com/th/id/R.fc3712934d3f14e93bb049cb3be0ee18?rik=0ZlOt7i89hWjVA&amp;riu=http%3a%2f%2fwww.kutoo8.com%2fupload%2fimage%2f17634230%2f5656000.jpg&amp;ehk=ecvpFWTMp4spOXJ7pxOpzNwsdlk591NfEtk31YSdogg%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a><a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a><a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> <a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: '',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: '',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
