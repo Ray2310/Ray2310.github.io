@@ -1,0 +1,521 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>组件化详细 | Rayce. Blogs</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一、组件的组成部分三大组成部分 1234567891011&lt;template&gt;  &lt;&#x2F;template&gt;&lt;script&gt;export default &amp;#123;&amp;#125;&lt;&#x2F;script&gt;&lt;style scoped&gt;&lt;&#x2F;style&gt;  二、scoped解决样式冲突默认情况：写在组件中的样式会 全局生效 → 因此很容易造成多">
+<meta property="og:type" content="article">
+<meta property="og:title" content="组件化详细">
+<meta property="og:url" content="https://ray2310.github.io/post/c4fe0bb4.html">
+<meta property="og:site_name" content="Rayce. Blogs">
+<meta property="og:description" content="一、组件的组成部分三大组成部分 1234567891011&lt;template&gt;  &lt;&#x2F;template&gt;&lt;script&gt;export default &amp;#123;&amp;#125;&lt;&#x2F;script&gt;&lt;style scoped&gt;&lt;&#x2F;style&gt;  二、scoped解决样式冲突默认情况：写在组件中的样式会 全局生效 → 因此很容易造成多">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2023-10-27T10:40:47.000Z">
+<meta property="article:modified_time" content="2023-10-27T10:52:38.223Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQHlJW3iX0eSx0YEsPnrToEC7iKW4m3TEgiQ&usqp=CAU"><link rel="canonical" href="https://ray2310.github.io/post/c4fe0bb4.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. Blogs","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '组件化详细',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-10-27 18:52:38'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">119</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">24</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. Blogs"><span class="site-name">Rayce. Blogs</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">组件化详细</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-10-27T10:40:47.000Z" title="发表于 2023-10-27 18:40:47">2023-10-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-10-27T10:52:38.223Z" title="更新于 2023-10-27 18:52:38">2023-10-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%89%8D%E7%AB%AF/vue/">vue</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">6.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>25分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="组件化详细"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="一、组件的组成部分"><a href="#一、组件的组成部分" class="headerlink" title="一、组件的组成部分"></a>一、组件的组成部分</h1><p>三大组成部分</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  </span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="二、scoped解决样式冲突"><a href="#二、scoped解决样式冲突" class="headerlink" title="二、scoped解决样式冲突"></a>二、scoped解决样式冲突</h1><h2 id="默认情况："><a href="#默认情况：" class="headerlink" title="默认情况："></a>默认情况：</h2><p><strong>写在组件中的样式会 全局生效 → 因此很容易造成多个组件之间的样式冲突问题。</strong></p>
+<ul>
+<li>全局样式: 默认组件中的样式会作用到全局，任何一个组件中都会受到此样式的影响</li>
+<li>局部样式: 可以给组件加上scoped 属性,可以让样式只作用于当前组件</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line"></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="scoped原理"><a href="#scoped原理" class="headerlink" title="scoped原理"></a>scoped原理</h2><p>通过上述的<style scoped>就可以使</p>
+<ol>
+<li>当前组件内标签都被添加data-v-hash值 的属性</li>
+<li>css选择器都被添加 [data-v-hash值] 的属性选择器</li>
+</ol>
+<p>最终效果: 必须是当前组件的元素, 才会有这个自定义属性, 才会被这个样式作用到<br><img src="/images/1698130104628-c7d7626d-d43b-42df-87e7-6afd48903f92.png" alt="image.png"></p>
+<h1 id="data必须是一个函数"><a href="#data必须是一个函数" class="headerlink" title="data必须是一个函数"></a>data必须是一个函数</h1><p>一个组件的 data 选项必须是一个函数。目的是为了：保证每个组件实例，维护独立的一份数据对象。<br><strong>每次创建新的组件实例，都会新执行一次data 函数，得到一个新对象。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data: function () &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      count: 100,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="组件通信"><a href="#组件通信" class="headerlink" title="组件通信"></a>组件通信</h1><h2 id="什么是组件通信-？"><a href="#什么是组件通信-？" class="headerlink" title="什么是组件通信 ？"></a>什么是组件通信 ？</h2><p>组件通信，就是指组件与组件之间的数据传递</p>
+<ul>
+<li>组件的数据是独立的，无法直接访问其他组件的数据。</li>
+<li>想使用其他组件的数据，就需要组件通信</li>
+</ul>
+<h2 id="如何通信及其组件之间的关系分类"><a href="#如何通信及其组件之间的关系分类" class="headerlink" title="如何通信及其组件之间的关系分类"></a>如何通信及其组件之间的关系分类</h2><p>父子关系<br>非父子关系<br><img src="/images/1698129739826-89a43585-6f66-45b3-8066-7ea63c3832f2.png" alt="image.png"></p>
+<p><strong>父组件通过 props 将数据传递给子组件</strong><br><strong>子组件利用 $emit 通知父组件修改更新</strong></p>
+<h3 id="父向子通信代码示例"><a href="#父向子通信代码示例" class="headerlink" title="父向子通信代码示例"></a>父向子通信代码示例</h3><p>父组件通过props将数据传递给子组件<br>父组件App.vue<br><img src="/images/1698129687347-7b5d73c2-9015-4251-a149-c74c908e1e58.png" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//:title=&quot;msg&quot;  表示动态赋予属性</span><br></pre></td></tr></table></figure>
+
+<p><strong>父向子传值步骤</strong></p>
+<ol>
+<li>给子组件以添加属性的方式传值</li>
+<li>子组件内部通过props接收</li>
+<li>模板中直接使用 props接收的值</li>
+</ol>
+<p><img src="/images/1698129664691-cab8b2e0-5d9a-4f67-990b-fb49e45e4328.png" alt="image.png"></p>
+<h3 id="子传父通信代码示例"><a href="#子传父通信代码示例" class="headerlink" title="子传父通信代码示例"></a>子传父通信代码示例</h3><p><strong>子向父传值步骤</strong></p>
+<ol>
+<li>$emit触发事件，给父组件发送消息通知</li>
+<li>父组件监听$emit触发的事件</li>
+<li>提供处理函数，在函数的性参中获取传过来的参数<br><img src="/images/1698129779906-6e0e16c8-90d9-4ac2-bea5-05be50f3b736.png" alt="image.png"></li>
+</ol>
+<p>	</p>
+<h1 id="props"><a href="#props" class="headerlink" title="props"></a>props</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>组件上 注册的一些 自定义属性, 我们可以使用props属性<strong>来向子组件传递数据</strong><br>两个特点： </p>
+<ol>
+<li>可以 传递 <strong>任意数量</strong> 的prop</li>
+<li>可以 传递 <strong>任意类型</strong> 的prop</li>
+</ol>
+<p><img src="/images/1698129657915-c05707b6-04d5-4580-b0fc-683937bcb55f.png" alt="image.png"><br>案例：<br><code>Main.vue</code>为我们自己定义的父组件， <code>UserInfo</code>为自定义的子组件 ， 通过props就可以实现组件之间的数据传递<br><img src="/images/1698130310112-7d75d06a-df51-4f62-833d-5fd2a4dbff1e.png" alt="image.png"></p>
+<h2 id="props校验"><a href="#props校验" class="headerlink" title="props校验"></a>props校验</h2><p>我们使用组件的props属性， 但是数据不能乱传， 所以就需要使用props来校验数据<br>为组件的 prop 指定<strong>验证要求</strong>，不符合要求，控制台就会有<strong>错误提示</strong> → 帮助开发者，快速发现错误</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>类型： <strong>类型校验、</strong>非空校验、默认值、自定义校验</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">props: &#123;</span><br><span class="line">	校验属性名：类型 </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="完整的校验写法"><a href="#完整的校验写法" class="headerlink" title="完整的校验写法"></a>完整的校验写法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">props: &#123;</span><br><span class="line">  校验的属性名: &#123;</span><br><span class="line">    type: 类型,  // Number String Boolean ...</span><br><span class="line">    required: true, // 是否必填</span><br><span class="line">    default: 默认值, // 默认值</span><br><span class="line">    validator (value) &#123;</span><br><span class="line">      // 自定义校验逻辑</span><br><span class="line">      return 是否通过校验</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>代码实例： </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  // 完整写法（类型、默认值、非空、自定义校验）</span><br><span class="line">  props: &#123;</span><br><span class="line">    w: &#123;</span><br><span class="line">      type: Number,</span><br><span class="line">      //required: true,</span><br><span class="line">      default: 0,</span><br><span class="line">      // 校验逻辑</span><br><span class="line">      validator(val) &#123;</span><br><span class="line">        // console.log(val)</span><br><span class="line">        if (val &gt;= 100 || val &lt;= 0) &#123;</span><br><span class="line">          console.error(&#x27;传入的范围必须是0-100之间&#x27;)</span><br><span class="line">          return false</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">          return true</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="注意事项："><a href="#注意事项：" class="headerlink" title="注意事项："></a>注意事项：</h3><ol>
+<li>default和required一般不同时写（因为当时必填项时，肯定是有值的）</li>
+<li>default后面如果是简单类型的值，可以直接写默认。如果是复杂类型的值，则需要以函数的形式return一个默认值</li>
+</ol>
+<h2 id="props和data、-单向数据流"><a href="#props和data、-单向数据流" class="headerlink" title="props和data、 单向数据流"></a>props和data、 单向数据流</h2><h3 id="1-共同点"><a href="#1-共同点" class="headerlink" title="1.共同点"></a>1.共同点</h3><p>都可以给组件提供数据</p>
+<h3 id="2-区别"><a href="#2-区别" class="headerlink" title="2.区别"></a>2.区别</h3><ul>
+<li>data 的数据是<strong>自己</strong>的 —&gt; 随便改</li>
+<li>prop 的数据是<strong>外部</strong>的 —&gt; 不能直接改，要遵循 <strong>单向数据流</strong></li>
+</ul>
+<h3 id="单向数据流"><a href="#单向数据流" class="headerlink" title="单向数据流"></a>单向数据流</h3><p><strong>父级props 的数据更新，会向下流动，影响子组件。这个数据流动是单向的</strong></p>
+<p>实现案例：<br><img src="/images/1698133108836-0d910f17-3dbc-404f-9b2d-73766be46df0.png" alt="image.png"></p>
+<h2 id="综合案例"><a href="#综合案例" class="headerlink" title="综合案例"></a>综合案例</h2><h2 id="组件之间数据的传输"><a href="#组件之间数据的传输" class="headerlink" title="组件之间数据的传输"></a>组件之间数据的传输</h2><p>代码地址： <a target="_blank" rel="noopener" href="https://github.com/Ray2310/vue-demo">https://github.com/Ray2310/vue-demo</a><br><strong>实现功能：</strong></p>
+<ul>
+<li><strong>拆分基础组件</strong></li>
+<li><strong>渲染待办任务</strong></li>
+<li><strong>添加任务</strong></li>
+<li><strong>删除任务</strong></li>
+<li><strong>底部合计 和 清空功能</strong></li>
+<li><strong>持久化存储</strong></li>
+</ul>
+<p>以组件<code>TodoMain.vue</code>（子组件）和组件<code>App.vue</code>(父组件) 为例 讲解父子数据传输的问题。</p>
+<h3 id="父传子-的-数据传输实现"><a href="#父传子-的-数据传输实现" class="headerlink" title="父传子 的 数据传输实现"></a>父传子 的 数据传输实现</h3><ol>
+<li>在父亲组件中提供数据data并返回</li>
+<li>在使用组件的<code>template</code>区域， 通过使用<code>:list=&quot;list&quot;</code>来实现可以在子组件中接受数据</li>
+<li>在子组件中通过使用<code>props</code>实现父亲组件传递内容的接收。 </li>
+<li>最后就可以在子组件的<code>template</code>中使用list中的数据</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">&lt;!-- 列表区域 --&gt;</span><br><span class="line">  &lt;section class=&quot;main&quot;&gt;</span><br><span class="line">    &lt;ul class=&quot;todo-list&quot;&gt;</span><br><span class="line">      &lt;li class=&quot;todo&quot;  v-for=&quot;(item, index) in list&quot; :key=&quot;item.id&quot; &gt;</span><br><span class="line">        &lt;div class=&quot;view&quot; &gt;</span><br><span class="line">          &lt;span class=&quot;index&quot;&gt;&#123;&#123; index + 1 &#125;&#125;&lt;/span&gt; &lt;label&gt;&#123;&#123; item.name &#125;&#125;&lt;/label&gt;</span><br><span class="line">          &lt;button class=&quot;destroy&quot;&gt;&lt;/button&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">      &lt;/li&gt;</span><br><span class="line">    &lt;/ul&gt;</span><br><span class="line">  &lt;/section&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">  export default &#123;</span><br><span class="line">    // 使用对象的写法 ,接收父组件中传入的内容</span><br><span class="line">      props: &#123;</span><br><span class="line">        list: Array</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>App.vue</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;!-- 主体区域 --&gt;</span><br><span class="line">  &lt;section id=&quot;app&quot;&gt;</span><br><span class="line">    &lt;TodoHeader&gt;&lt;/TodoHeader&gt;</span><br><span class="line">    &lt;!-- 通过在这里写list， 就可以实现在子组件中作接收 --&gt;</span><br><span class="line">    &lt;TodoMain :list=&quot;list&quot;&gt;&lt;/TodoMain&gt;</span><br><span class="line">    &lt;TodoFooter&gt;&lt;/TodoFooter&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/section&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">// 导入组件</span><br><span class="line">  import TodoHeader from &#x27;./components/TodoHeader.vue&#x27;</span><br><span class="line">  import TodoMain from &#x27;./components/TodoMain.vue&#x27;</span><br><span class="line">  import TodoFooter from &#x27;./components/TodoFooter.vue&#x27;</span><br><span class="line"></span><br><span class="line">  export default &#123;  </span><br><span class="line">    // 注册组件</span><br><span class="line">    components: &#123;</span><br><span class="line">      TodoHeader, </span><br><span class="line">      TodoMain,</span><br><span class="line">      TodoFooter    </span><br><span class="line">    &#125;,</span><br><span class="line">  </span><br><span class="line">  //TODO: 数据提供需要提供在父组件中， 这样如果我们想要使用， 直接使用props传递即可。 </span><br><span class="line">  data () &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      list: [</span><br><span class="line">        &#123;id: 1, name: &#x27;eat&#x27;&#125;,</span><br><span class="line">        &#123;id: 2, name: &#x27;play&#x27;&#125;,</span><br><span class="line">        &#123;id: 3, name: &#x27;write&#x27;&#125;</span><br><span class="line">      ]</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="子传父-的-数据传输实现"><a href="#子传父-的-数据传输实现" class="headerlink" title="子传父 的 数据传输实现"></a>子传父 的 数据传输实现</h3><p><code>TodoHeader.vue</code> 子组件向<code>App.vue</code>父子 传输添加的数据</p>
+<ol>
+<li>在子组件中通过<code>v-model</code>实现数据收集并通过点击事件或回车 进行数据发送</li>
+<li>然后通过<code>this.$emit(&#39;addItem&#39;, this.name)</code> 实现给父组件发送消息通知</li>
+<li>父组件监听$emit触发的事件， 通过 <code>@addItem=&quot;add&quot;</code>， 并且通过<code>add()</code>函数接收数据</li>
+<li>最后在函数中实现数据的update操作</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;  </span><br><span class="line">   &lt;!-- 输入框 --&gt;</span><br><span class="line">  &lt;header class=&quot;header&quot;&gt;</span><br><span class="line">    &lt;h1&gt;记事本&lt;/h1&gt;</span><br><span class="line">    &lt;input placeholder=&quot;请输入任务&quot; @keyup.enter=&quot;addItem()&quot; v-model=&quot;name&quot; class=&quot;new-todo&quot; /&gt;</span><br><span class="line">    &lt;button class=&quot;add&quot; @keyup.enter=&quot;addItem()&quot; @click=&quot;addItem()&quot;&gt;添加任务&lt;/button&gt;</span><br><span class="line">  &lt;/header&gt;</span><br><span class="line"></span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;!-- </span><br><span class="line">  这里实现数据的 子传父</span><br><span class="line">  完成添加功能</span><br><span class="line">  1. 收集表单数据 v-model</span><br><span class="line">  2. 监听时间 （回车+点击 都要进行添加）</span><br><span class="line">  3. 子传父，将任务名称传递给父组件App.vue</span><br><span class="line">  4. 父组件接受到数据后 进行添加 unshift(自己的数据自己负责)</span><br><span class="line"> --&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">  export default &#123;</span><br><span class="line">    data()&#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      name:&#x27;&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">      addItem()&#123;</span><br><span class="line">        // console.log(this.name);</span><br><span class="line">        //传递给父亲组件</span><br><span class="line">        if(this.name === &quot;&quot; ) &#123;</span><br><span class="line">          return</span><br><span class="line">        &#125;</span><br><span class="line">        this.$emit(&#x27;addItem&#x27;, this.name)</span><br><span class="line">        //清空表单</span><br><span class="line">        this.name = &#x27;&#x27;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; </span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;!-- 主体区域 --&gt;</span><br><span class="line">  &lt;section id=&quot;app&quot;&gt;</span><br><span class="line">    &lt;TodoHeader @addItem=&quot;add&quot;&gt;&lt;/TodoHeader&gt;</span><br><span class="line">    &lt;!-- 通过在这里写list， 就可以实现在子组件中作接收 --&gt;</span><br><span class="line">    &lt;TodoMain @deleteItem=&quot;deleteItem&quot; :list=&quot;list&quot;&gt;&lt;/TodoMain&gt;</span><br><span class="line">    &lt;TodoFooter @clear=&quot;clear&quot; :list=&quot;list&quot;&gt;&lt;/TodoFooter&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/section&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">// 导入组件</span><br><span class="line">  import TodoHeader from &#x27;./components/TodoHeader.vue&#x27;</span><br><span class="line">  import TodoMain from &#x27;./components/TodoMain.vue&#x27;</span><br><span class="line">  import TodoFooter from &#x27;./components/TodoFooter.vue&#x27;</span><br><span class="line"></span><br><span class="line">  export default &#123;  </span><br><span class="line">    // 注册组件</span><br><span class="line">    components: &#123;</span><br><span class="line">      TodoHeader, </span><br><span class="line">      TodoMain,</span><br><span class="line">      TodoFooter    </span><br><span class="line">    &#125;,</span><br><span class="line">  </span><br><span class="line">  //TODO: 数据提供需要提供在父组件中， 这样如果我们想要使用， 直接使用props传递即可。 </span><br><span class="line">  data () &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      list: [</span><br><span class="line">        &#123;id: 1, name: &#x27;eat&#x27;&#125;,</span><br><span class="line">        &#123;id: 2, name: &#x27;play&#x27;&#125;,</span><br><span class="line">        &#123;id: 3, name: &#x27;write&#x27;&#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    add(newName)&#123;</span><br><span class="line">      console.log(newName)</span><br><span class="line">      //使用unshift添加</span><br><span class="line">      this.list.unshift(&#123;</span><br><span class="line">        id: +new Date(), //通过时间戳来实现id的唯一性</span><br><span class="line">        name: newName</span><br><span class="line">      &#125;)</span><br><span class="line">      //还需要作的是清空表单</span><br><span class="line">    &#125;,</span><br><span class="line">    deleteItem(id) &#123;</span><br><span class="line">      console.log(id)</span><br><span class="line">      //通过filter过滤器实现删除操作</span><br><span class="line">      this.list = this.list.filter(item =&gt; item.id !== id) </span><br><span class="line">    &#125;,</span><br><span class="line">    //清空任务栏</span><br><span class="line">    clear()&#123;</span><br><span class="line">      this.list = []</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;!-- </span><br><span class="line">  TODO:</span><br><span class="line">  拆分基础组件</span><br><span class="line">  渲染待办任务</span><br><span class="line">  添加任务</span><br><span class="line">  删除任务</span><br><span class="line">  底部合计 和 清空功能</span><br><span class="line">  持久化存储</span><br><span class="line"> --&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+<h1 id="非父子之间的数据通信—event-bus事件总线"><a href="#非父子之间的数据通信—event-bus事件总线" class="headerlink" title="非父子之间的数据通信—event bus事件总线"></a>非父子之间的数据通信—event bus事件总线</h1><p>非父子组件之间，进行简易消息传递。(复杂场景→ Vuex)<br>发送通知不是一个一对一的关系， 但凡有人接收， 那么就都可以接受发送的内容</p>
+<h2 id="步骤："><a href="#步骤：" class="headerlink" title="步骤："></a>步骤：</h2><p>在工具包<code>utils</code>中</p>
+<ol>
+<li>创建一个都能访问的事件总线 （空Vue实例）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import Vue from &#x27;vue&#x27;</span><br><span class="line">const Bus = new Vue()</span><br><span class="line">export default Bus</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>A组件（接受方</strong>），监听Bus的 $on事件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"> import Bus form &#x27;./utils/EventBus&#x27; </span><br><span class="line">  export default &#123;</span><br><span class="line">    created () &#123;</span><br><span class="line">      Bus.$on(&#x27;sendMsg&#x27;, (msg) =&gt; &#123;</span><br><span class="line">        this.msg = msg</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">    data: &#123;</span><br><span class="line">      return &#123;</span><br><span class="line">        msg: &#x27;&#x27;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>B组件（发送方</strong>），触发Bus的$emit事件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">	&lt;button #click=&quot;clickSend&quot;&gt;&lt;/button&gt;</span><br><span class="line">  </span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line"> import Bus form &#x27;./utils/EventBus&#x27; </span><br><span class="line">  export default &#123;</span><br><span class="line">      methods: &#123;</span><br><span class="line">        clickSend()&#123;</span><br><span class="line">          Bus.$emit(&#x27;sendMsg&#x27;, &#x27;这是一个消息&#x27;)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/1698143034576-10a269c8-25b4-4983-bf0c-94dbf13b6d41.png" alt="image.png"></p>
+<h1 id="非父子通信-provide-amp-inject"><a href="#非父子通信-provide-amp-inject" class="headerlink" title="非父子通信-provide&amp;inject"></a>非父子通信-provide&amp;inject</h1><p>跨层级共享数据<br>从祖辈层到后辈层（例如：爷爷到孙子）<br><img src="/images/1698143941021-cf5bf8a8-ced0-4569-ae74-4486ea4632ef.png" alt="image.png"></p>
+<h2 id="语法-："><a href="#语法-：" class="headerlink" title="语法 ："></a>语法 ：</h2><ol>
+<li><strong>父组件 provide提供数据</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">export default &#123;</span><br><span class="line">  provide () &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      // 普通类型【非响应式】</span><br><span class="line">      color: this.color, </span><br><span class="line">      // 复杂类型【响应式】</span><br><span class="line">      userInfo: this.userInfo, </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>子&#x2F;孙组件 inject获取数据</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">export default &#123;</span><br><span class="line">  inject: [&#x27;color&#x27;,&#x27;userInfo&#x27;],</span><br><span class="line">    created () &#123;</span><br><span class="line">    console.log(this.color, this.userInfo)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-注意"><a href="#4-注意" class="headerlink" title="4.注意"></a>4.注意</h3><ul>
+<li><strong>provide提供的简单类型的数据不是响应式的，复杂类型数据是响应式。（推荐提供复杂类型数据）</strong></li>
+<li>子&#x2F;孙组件通过inject获取的数据，不能在自身组件内修改</li>
+</ul>
+<h1 id="v-model实现表单类组件的封装"><a href="#v-model实现表单类组件的封装" class="headerlink" title="v-model实现表单类组件的封装"></a><code>v-model</code>实现表单类组件的封装</h1><p>**实现子组件和父组件数据的双向绑定 （实现App.vue中的selectId和子组件选中的数据进行双向绑定）	**</p>
+<blockquote>
+<p><code>v-model</code>本质上实现的是双向绑定，而<code>:value</code>这中的是单向绑定， 但是我们子组件是不允许修改父组件的内容的， 所以如果直接使用<code>v-model</code>就会报错， 需要修改。</p>
+</blockquote>
+<p><strong>v-model其实就是 :value和@input事件的简写</strong></p>
+<ul>
+<li><strong>子组件：props通过value接收数据，事件触发 input</strong></li>
+<li><strong>父组件：v-model直接绑定数据</strong></li>
+</ul>
+<p><img src="/images/1698145282076-95c9e4ad-9ff8-48d7-a27d-397548de446b.png" alt="image.png"><br>子组件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;select :value=&quot;value&quot; @change=&quot;handleChange&quot;&gt;...&lt;/select&gt;</span><br><span class="line">props: &#123;</span><br><span class="line">  value: String</span><br><span class="line">&#125;,</span><br><span class="line">methods: &#123;</span><br><span class="line">  handleChange (e) &#123;</span><br><span class="line">    this.$emit(&#x27;input&#x27;, e.target.value)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>父组件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;BaseSelect v-model=&quot;selectId&quot;&gt;&lt;/BaseSelect&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="sync修饰符（vue3-x已排除）"><a href="#sync修饰符（vue3-x已排除）" class="headerlink" title=".sync修饰符（vue3.x已排除）"></a>.sync修饰符（vue3.x已排除）</h2><p><code>:visible</code>就是控制显示隐藏的<br>update是固定的。<br><img src="/images/1698146218851-54bcc61a-8fcf-4a0a-8f21-450e3b27aa68.png" alt="image.png"></p>
+<h2 id="ref-和-refs-（常用-获取-dom-元素-）"><a href="#ref-和-refs-（常用-获取-dom-元素-）" class="headerlink" title="ref 和 $refs （常用** 获取 dom 元素 **）"></a>ref 和 $refs （常用** 获取 dom 元素 **）</h2><p><strong>作用： 利用ref 和 $refs 可以用于 获取 dom 元素 或 组件实例</strong></p>
+<h3 id=""><a href="#" class="headerlink" title=""></a><img src="/images/1698146932823-6246b84a-4e9a-4a4b-b409-83ec4a2c8658.png" alt="image.png"></h3><h3 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h3><ol>
+<li><strong>给要获取的盒子添加ref属性</strong></li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">ref</span>=<span class="string">&quot;chartRef&quot;</span>&gt;</span>我是渲染图表的容器<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>获取时通过 $refs获取 this.$refs.chartRef 获取</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mounted () &#123;</span><br><span class="line">  console.log(this.$refs.chartRef)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/1698146862440-541b118a-e290-4514-bd5b-bc9a7deb6ccb.png" alt="image.png"></p>
+<h2 id="vue异步更新、-nextTick"><a href="#vue异步更新、-nextTick" class="headerlink" title="vue异步更新、$nextTick"></a>vue异步更新、$nextTick</h2><blockquote>
+<h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>编辑标题, 编辑框自动聚焦</p>
+<ol>
+<li>点击编辑，显示编辑框</li>
+<li>让编辑框，立刻获取焦点</li>
+</ol>
+</blockquote>
+<p><img src="/images/1698147972531-4fd5da62-9894-44f8-bc9e-82ed748d5f19.png" alt="image.png">“显示之后”，立刻获取焦点是不能成功的！<br>原因<strong>：Vue 是异步更新DOM (提升性能)</strong></p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>$nextTick：<strong>等 DOM更新后</strong>,才会触发执行此方法里的函数体<br>**语法: **<code>this.$nextTick(函数体)</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">this.$nextTick(() =&gt; &#123;</span><br><span class="line">  this.$refs.inp.focus()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>$nextTick 内的函数体 一定是<strong>箭头函数</strong>，这样才能让函数内部的this指向Vue实例</p>
+<h1 id="自定义指令"><a href="#自定义指令" class="headerlink" title="自定义指令"></a>自定义指令</h1><ul>
+<li>内置指令：<strong>v-html、v-if、v-bind、v-on</strong>… 这都是Vue给咱们内置的一些指令，可以直接使用</li>
+<li>自定义指令：同时Vue也支持让开发者，自己注册一些指令。这些指令被称为<strong>自定义指令</strong>每个指令都有自己各自独立的功能</li>
+</ul>
+<p><strong>概念：自己定义的指令，可以封装一些DOM操作，扩展额外的功能</strong></p>
+<blockquote>
+<p>案例， 通过自定义指令， 可以封装一些dom操作， 扩展额外的功能， 实现项目中的所有获取dom的操作都可以使用我们的自定义指令来实现获取dom</p>
+</blockquote>
+<h2 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h2><ul>
+<li><strong>全局注册</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//在main.js中</span><br><span class="line">Vue.directive(&#x27;指令名&#x27;, &#123;</span><br><span class="line">  &quot;inserted&quot; (el) &#123;</span><br><span class="line">    // 可以对 el 标签，扩展额外功能</span><br><span class="line">    el.focus()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>局部注册</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//在Vue组件的配置项中</span><br><span class="line">directives: &#123;</span><br><span class="line">  &quot;指令名&quot;: &#123;</span><br><span class="line">    inserted () &#123;</span><br><span class="line">      // 可以对 el 标签，扩展额外功能</span><br><span class="line">      el.focus()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>使用指令语法： v-指令名</strong></li>
+</ul>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
+<li>注意：在使用指令的时候，一定要<strong>先注册</strong>，<strong>再使用</strong>，否则会报错<br>使用指令语法： v-指令名。如：<strong>注册</strong>指令时<strong>不用</strong>加<strong>v-前缀</strong>，但<strong>使用时</strong>一定要<strong>加v-前缀</strong></li>
+</ul>
+<h2 id="指令的值"><a href="#指令的值" class="headerlink" title="指令的值"></a>指令的值</h2><blockquote>
+<p>需求： 实现一个 color 指令 - 传入不同的颜色, 给标签设置文字颜色</p>
+</blockquote>
+<h2 id="语法："><a href="#语法：" class="headerlink" title="语法："></a>语法：</h2><ol>
+<li>绑定指令时，可以通过“等号”的形式为指令 绑定 具体的参数值</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div v-color=&quot;color&quot;&gt;我是内容&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>通过 binding.value 可以拿到指令值，<strong>指令值修改会 触发 update 函数</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">directives: &#123;</span><br><span class="line">  color: &#123;</span><br><span class="line">    inserted (el, binding) &#123;</span><br><span class="line">      el.style.color = binding.value</span><br><span class="line">    &#125;,</span><br><span class="line">    update (el, binding) &#123;</span><br><span class="line">      el.style.color = binding.value</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="实现案例需求："><a href="#实现案例需求：" class="headerlink" title="实现案例需求："></a>实现案例需求：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line"></span><br><span class="line">  &lt;!-- 类名·最好和当前组件名同名 --&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;!--显示红色--&gt; </span><br><span class="line">   &lt;h2 v-color=&quot;color1&quot;&gt;指令的值1测试&lt;/h2&gt;</span><br><span class="line">    &lt;!--显示蓝色--&gt; </span><br><span class="line">   &lt;h2 v-color=&quot;color2&quot;&gt;指令的值2测试&lt;/h2&gt;</span><br><span class="line">    &lt;button @click=&quot;color1 = &#x27;blue&#x27;&quot;&gt;</span><br><span class="line">       改变第一个h1的颜色</span><br><span class="line">   &lt;/button&gt;</span><br><span class="line"> &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  //导入组件</span><br><span class="line">  </span><br><span class="line">  export default &#123;</span><br><span class="line">    data () &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      color1: &#x27;red&#x27;,</span><br><span class="line">      color2: &#x27;blue&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">    methods: &#123;</span><br><span class="line">     </span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    // mounted ()&#123;</span><br><span class="line">    //     let input = this.$refs.inp.focus()</span><br><span class="line">    //     console.log(&quot;input&quot;+ input)</span><br><span class="line">    // &#125;,</span><br><span class="line"></span><br><span class="line">    // 注册组件 (对于导入的组件名和名称一样时， 我们可以直接使用)</span><br><span class="line">    components: &#123;</span><br><span class="line">      </span><br><span class="line">    &#125;</span><br><span class="line">    ,</span><br><span class="line">    </span><br><span class="line">    directives: &#123;</span><br><span class="line">      color: &#123;</span><br><span class="line">        inserted (el, binding) &#123;</span><br><span class="line">          // 可以对 el 标签，扩展额外功能</span><br><span class="line">          //这个el 就相当于是document.querySelecter(&#x27;color&#x27;)的意思</span><br><span class="line">          el.style.color = binding.value // 可以获取对应的data中的数据 就是我们指令的值color2 ----》 &lt;h2 v-color=&quot;color1&quot;&gt;指令的值1测试&lt;/h2&gt;</span><br><span class="line">          el.focus()</span><br><span class="line"></span><br><span class="line">        &#125;,</span><br><span class="line">        // update 指令的值修改的时候触发， 提供值变化后， dom的更新逻辑</span><br><span class="line">        update (el , binding)&#123;</span><br><span class="line">           console.log(&#x27;update 指令的val&#x27;)</span><br><span class="line">           el.style.color = binding.value</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="v-loading指令封装"><a href="#v-loading指令封装" class="headerlink" title="v-loading指令封装"></a>v-loading指令封装</h2><blockquote>
+<p><strong>需求：</strong> 实际开发过程中，发送请求需要时间，在请求的数据未回来时，页面会处于<strong>空白状态</strong> &#x3D;&gt; 用户体验不好<br><strong>封装一个 v-loading 指令，实现加载中的效果</strong></p>
+</blockquote>
+<p>类似于这样<br><img src="/images/1698231569590-7d8ea9c1-aaab-40af-9ef5-8fecb71d003c.png" alt="image.png"></p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><ol>
+<li>本质 loading效果就是一个蒙层，盖在了盒子上</li>
+<li>数据请求中，开启loading状态，添加蒙层</li>
+<li>数据请求完毕，关闭loading状态，移除蒙层</li>
+</ol>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><ol>
+<li>准备一个 loading类，通过伪元素定位，设置宽高，实现蒙层</li>
+<li><strong>开启关闭 loading状态（添加移除蒙层），本质只需要添加移除类即可</strong></li>
+<li>结合自定义指令的语法进行封装复用</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line">  .loading:before &#123;</span><br><span class="line">  content: &quot;&quot;;</span><br><span class="line">  position: absolute;</span><br><span class="line">  left: 0;</span><br><span class="line">  top: 0;</span><br><span class="line">  width: 100%;</span><br><span class="line">  height: 100%;</span><br><span class="line">  background: #fff url(&quot;./loading.gif&quot;) no-repeat center;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="插槽"><a href="#插槽" class="headerlink" title="插槽"></a>插槽</h1><p>**作用： **让组件内部的一些 <strong>结构</strong> 支持 <strong>自定义</strong><br><img src="/images/1698232931593-15aba065-50c7-49e6-be8e-e2b0b2e1d8f7.png" alt="image.png"></p>
+<blockquote>
+<p>需求： 将需要多次显示的对话框,封装成一个组件</p>
+</blockquote>
+<h3 id="插槽的基本语法"><a href="#插槽的基本语法" class="headerlink" title="插槽的基本语法"></a>插槽的基本语法</h3><ol>
+<li>组件内需要定制的结构部分，改用****占位</li>
+<li>使用组件时, ****标签内部, 传入结构替换slot </li>
+<li>给插槽传入内容时，可以传入<strong>纯文本、html标签、组件</strong></li>
+</ol>
+<h2 id="默认插槽"><a href="#默认插槽" class="headerlink" title="默认插槽"></a>默认插槽</h2><p>如果想要修改其中的内容该怎么做呢 ？<br><img src="/images/1698234428872-29b145d5-b87e-4afe-b333-6232dce92713.png" alt="image.png"><br><strong>封装组件时，可以为预留的 <slot> 插槽提供后备内容（默认内容)</strong><br>自定义的组件<code>MyDialog.vue</code> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;dialog&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;dialog-header&quot;&gt;</span><br><span class="line">      &lt;h3&gt;友情提示&lt;/h3&gt;</span><br><span class="line">      &lt;span class=&quot;close&quot;&gt;✖️&lt;/span&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">    &lt;div class=&quot;dialog-content&quot;&gt;</span><br><span class="line">      &lt;!-- 通过slot插槽来进行占位， 然后就可以在App中进行自定义传输 --&gt;</span><br><span class="line">      &lt;slot&gt;&lt;/slot&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;dialog-footer&quot;&gt;</span><br><span class="line">      &lt;button&gt;取消&lt;/button&gt;</span><br><span class="line">      &lt;button&gt;确认&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如果想要实现组件的占位操作：<br>在<code>App.vue</code>中 即可通过自定义内容来实现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;Mydialog&gt;</span><br><span class="line">    &lt;p&gt;are you shuer&lt;/p&gt;</span><br><span class="line">   &lt;/Mydialog&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/1698234610027-ec7064c3-4b5f-4e5e-b8be-a31165ebc946.png" alt="image.png"></p>
+<h2 id="后被内容"><a href="#后被内容" class="headerlink" title="后被内容"></a>后被内容</h2><p>但是这样的操作 ，如果我们不传输内容， 那么就会显示为空。 这样明显不符合要求， 所以我们需要给<code>slot</code>来实现给其中的内容进行赋值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;dialog&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;dialog-header&quot;&gt;</span><br><span class="line">      &lt;h3&gt;友情提示&lt;/h3&gt;</span><br><span class="line">      &lt;span class=&quot;close&quot;&gt;✖️&lt;/span&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">    &lt;div class=&quot;dialog-content&quot;&gt;</span><br><span class="line">      &lt;!-- 通过slot插槽来进行占位， 然后就可以在App中进行自定义传输 --&gt;</span><br><span class="line">      &lt;slot&gt;这是后被内容&lt;/slot&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;dialog-footer&quot;&gt;</span><br><span class="line">      &lt;button&gt;取消&lt;/button&gt;</span><br><span class="line">      &lt;button&gt;确认&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/1698234772706-6e655dca-12c9-4bd0-8f0b-2881f56f8c1b.png" alt="image.png"><br><img src="/images/1698234744200-0d0e8995-dc3d-4195-af31-98ac5d81622f.png" alt="image.png"></p>
+<h2 id="具名插槽"><a href="#具名插槽" class="headerlink" title="具名插槽"></a>具名插槽</h2><blockquote>
+<p><img src="/images/1698234921048-fa594c4f-ccb6-4325-b31e-bef8d02f575f.png" alt="image.png"><br>一个组件内有多处结构，需要外部传入标签，进行定制<br>上面的弹框中有<strong>三处不同</strong>，但是<strong>默认插槽</strong>只能<strong>定制一个位置</strong>，这时候怎么办呢?</p>
+</blockquote>
+<h3 id="具名插槽的使用"><a href="#具名插槽的使用" class="headerlink" title="具名插槽的使用"></a>具名插槽的使用</h3><p>通过在<code>slot</code>标签中使用 name属性来进行区分不同的插槽， 然后在需要使用的组件中， 通过<code>v-slot:name属性value</code>来进行赋值。 从而达到多个弹框出现多个值的情况</p>
+<p><img src="/images/1698234972256-3896416b-bc78-4878-84ef-4dc1651c8477.png" alt="image.png"></p>
+<h2 id="作用域插槽"><a href="#作用域插槽" class="headerlink" title="作用域插槽"></a>作用域插槽</h2><h3 id="插槽分类"><a href="#插槽分类" class="headerlink" title="插槽分类"></a>插槽分类</h3><ul>
+<li>默认插槽</li>
+<li>具名插槽</li>
+</ul>
+<p>插槽只有两种，作用域插槽不属于插槽的一种分类</p>
+<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><p>定义slot 插槽的同时, 是可以<strong>传值</strong>的。给 <strong>插槽</strong> 上可以 <strong>绑定数据</strong>，将来 <strong>使用组件时可以用</strong></p>
+<h3 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h3><ol>
+<li>给 slot 标签, 以 添加属性的方式传值</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;slot :id=&quot;item.id&quot; msg=&quot;测试文本&quot;&gt;&lt;/slot&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>所有添加的属性, 都会被收集到一个对象中</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; id: 3, msg: &#x27;测试文本&#x27; &#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>在template中, 通过 #插槽名&#x3D; “obj” 接收，默认插槽名为 default</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;MyTable :list=&quot;list&quot;&gt;</span><br><span class="line">  &lt;template #default=&quot;obj&quot;&gt;</span><br><span class="line">    &lt;button @click=&quot;del(obj.id)&quot;&gt;删除&lt;/button&gt;</span><br><span class="line">  &lt;/template&gt;</span><br><span class="line">&lt;/MyTable&gt;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="组件的封装-综合案例实现"><a href="#组件的封装-综合案例实现" class="headerlink" title="组件的封装 - 综合案例实现"></a>组件的封装 - 综合案例实现</h1><h2 id="my-tag-组件的封装"><a href="#my-tag-组件的封装" class="headerlink" title="my-tag 组件的封装"></a>my-tag 组件的封装</h2><p><strong>(1)  双击显示输入框，输入框获取焦点</strong><br><strong>(2) 失去焦点，隐藏输入框</strong><br><strong>(3) 回显标签信息</strong><br><strong>(4) 内容修改，回车 → 修改标签信息</strong></p>
+<h3 id="实现双击显示输入框，-并且获取输入框的焦点"><a href="#实现双击显示输入框，-并且获取输入框的焦点" class="headerlink" title="实现双击显示输入框， 并且获取输入框的焦点"></a>实现双击显示输入框， 并且获取输入框的焦点</h3><ol>
+<li><p>首先， 双击显示输入框， 我们可以通过双点击事件<code>dblclick=&quot;handleClick&quot;</code>实现，然后在实现的函数中 通过使<code>v-if</code>的内容为true， 实现点击显示输入框</p>
+</li>
+<li><p>获取输入框的焦点可以有两种方式：</p>
+</li>
+</ol>
+<ul>
+<li>方式一： 通过双击， 然后在其中的函数里通过<code>this.$nextTick(()=&gt; &#123;&#125;)</code>的方式 实现</li>
+<li>方式二： 通过在<code>main.js</code>中全局注册， 然后封装全局指令focus，然后就可以直接通过<code>v-focus</code>来进行使用</li>
+</ul>
+<p><img src="/images/1698390574641-5eb50174-01b0-4d06-866a-f75aaa98538b.png" alt="image.png"></p>
+<h3 id="失去焦点"><a href="#失去焦点" class="headerlink" title="失去焦点"></a>失去焦点</h3><p>因为获取焦点，我们是通过<code>v-if</code>来向选择的， 所以如果想要失去焦点， 可以直接将<code>if</code>中的信息修改即可。<br>所以就可以通过<code>@blur=&quot;isEdit = false&quot;</code>实现失去焦点</p>
+<h3 id="回显标签信息"><a href="#回显标签信息" class="headerlink" title="回显标签信息"></a>回显标签信息</h3><p>回显的信息是通过父组件传入的， 可以通过<code>v-model</code>实现， 也可以通过前面所学的<code>props</code>实现。<br>这里我们使用<code>v-model</code>实现， <code>v-model</code> &#x3D;&#x3D;&gt; <code>:value 和 input的组合</code></p>
+<ol>
+<li>父组件中<code>&lt;MyTag v-model=&quot;tempText&quot;&gt;&lt;/MyTag&gt;</code>， 通过<code>v-model</code>将需要修改的信息传入子标签</li>
+<li>子标签中通过<code>props</code>来进行接受标签内容</li>
+<li>接下来就可以在结构页面通过<code>&#123;&#123; value&#125;&#125;</code>实现内容的显示。</li>
+</ol>
+<p>通过上述的步骤就可以<strong>实现数据从父标签传入子标签， 实现标签内容的回显</strong></p>
+<h3 id="回车修改标签内容"><a href="#回车修改标签内容" class="headerlink" title="回车修改标签内容"></a>回车修改标签内容</h3><p>上述的回显示标签信息是通过父标签传子标签的形式实现的， 但是如何实现子标签传入父标签呢 ?<br>这里通过回车实现事件的触发， 那么我们就·在回车事件内实现数据的回显。 </p>
+<ol>
+<li>首先，我们知道， 回显的内容是在我们输入的<code>input</code>标签中， 同样，我们回车触发事件的内容也是在<code>input</code>中， 所以我们可以通过<code>e.target.value</code>获取触发事件的标签的内容， 也就是我们<code>input</code>标签中的内容， 也就是我们需要回显 的内容。 </li>
+<li>所以在回车事件中， 我们就可以通过<code>this.$emit(&#39;input&#39;, e.target.value)</code>实现子标签的内容向父标签传递的功能。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;my-tag&quot;&gt;</span><br><span class="line">    &lt;input </span><br><span class="line">      v-if=&quot;isEdit&quot;</span><br><span class="line">      refs=&quot;inp&quot;</span><br><span class="line">      v-focus</span><br><span class="line">      :value=&quot;value&quot;</span><br><span class="line">      class=&quot;input&quot;</span><br><span class="line">      type=&quot;text&quot;</span><br><span class="line">      placeholder=&quot;输入标签&quot;</span><br><span class="line">      @blur=&quot;isEdit = false&quot;</span><br><span class="line">      @keyup.enter=&quot;handleEnter&quot;</span><br><span class="line">    /&gt;</span><br><span class="line">    &lt;!-- </span><br><span class="line">       :value=&quot;values&quot;绑定</span><br><span class="line">       v-focus 自动聚焦的方法二 ： 在main.js中封装全局指令</span><br><span class="line">      @blur=&quot;isEdit = false&quot; 失去焦点隐藏 --&gt;</span><br><span class="line">    &lt;div class=&quot;text&quot; v-else</span><br><span class="line">      @dblclick=&quot;handleClick&quot;&gt;&#123;&#123; value &#125;&#125;&lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;!-- </span><br><span class="line">  (1) 双击显示输入框，输入框获取焦点</span><br><span class="line">  (2) 失去焦点，隐藏输入框</span><br><span class="line">  (3) 回显标签信息</span><br><span class="line">      信息是由外部父组件传入的</span><br><span class="line">  (4) 内容修改，回车 → 修改标签信息</span><br><span class="line"> --&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  export default &#123;</span><br><span class="line">     //接受父组件传入的信息</span><br><span class="line">    props: &#123;</span><br><span class="line">      value: String</span><br><span class="line">    &#125;,</span><br><span class="line">    data() &#123; </span><br><span class="line">      return &#123; </span><br><span class="line">        isEdit: false</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">      // 使用双击点击事件</span><br><span class="line">      handleClick()&#123; </span><br><span class="line">        // 需要实现自动聚焦的方式一： ，通过this.$nextTick()</span><br><span class="line">        // this.$nextTick(()=&gt; &#123;</span><br><span class="line">        //   //立刻获取焦点</span><br><span class="line">        //   this.$refs.inp.focus()</span><br><span class="line">        // &#125;)</span><br><span class="line">        this.isEdit = true</span><br><span class="line">      &#125;,</span><br><span class="line">      //e :可以获取触发事件的事件源</span><br><span class="line">      handleEnter(e) &#123;</span><br><span class="line">        if(e.target.value.trim() === &#x27;&#x27;) return alert(&quot;标签内容不为空&quot;)</span><br><span class="line">        //获取回车之后里面的内容， 所以获取内容， 然后更新给父组件</span><br><span class="line">        this.$emit(&#x27;input&#x27;, e.target.value)</span><br><span class="line">        this.isEdit=  false //隐藏输入框</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style lang=&quot;less&quot; scoped&gt;</span><br><span class="line">.my-tag &#123;</span><br><span class="line">  cursor: pointer;</span><br><span class="line">  .input &#123;</span><br><span class="line">    appearance: none;</span><br><span class="line">    outline: none;</span><br><span class="line">    border: 1px solid #ccc;</span><br><span class="line">    width: 100px;</span><br><span class="line">    height: 40px;</span><br><span class="line">    box-sizing: border-box;</span><br><span class="line">    padding: 10px;</span><br><span class="line">    color: #666;</span><br><span class="line">    &amp;::placeholder &#123;</span><br><span class="line">      color: #666;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="my-table-组件的封装"><a href="#my-table-组件的封装" class="headerlink" title="my-table 组件的封装"></a>my-table 组件的封装</h2><p><strong>(1) 动态传递表格数据渲染</strong><br><strong>(2) 表头支持用户自定义</strong><br><strong>(3) 主体支持用户自定义</strong></p>
+<h3 id="动态定义表"><a href="#动态定义表" class="headerlink" title="动态定义表"></a>动态定义表</h3><p>通过<code>&lt;slot name=&quot;head&quot;&gt;&lt;/slot&gt;</code>占位， 然后在父标签中实现内容传递<br><img src="/images/1698394532374-99da86d3-43dd-4516-bad4-5f7d26ac4cee.png" alt="image.png"></p>
+<p>在父组件<code>App.vue</code>中， 通过使用<code>&lt;template #head...&gt;</code>的方式， 实现组件插槽的自定义编辑。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">   &lt;div class=&quot;table-case&quot;&gt;</span><br><span class="line">   &lt;!-- 动态的定义表头 --&gt;</span><br><span class="line">     &lt;MyTable :data=&quot;goods&quot;&gt;</span><br><span class="line">      &lt;template #head&gt;</span><br><span class="line">        &lt;th&gt;编号&lt;/th&gt;</span><br><span class="line">        &lt;th&gt;图片&lt;/th&gt;</span><br><span class="line">        &lt;th&gt;名称&lt;/th&gt;</span><br><span class="line">        &lt;th width=&quot;100px&quot;&gt;标签&lt;/th&gt;</span><br><span class="line"></span><br><span class="line">      &lt;/template&gt; </span><br><span class="line"></span><br><span class="line">      &lt;!-- 通过表头 ，自定义主体部分. 通过obj对象来接收传入的内容 --&gt;</span><br><span class="line">      &lt;template #body=&quot;obj&quot;&gt;</span><br><span class="line">          &lt;td&gt;&#123;&#123; obj.index + 1&#125;&#125;&lt;/td&gt;</span><br><span class="line">          &lt;td&gt; &lt;img :src=&quot;obj.item.picture&quot; /&gt; &lt;/td&gt;</span><br><span class="line">          &lt;td&gt; &#123;&#123;  obj.item.name &#125;&#125; &lt;/td&gt;</span><br><span class="line">          &lt;td&gt; &lt;MyTag v-model=&quot;obj.item.tag&quot;&gt;&lt;/MyTag&gt; &lt;/td&gt;</span><br><span class="line"></span><br><span class="line">      &lt;/template&gt;</span><br><span class="line">    &lt;/MyTable&gt;</span><br><span class="line">  </span><br><span class="line">   &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在子组件<code>MyTable.vue</code>组件中，通过<code>&lt;slot name=&quot;body&quot; :item=&quot;item&quot; :index=&quot;index&quot;&gt;&lt;/slot&gt;</code>占位符的方式， 实现组件内容的占位， 然后再通过<code>:参数=“参数”</code>的方式， 实现占位中的内容传输</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line"></span><br><span class="line">  &lt;table class=&quot;my-table&quot;&gt;</span><br><span class="line">    &lt;thead&gt;</span><br><span class="line">      &lt;tr&gt;</span><br><span class="line">        &lt;slot name=&quot;head&quot;&gt;&lt;/slot&gt;</span><br><span class="line">      &lt;/tr&gt;</span><br><span class="line">    &lt;/thead&gt;</span><br><span class="line">    &lt;tbody &gt;</span><br><span class="line">      &lt;tr v-for=&quot;(item, index) in data&quot; :key=&quot;item.id&quot;&gt;</span><br><span class="line">        &lt;!-- 通过slot插槽占位 ，之后又使用:item 进行插槽传值 --&gt;</span><br><span class="line">        &lt;slot name=&quot;body&quot; :item=&quot;item&quot; :index=&quot;index&quot;&gt;&lt;/slot&gt;</span><br><span class="line">      &lt;/tr&gt;</span><br><span class="line">  </span><br><span class="line">    &lt;/tbody&gt;</span><br><span class="line">  &lt;/table&gt;</span><br><span class="line"></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+</style></p></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://Ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/c4fe0bb4.html">https://ray2310.github.io/post/c4fe0bb4.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ray2310.github.io" target="_blank">Rayce. Blogs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/vue/">vue</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/f914d2ff.html" title="Vue工程化"><img class="cover" src="https://pic2.zhimg.com/v2-93d5754cb8c35c94f8ade4a5399929c1_r.jpg" onerror="onerror=null;src='/img/second.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Vue工程化</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/f914d2ff.html" title="Vue工程化"><img class="cover" src="https://pic2.zhimg.com/v2-93d5754cb8c35c94f8ade4a5399929c1_r.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-10-24</div><div class="title">Vue工程化</div></div></a></div><div><a href="/post/b5f5f2e1.html" title="Vue-QuickStarted"><img class="cover" src="https://th.bing.com/th/id/R.0fc443a72d9db316bfde971a16183f0b?rik=PXfjJ755mSffZQ&riu=http%3a%2f%2fpic.qqbizhi.com%2fallimg%2fbbpic%2f52%2f1152_1.jpg&ehk=7rVKhOuGUW%2bcK6qwj4%2fmjwH1ZrDLF1e82i%2f09SqbqSE%3d&risl=&pid=ImgRaw&r=0" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-10-24</div><div class="title">Vue-QuickStarted</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">119</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">24</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center">自我沉淀，在繁华中自律，在落魄中自愈</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%BB%84%E4%BB%B6%E7%9A%84%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86"><span class="toc-number">1.</span> <span class="toc-text">一、组件的组成部分</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81scoped%E8%A7%A3%E5%86%B3%E6%A0%B7%E5%BC%8F%E5%86%B2%E7%AA%81"><span class="toc-number">2.</span> <span class="toc-text">二、scoped解决样式冲突</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E6%83%85%E5%86%B5%EF%BC%9A"><span class="toc-number">2.1.</span> <span class="toc-text">默认情况：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#scoped%E5%8E%9F%E7%90%86"><span class="toc-number">2.2.</span> <span class="toc-text">scoped原理</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/c4fe0bb4.html" title="组件化详细"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="组件化详细"/></a><div class="content"><a class="title" href="/post/c4fe0bb4.html" title="组件化详细">组件化详细</a><time datetime="2023-10-27T10:40:47.000Z" title="发表于 2023-10-27 18:40:47">2023-10-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/f914d2ff.html" title="Vue工程化"><img src="https://pic2.zhimg.com/v2-93d5754cb8c35c94f8ade4a5399929c1_r.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Vue工程化"/></a><div class="content"><a class="title" href="/post/f914d2ff.html" title="Vue工程化">Vue工程化</a><time datetime="2023-10-24T12:23:01.000Z" title="发表于 2023-10-24 20:23:01">2023-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/6c80c3f9.html" title="二叉树篇二刷总结"><img src="https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d058ccbf6c81800ae9cb0e37b83533fa828b47d9.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="二叉树篇二刷总结"/></a><div class="content"><a class="title" href="/post/6c80c3f9.html" title="二叉树篇二刷总结">二叉树篇二刷总结</a><time datetime="2023-10-21T05:07:43.000Z" title="发表于 2023-10-21 13:07:43">2023-10-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/b5f5f2e1.html" title="Vue-QuickStarted"><img src="https://th.bing.com/th/id/R.0fc443a72d9db316bfde971a16183f0b?rik=PXfjJ755mSffZQ&amp;riu=http%3a%2f%2fpic.qqbizhi.com%2fallimg%2fbbpic%2f52%2f1152_1.jpg&amp;ehk=7rVKhOuGUW%2bcK6qwj4%2fmjwH1ZrDLF1e82i%2f09SqbqSE%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Vue-QuickStarted"/></a><div class="content"><a class="title" href="/post/b5f5f2e1.html" title="Vue-QuickStarted">Vue-QuickStarted</a><time datetime="2023-10-19T12:22:13.000Z" title="发表于 2023-10-19 20:22:13">2023-10-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/a45f6496.html" title="栈和队列篇总结"><img src="https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d058ccbf6c81800ae9cb0e37b83533fa828b47d9.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="栈和队列篇总结"/></a><div class="content"><a class="title" href="/post/a45f6496.html" title="栈和队列篇总结">栈和队列篇总结</a><time datetime="2023-10-07T08:28:32.000Z" title="发表于 2023-10-07 16:28:32">2023-10-07</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a><a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a><a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> <a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: '',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: '',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
