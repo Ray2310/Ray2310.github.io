@@ -1,0 +1,551 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Vue路由 | Rayce. Blogs</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="引言什么是单页应用程序：单页应用程序：SPA【Single Page Application】是指所有的功能都在一个html页面上实现 单页应用和多页应用的区别： 单页面应用程序，之所以开发效率高，性能好，用户体验好最大的原因就是：页面按需更新 路由的基本使用定义&amp;作用：修改地址栏路径时，切换显示匹配的组件 基本使用固定5个固定的步骤（不用死背，熟能生巧）  下载 VueRouter 模块">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue路由">
+<meta property="og:url" content="https://ray2310.github.io/post/92619e7d.html">
+<meta property="og:site_name" content="Rayce. Blogs">
+<meta property="og:description" content="引言什么是单页应用程序：单页应用程序：SPA【Single Page Application】是指所有的功能都在一个html页面上实现 单页应用和多页应用的区别： 单页面应用程序，之所以开发效率高，性能好，用户体验好最大的原因就是：页面按需更新 路由的基本使用定义&amp;作用：修改地址栏路径时，切换显示匹配的组件 基本使用固定5个固定的步骤（不用死背，熟能生巧）  下载 VueRouter 模块">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://th.bing.com/th/id/OIP.1tjF2kQmna-oY-8tTH5OQgHaE7?pid=ImgDet&rs=1">
+<meta property="article:published_time" content="2023-10-30T13:15:39.000Z">
+<meta property="article:modified_time" content="2023-10-30T13:20:19.020Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://th.bing.com/th/id/OIP.1tjF2kQmna-oY-8tTH5OQgHaE7?pid=ImgDet&rs=1"><link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQHlJW3iX0eSx0YEsPnrToEC7iKW4m3TEgiQ&usqp=CAU"><link rel="canonical" href="https://ray2310.github.io/post/92619e7d.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. Blogs","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Vue路由',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-10-30 21:20:19'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">120</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">24</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://th.bing.com/th/id/OIP.1tjF2kQmna-oY-8tTH5OQgHaE7?pid=ImgDet&amp;rs=1')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. Blogs"><span class="site-name">Rayce. Blogs</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Vue路由</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-10-30T13:15:39.000Z" title="发表于 2023-10-30 21:15:39">2023-10-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-10-30T13:20:19.020Z" title="更新于 2023-10-30 21:20:19">2023-10-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%89%8D%E7%AB%AF/vue/">vue</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>21分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Vue路由"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p><strong>什么是单页应用程序：</strong><br>单页应用程序：SPA【Single Page Application】是指所有的功能都在<strong>一个html页面</strong>上实现</p>
+<h2 id="单页应用和多页应用的区别："><a href="#单页应用和多页应用的区别：" class="headerlink" title="单页应用和多页应用的区别："></a>单页应用和多页应用的区别：</h2><p><img src="/images/1698396457319-6190719e-288d-4733-a655-06df56b57906.png" alt="image.png"></p>
+<p>单页面应用程序，之所以开发效率高，性能好，用户体验好<br>最大的原因就是：<strong>页面按需更新</strong></p>
+<h1 id="路由的基本使用"><a href="#路由的基本使用" class="headerlink" title="路由的基本使用"></a>路由的基本使用</h1><h2 id="定义-amp-作用："><a href="#定义-amp-作用：" class="headerlink" title="定义&amp;作用："></a>定义&amp;作用：</h2><p><strong>修改</strong>地址栏路径时，<strong>切换显示</strong>匹配的<strong>组件</strong></p>
+<h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><p>固定5个固定的步骤（不用死背，熟能生巧）</p>
+<ol>
+<li>下载 VueRouter 模块到当前工程，版本3.6.5</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install vue-router@3.6.5</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>main.js中引入VueRouter</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import VueRouter from &#x27;vue-router&#x27;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>安装注册</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Vue.use(VueRouter)</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>创建路由对象</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const router = new VueRouter()</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>注入，将路由对象注入到new Vue实例中，建立关联</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">new Vue(&#123;</span><br><span class="line">  render: h =&gt; h(App),</span><br><span class="line">  router:router</span><br><span class="line">&#125;).$mount(&#x27;#app&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>当我们配置完以上5步之后 就可以看到浏览器地址栏中的路由 变成了 &#x2F;#&#x2F;的形式。表示项目的路由已经被Vue-Router管理了</p>
+<h2 id="核心步骤"><a href="#核心步骤" class="headerlink" title="核心步骤"></a>核心步骤</h2><ol>
+<li><strong>创建需要的组件 (views目录)，配置路由规则</strong></li>
+</ol>
+<p><img src="/images/1698397916834-dc0c7483-5465-42aa-843e-190e3b27b78d.png" alt="image.png"></p>
+<ol start="2">
+<li>**配置导航，配置路由出口(路径匹配的组件显示的位置) **</li>
+</ol>
+<p>这里我们在<code>App.vue</code>中配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;footer_wrap&quot;&gt;</span><br><span class="line">  &lt;a href=&quot;#/find&quot;&gt;发现音乐&lt;/a&gt;</span><br><span class="line">  &lt;a href=&quot;#/my&quot;&gt;我的音乐&lt;/a&gt;</span><br><span class="line">  &lt;a href=&quot;#/friend&quot;&gt;朋友&lt;/a&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;top&quot;&gt;</span><br><span class="line">  &lt;router-view&gt;&lt;/router-view&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="放置位置："><a href="#放置位置：" class="headerlink" title="放置位置："></a>放置位置：</h2><p>分类开来的目的就是为了 <strong>更易维护</strong></p>
+<ol>
+<li><strong>src&#x2F;views文件夹页面组件 - 页面展示 - 配合路由用</strong></li>
+<li><strong>src&#x2F;components文件夹复用组件 - 展示数据 - 常用于复用</strong></li>
+</ol>
+<h1 id="路由进阶"><a href="#路由进阶" class="headerlink" title="路由进阶"></a>路由进阶</h1><h2 id="路由模块封装"><a href="#路由模块封装" class="headerlink" title="路由模块封装"></a>路由模块封装</h2><blockquote>
+<p>如果将所有的路由配置 都配配置在main.js中， 那么如果模块很多， 那么项目就不利于维护， 所以我们需要拆分路由模块</p>
+</blockquote>
+<p><img src="/images/1698487271072-67950141-24b1-4dcc-8a39-89c35a3d8181.png" alt="image.png"></p>
+<p><code>router/index.js</code>的内容</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 路由的使用步骤 5 + 2</span></span><br><span class="line"><span class="comment">// 5个基础步骤</span></span><br><span class="line"><span class="comment">// 1. 下载 v3.6.5</span></span><br><span class="line"><span class="comment">// 2. 引入</span></span><br><span class="line"><span class="comment">// 3. 安装注册 Vue.use(Vue插件)</span></span><br><span class="line"><span class="comment">// 4. 创建路由对象( 也就是一些组件 )</span></span><br><span class="line"><span class="comment">// 5. 注入到new Vue中，建立关联</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2个核心步骤</span></span><br><span class="line"><span class="comment">// 1. 建组件(views目录)，配规则</span></span><br><span class="line"><span class="comment">// 2. 准备导航链接，配置路由出口(匹配的组件展示的位置) </span></span><br><span class="line"></span><br><span class="line"><span class="comment">//@ 代表的就是src</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Find</span> <span class="keyword">from</span> <span class="string">&#x27;@/views/Find&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">My</span> <span class="keyword">from</span> <span class="string">&#x27;@/views/My&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Friend</span> <span class="keyword">from</span> <span class="string">&#x27;@/views/Friend&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Link</span> <span class="keyword">from</span> <span class="string">&#x27;@/views/Link&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">VueRouter</span> <span class="keyword">from</span> <span class="string">&#x27;vue-router&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">VueRouter</span>) <span class="comment">// VueRouter插件初始化</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> <span class="title class_">VueRouter</span>(&#123;</span><br><span class="line">  <span class="comment">// routes 路由规则们</span></span><br><span class="line">  <span class="comment">// route  一条路由规则 &#123; path: 路径, component: 组件 &#125;</span></span><br><span class="line">  <span class="attr">routes</span>: [</span><br><span class="line">    &#123; <span class="attr">path</span>: <span class="string">&#x27;/find&#x27;</span>, <span class="attr">component</span>: <span class="title class_">Find</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">path</span>: <span class="string">&#x27;/my&#x27;</span>, <span class="attr">component</span>: <span class="title class_">My</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">path</span>: <span class="string">&#x27;/friend&#x27;</span>, <span class="attr">component</span>: <span class="title class_">Friend</span> &#125;,</span><br><span class="line">    &#123;<span class="attr">path</span>: <span class="string">&#x27;/link&#x27;</span>, <span class="attr">component</span>: <span class="title class_">Link</span>&#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> router</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="声明式导航-amp-导航高亮-x2F-精确匹配-x2F-自定义高亮类名"><a href="#声明式导航-amp-导航高亮-x2F-精确匹配-x2F-自定义高亮类名" class="headerlink" title="声明式导航&amp; 导航高亮 &#x2F; 精确匹配 &#x2F; 自定义高亮类名"></a>声明式导航&amp; 导航高亮 &#x2F; 精确匹配 &#x2F; 自定义高亮类名</h2><h3 id="导航高亮"><a href="#导航高亮" class="headerlink" title="导航高亮"></a>导航高亮</h3><p><img src="/images/1698487740126-6f8e02ad-d4af-4964-88bf-0a68600359a8.png" alt="image.png"></p>
+<blockquote>
+<p>如果使用a标签进行跳转的话，需要给当前跳转的导航加样式，同时要移除上一个a标签的样式，太麻烦！！！</p>
+</blockquote>
+<p><strong>vue-router 提供了一个全局组件 router-link (取代 a 标签)</strong></p>
+<ul>
+<li><strong>能跳转</strong>，配置 to 属性指定路径(<strong>必须</strong>) 。本质还是 a 标签 ，<strong>to 无需 #</strong></li>
+<li><strong>能高亮</strong>，默认就会提供<strong>高亮类名</strong>，可以直接设置高亮样</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;footer_wrap&quot;&gt;</span><br><span class="line">  &lt;router-link to=&quot;/find&quot;&gt;发现音乐&lt;/router-link&gt;</span><br><span class="line">  &lt;router-link to=&quot;/my&quot;&gt;我的音乐&lt;/router-link&gt;</span><br><span class="line">  &lt;router-link to=&quot;/friend&quot;&gt;朋友&lt;/router-link&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<p>使用router-link跳转后，我们发现。当前点击的链接默认加了两个class的值 <code>router-link-exact-active和router-link-active</code><br>我们可以给任意一个class属性添加高亮样式即可实现功能</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line">.footer_wrap a.router-link-active &#123;</span><br><span class="line">  background-color: purple;</span><br><span class="line">&#125; </span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="两个类名"><a href="#两个类名" class="headerlink" title="两个类名"></a>两个类名</h3><p>当我们使用<code>router-link</code>跳转时，自动给当前导航加了**两个类名. **<br>相当于a标签加上了两个类名<br><img src="/images/1698488299778-2003eb2e-aced-4569-b325-ccc93ad93c2c.png" alt="image.png"></p>
+<h4 id="精确匹配：router-link-exact-active"><a href="#精确匹配：router-link-exact-active" class="headerlink" title="精确匹配：router-link-exact-active"></a>精确匹配：<code>router-link-exact-active</code></h4><blockquote>
+<p>to&#x3D;”&#x2F;my” 仅可以匹配 &#x2F;my</p>
+</blockquote>
+<p>不能对其他的路径起作用。</p>
+<h4 id="模糊匹配：-router-link-active"><a href="#模糊匹配：-router-link-active" class="headerlink" title="模糊匹配： router-link-active"></a>模糊匹配： <code>router-link-active</code></h4><blockquote>
+<p>to&#x3D;”&#x2F;my” 可以匹配 &#x2F;my &#x2F;my&#x2F;a &#x2F;my&#x2F;b ….<br>只要是以&#x2F;my开头的路径 都可以和 to&#x3D;”&#x2F;my”匹配到</p>
+</blockquote>
+<p><img src="/images/1698488552480-c67a2c3f-7804-4290-96f0-8a0a5f09d008.png" alt="image.png"><br>就是如果我们匹配到发现音乐下面的排行榜名 ，但是同时还希望 发现音乐也是高亮显示， 那么我们就可以通过使用模糊匹配的方式来实现</p>
+<h3 id="自定义类名"><a href="#自定义类名" class="headerlink" title="自定义类名"></a>自定义类名</h3><blockquote>
+<p>对于<code>router-link-exact-active</code> 和 <code>router-link-active</code>， 认为类名太长了，如果想要换的短一些， 可以通过使用下面的即可</p>
+</blockquote>
+<p>我们可以在创建路由对象时，额外配置两个配置项即可。 linkActiveClass和linkExactActiveClass</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const router = new VueRouter(&#123;</span><br><span class="line">  routes: [...],</span><br><span class="line">  linkActiveClass: &quot;类名1&quot;, </span><br><span class="line">  linkExactActiveClass: &quot;类名2&quot;</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 创建了一个路由对象</span><br><span class="line">    const router = new VueRouter(&#123;</span><br><span class="line">    routes: [</span><br><span class="line">    ...</span><br><span class="line">    ], </span><br><span class="line">    linkActiveClass: &#x27;active&#x27;, // 配置模糊匹配的类名</span><br><span class="line">    linkExactActiveClass: &#x27;exact-active&#x27; // 配置精确匹配的类名</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>最后再将<code>style</code>中之前配置的 <code>router-link-exact-active</code>更改为自己使用的<code>类名1</code>  和<code>类名2</code>即可。</p>
+<h3 id="声明式导航的跳转传参的两种方式"><a href="#声明式导航的跳转传参的两种方式" class="headerlink" title="声明式导航的跳转传参的两种方式"></a>声明式导航的跳转传参的两种方式</h3><blockquote>
+<p>在跳转路由时，进行传参<br>比如：现在我们在搜索页点击了热门搜索链接，跳转到详情页，<strong>需要把点击的内容带到详情页</strong>，改怎么办呢？</p>
+</blockquote>
+<ul>
+<li><strong>查询参数传参</strong></li>
+<li><strong>动态路由传参</strong></li>
+</ul>
+<h3 id="查询参数传参"><a href="#查询参数传参" class="headerlink" title="查询参数传参"></a>查询参数传参</h3><p><strong>语法格式：</strong><br><code>&lt;router-link to=&quot;to/path?参数名=值&quot;&gt; &lt;/router-link&gt;</code><br><strong>对应的页面接收参数的语法：</strong><br><code>&lt;p&gt;&#123;&#123; $route.query.参数名 &#125;&#125; &lt;/p&gt;</code><br>如果想要在<code>created()&#123;&#125;</code>等方法中得到参数路由 ，可以通过 <code>this.$route.query.参数名</code> 来获取参数值 </p>
+<h3 id="动态路由传参"><a href="#动态路由传参" class="headerlink" title="动态路由传参"></a>动态路由传参</h3><ol>
+<li>配置动态路由动态路由后面的参数可以随便起名，但要有语义</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const router = new VueRouter(&#123;</span><br><span class="line">  routes: [</span><br><span class="line">    ...,</span><br><span class="line">    // /search/:参数名 表示，必须要传参数。如果不传参数，也希望匹配，可以加个可选符&quot;？&quot;  </span><br><span class="line">    &#123;  path: &#x27;/search/:参数名&#x27;, component: Search  &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)	</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>配置导航链接<code>to=&quot;/path/参数值&quot;</code></li>
+</ol>
+<blockquote>
+<p>可以直接写参数名， 不需要写 <code>?key=value</code></p>
+</blockquote>
+<ol start="3">
+<li>对应页面组件<strong>接受参数</strong><code>$route.**params**.参数名</code></li>
+</ol>
+<blockquote>
+<p>params后面的参数名要和动态路由配置的参数保持一致</p>
+</blockquote>
+<h3 id="两种传参数的方式区别"><a href="#两种传参数的方式区别" class="headerlink" title="两种传参数的方式区别"></a>两种传参数的方式区别</h3><ol>
+<li>查询参数传参 (比较适合传<strong>多个参数</strong>)</li>
+<li>跳转：to&#x3D;”&#x2F;path?参数名&#x3D;值&amp;参数名2&#x3D;值”</li>
+<li>获取：$route.query.参数名</li>
+<li>动态路由传参 (<strong>优雅简洁</strong>，传单个参数比较方便)<ol>
+<li>配置动态路由：path: “&#x2F;path&#x2F;:参数名”</li>
+<li>跳转：to&#x3D;”&#x2F;path&#x2F;参数值”</li>
+<li>获取：$route.params.参数名</li>
+</ol>
+</li>
+<li>注意：动态路由也可以传多个参数，但一般只传一个</li>
+</ol>
+<h2 id="路由重定向-x2F-路由404-x2F-路由模式"><a href="#路由重定向-x2F-路由404-x2F-路由模式" class="headerlink" title="路由重定向 &#x2F; 路由404 &#x2F; 路由模式"></a>路由重定向 &#x2F; 路由404 &#x2F; 路由模式</h2><h3 id="路由重定向"><a href="#路由重定向" class="headerlink" title="路由重定向"></a>路由重定向</h3><blockquote>
+<p>网页打开时， url 默认是 &#x2F; 路径，未匹配到组件时，会出现空白</p>
+</blockquote>
+<p><img src="/images/1698490537082-b491f630-2ae7-41ab-aa25-0a2ebc458d9b.png" alt="image.png"></p>
+<p><strong>重定向</strong> → 匹配 &#x2F; 后, 强制跳转 &#x2F;home 路径</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123; path: 匹配路径, redirect: 重定向到的路径 &#125;,</span><br><span class="line">比如：</span><br><span class="line">&#123; path:&#x27;/&#x27; ,redirect:&#x27;/home&#x27; &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const router = new VueRouter(&#123;</span><br><span class="line">  routes: [</span><br><span class="line">    &#123; path: &#x27;/&#x27;, redirect: &#x27;/home&#x27;&#125;,</span><br><span class="line"> 	 ...</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="路由404"><a href="#路由404" class="headerlink" title="路由404"></a>路由404</h3><p>找不到路径匹配的时候， 通过404的路由，虽然配置在任何一个位置都可以，但一般都<strong>配置在其他路由规则的最后面</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import NotFind from &#x27;@/views/NotFind&#x27;</span><br><span class="line"></span><br><span class="line">const router = new VueRouter(&#123;</span><br><span class="line">  routes: [</span><br><span class="line">    ...</span><br><span class="line">    &#123; path: &#x27;*&#x27;, component: NotFind &#125; //最后一个</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="路由模式"><a href="#路由模式" class="headerlink" title="路由模式"></a>路由模式</h3><blockquote>
+<p>默认是hash模式， 就是带 # 的<br>路由的路径看起来不自然, 有#，能否切成真正路径形式?</p>
+</blockquote>
+<ul>
+<li>hash路由(默认) 例如: <a target="_blank" rel="noopener" href="http://localhost:8080/#/home">http://localhost:8080/#/home</a></li>
+<li>history路由(常用) 例如: <a target="_blank" rel="noopener" href="http://localhost:8080/home">http://localhost:8080/home</a> (以后上线需要服务器端支持，开发环境webpack给规避掉了history模式的问题)</li>
+</ul>
+<h3 id="2-语法"><a href="#2-语法" class="headerlink" title="2.语法"></a>2.语法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const router = new VueRouter(&#123;</span><br><span class="line">  mode:&#x27;histroy&#x27;, //默认是hash ， 通过这个配置就是设置成为history</span><br><span class="line">  routes:[]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="编程式导航-两种路由跳转方式"><a href="#编程式导航-两种路由跳转方式" class="headerlink" title="编程式导航- 两种路由跳转方式"></a>编程式导航- 两种路由跳转方式</h2><blockquote>
+<p>点击按钮跳转。 通过js的格式 实现跳转</p>
+</blockquote>
+<p><img src="/images/1698491104532-82eda7ed-d3b0-494d-bef3-24e4ddee5eb3.png" alt="image.png"><br><strong>两种语法：</strong></p>
+<ul>
+<li><strong>path 路径跳转 （简易方便）</strong></li>
+<li><strong>name 命名路由跳转 (适合 path 路径长的场景)</strong></li>
+</ul>
+<h3 id="path的形式进行跳转"><a href="#path的形式进行跳转" class="headerlink" title="path的形式进行跳转"></a>path的形式进行跳转</h3><p>通过点击事件触发</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123; </span><br><span class="line">	clickItem() &#123;</span><br><span class="line">     //两种方法</span><br><span class="line">    //1. 简单写法</span><br><span class="line">    this.$router.push(&#x27;路由路径&#x27;)</span><br><span class="line">    //2. 完整写法</span><br><span class="line">    this.$router.push(&#123;</span><br><span class="line">      path: &#x27;路由路径&#x27;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="name命名路由跳转"><a href="#name命名路由跳转" class="headerlink" title="name命名路由跳转"></a>name命名路由跳转</h3><blockquote>
+<p>特点：适合 path 路径长的场景</p>
+</blockquote>
+<p>语法：</p>
+<ul>
+<li>路由规则，必须配置name配置项</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> <span class="title class_">VueRouter</span>(&#123;</span><br><span class="line">  <span class="comment">// routes 路由规则们</span></span><br><span class="line">  <span class="comment">// route  一条路由规则 &#123; path: 路径, component: 组件 &#125;</span></span><br><span class="line">  <span class="attr">routes</span>: [</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">&#x27;路由名&#x27;</span>, <span class="attr">path</span>: <span class="string">&#x27;/path/xxx&#x27;</span>, <span class="attr">component</span>: <span class="variable constant_">XXX</span> &#125;,</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>通过click事件触发之后 然后通过 name来进行跳转</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123; </span><br><span class="line">	clickItem() &#123;</span><br><span class="line">     this.$router.push(&#123;</span><br><span class="line">      name: &#x27;路由名&#x27;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="路由跳转的传参"><a href="#路由跳转的传参" class="headerlink" title="路由跳转的传参"></a>路由跳转的传参</h3><blockquote>
+<p>下面的演示案例，都是通过点击事件触发的， 所以使用<code>clickItem</code>函数来实现其中的传参</p>
+</blockquote>
+<ol>
+<li>path路径的方式 (query的方式)</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123; </span><br><span class="line">	clickItem() &#123;</span><br><span class="line">    //简单写法</span><br><span class="line">    this.$router.push(&#x27;/路径?参数名1=参数值1&amp;参数2=参数值2&#x27;)</span><br><span class="line">    //完整写法</span><br><span class="line">    this.$router.push(&#123;</span><br><span class="line">      path: &#x27;/路径&#x27;,</span><br><span class="line">      query: &#123;</span><br><span class="line">        参数名1: &#x27;参数值1&#x27;,</span><br><span class="line">        参数名2: &#x27;参数值2&#x27;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接受还是通过<code>$route.query.参数名</code></p>
+<ol start="2">
+<li>path路径的方式， 通过动态路由的方式</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line">methods: &#123; </span><br><span class="line">	clickItem() &#123;</span><br><span class="line">    //简单写法</span><br><span class="line">    this.$router.push(&#x27;/路径/参数值&#x27;)</span><br><span class="line">    //完整写法</span><br><span class="line">    this.$router.push(&#123;</span><br><span class="line">      path: &#x27;/路径/参数值&#x27;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接受参数的方式依然是：<code>$route.params.参数值</code></p>
+<ol start="3">
+<li>name 命名路由跳转传参 (query传参)</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">methods: &#123; </span><br><span class="line">	clickItem() &#123;</span><br><span class="line">  this.$router.push(&#123;</span><br><span class="line">      name: &#x27;路由名字&#x27;,</span><br><span class="line">      query: &#123;</span><br><span class="line">        参数名1: &#x27;参数值1&#x27;,</span><br><span class="line">        参数名2: &#x27;参数值2&#x27;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>name 命名路由跳转传参 (动态路由传参)</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123; </span><br><span class="line">	clickItem() &#123;</span><br><span class="line">    this.$router.push(&#123;</span><br><span class="line">      name: &#x27;路由名字&#x27;,</span><br><span class="line">      params: &#123;</span><br><span class="line">        参数名: &#x27;参数值&#x27;,</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="案例实现"><a href="#案例实现" class="headerlink" title="案例实现"></a>案例实现</h1><p>**分析：配路由 + 实现功能 **</p>
+<ol>
+<li>**配路由 **</li>
+</ol>
+<p>① 首页 和 面经详情，两个一级路由<br>② 首页内嵌四个可切换页面 (嵌套二级路由) </p>
+<ol start="2">
+<li><strong>实现功能</strong></li>
+</ol>
+<p>① 首页请求渲染<br>② 跳转传参 到 详情页，详情页渲染<br>③ 组件缓存，优化性能<br><img src="/images/1698660605691-eb449a14-2128-4d4a-86cb-3d0250f85a8e.png" alt="image.png"></p>
+<h2 id="配置路由"><a href="#配置路由" class="headerlink" title="配置路由"></a>配置路由</h2><ol>
+<li>首先配置两个一级路由</li>
+</ol>
+<blockquote>
+<p>在Vouter.js中 ， 通过导入 并且配置路由信息</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">VueRouter</span> <span class="keyword">from</span> <span class="string">&quot;vue-router&quot;</span>;</span><br><span class="line"><span class="comment">//1. 导入</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Layout</span> <span class="keyword">from</span> <span class="string">&#x27;@/views/Layout&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ArticleDetail</span> <span class="keyword">from</span> <span class="string">&#x27;@/views/ArticleDetail&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">VueRouter</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//2. 配置路由</span></span><br><span class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> <span class="title class_">VueRouter</span>(&#123;</span><br><span class="line">  <span class="attr">routes</span>: [</span><br><span class="line">    &#123; <span class="attr">path</span>: <span class="string">&#x27;/&#x27;</span>, <span class="attr">component</span>: <span class="title class_">Layout</span> &#125;,</span><br><span class="line">    &#123;<span class="attr">path</span>: <span class="string">&#x27;/detail&#x27;</span>, <span class="attr">component</span>: <span class="title class_">ArticleDetail</span>&#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> router</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>配置首页内嵌的四个二级路由</li>
+</ol>
+<blockquote>
+<p>如果按照上面的配置， 那么首页的内容就无法展示， 二级路由 和 一级路由就成为同等级的路由<br>所以我们需要通过使用children 来进行配置</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.1 导入二级路由</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Article</span> <span class="keyword">from</span> <span class="string">&#x27;@/views/Article&#x27;</span> </span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Collect</span> <span class="keyword">from</span> <span class="string">&#x27;@/views/Collect&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Like</span> <span class="keyword">from</span> <span class="string">&#x27;@/views/Like&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">User</span> <span class="keyword">from</span> <span class="string">&#x27;@/views/User&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">VueRouter</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//2. 配置路由</span></span><br><span class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> <span class="title class_">VueRouter</span>(&#123;</span><br><span class="line">  <span class="attr">routes</span>: [</span><br><span class="line">    &#123; </span><br><span class="line">      <span class="attr">path</span>: <span class="string">&#x27;/&#x27;</span>, </span><br><span class="line">      <span class="attr">component</span>: <span class="title class_">Layout</span> ,</span><br><span class="line">      <span class="comment">//2.1 配置当前路由嵌套的二级路由</span></span><br><span class="line">      <span class="attr">children</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          path : <span class="string">&#x27;/article&#x27;</span>,</span><br><span class="line">          <span class="attr">component</span>: <span class="title class_">Article</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">path</span>: <span class="string">&#x27;/like&#x27;</span>,</span><br><span class="line">          <span class="attr">component</span>: <span class="title class_">Like</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">path</span>: <span class="string">&#x27;collect&#x27;</span>,</span><br><span class="line">          <span class="attr">component</span>: <span class="title class_">Collect</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">path</span>: <span class="string">&#x27;user&#x27;</span>,</span><br><span class="line">          <span class="attr">component</span>: <span class="title class_">User</span></span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;<span class="attr">path</span>: <span class="string">&#x27;/detail&#x27;</span>, <span class="attr">component</span>: <span class="title class_">ArticleDetail</span>&#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>但是仅仅这样配置还不够，我们还需要在一级路由的文件中配置二级路由的出口 ，通过这样就可以实现路由的配置 </p>
+<blockquote>
+<p>这里一级路由是<code>Layout.vue</code> 二级路由是 <code>tabbar</code>下面的四个</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;h5-wrapper&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;content&quot;&gt;</span><br><span class="line">      &lt;!-- 配置二级路由的出口 --&gt;</span><br><span class="line">      &lt;router-view&gt;&lt;/router-view&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;nav class=&quot;tabbar&quot;&gt;</span><br><span class="line">      &lt;a href=&quot;#/article&quot;&gt;面经&lt;/a&gt;</span><br><span class="line">      &lt;a href=&quot;#/collect&quot;&gt;收藏&lt;/a&gt;</span><br><span class="line">      &lt;a href=&quot;#/like&quot;&gt;喜欢&lt;/a&gt;</span><br><span class="line">      &lt;a href=&quot;#/user&quot;&gt;我的&lt;/a&gt;</span><br><span class="line">    &lt;/nav&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="实现导航的高亮效果"><a href="#实现导航的高亮效果" class="headerlink" title="实现导航的高亮效果"></a>实现导航的高亮效果</h2><ol>
+<li>将a标签替换成为 <code>router-link(to)</code> </li>
+<li>结合高亮类名 通过css实现高亮效果</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;h5-wrapper&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;content&quot;&gt;</span><br><span class="line">      &lt;!-- 配置二级路由的出口 --&gt;</span><br><span class="line">      &lt;router-view&gt;&lt;/router-view&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;nav class=&quot;tabbar&quot;&gt;</span><br><span class="line">      &lt;router-link to=&quot;#/article&quot;&gt;面经&lt;/router-link&gt;</span><br><span class="line">      &lt;router-link to=&quot;#/collect&quot;&gt;收藏&lt;/router-link&gt;</span><br><span class="line">      &lt;router-link to=&quot;#/like&quot;&gt;喜欢&lt;/router-link&gt;</span><br><span class="line">      &lt;router-link to=&quot;#/user&quot;&gt;我的&lt;/router-link&gt;</span><br><span class="line">    &lt;/nav&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line"> <span class="selector-tag">a</span><span class="selector-class">.router-link-active</span> &#123;</span><br><span class="line">      <span class="attribute">color</span>: orange;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="实现对应的功能"><a href="#实现对应的功能" class="headerlink" title="实现对应的功能"></a>实现对应的功能</h2><h3 id="内容1-实现首页内容的显示"><a href="#内容1-实现首页内容的显示" class="headerlink" title="内容1. 实现首页内容的显示"></a>内容1. 实现首页内容的显示</h3><blockquote>
+<p>这里我们实现的是首页的基础内容渲染</p>
+</blockquote>
+<p>在<code>Article.vue</code>中 ，实现显示页面的所有内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;article-page&quot;&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;div class=&quot;article-item&quot;  </span><br><span class="line">    v-for=&quot;(item, index) in articelList&quot; </span><br><span class="line">    :key=&quot;item.id&quot; </span><br><span class="line">    @click=&quot;$router.push(&#x27;/detail&#x27;)&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;head&quot;&gt;</span><br><span class="line">        &lt;img :src=&quot;item.creatorAvatar&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;con&quot;&gt;</span><br><span class="line">          &lt;p class=&quot;title&quot;&gt;&#123;&#123; item.stem &#125;&#125;&lt;/p&gt;</span><br><span class="line">          &lt;p class=&quot;other&quot;&gt;&#123;&#123; item.creatorName &#125;&#125;| &#123;&#123; item.createdAt &#125;&#125;&lt;/p&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;body&quot;&gt;</span><br><span class="line">        &#123;&#123; item.content &#125;&#125;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;foot&quot;&gt;点赞 &#123;&#123; item.likeCount &#125;&#125; | 浏览 &#123;&#123; item.views &#125;&#125;&lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import axios from &#x27;axios&#x27;</span><br><span class="line">// 请求地址: https://mock.boxuegu.com/mock/3083/articles</span><br><span class="line">// 请求方式: get</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &#x27;ArticlePage&#x27;,</span><br><span class="line">  data () &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      // 接收发送的数据</span><br><span class="line">      articelList: [],</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  // 获取请求数据</span><br><span class="line">  async created() &#123;</span><br><span class="line">    const articles = await axios.get(&#x27;https://mock.boxuegu.com/mock/3083/articles&#x27;)</span><br><span class="line">    //存入</span><br><span class="line">    console.log(&quot;test&quot;)</span><br><span class="line">    console.log(articles)</span><br><span class="line">    // 页面渲染</span><br><span class="line">    this.articelList = articles.data.result.rows</span><br><span class="line">  &#125; ,</span><br><span class="line">  //在页面挂载阶段进行页面渲染</span><br><span class="line">  mounted ()&#123; </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="内容2-实现点击显示详细的内容"><a href="#内容2-实现点击显示详细的内容" class="headerlink" title="内容2. 实现点击显示详细的内容"></a>内容2. 实现点击显示详细的内容</h3><blockquote>
+<p>通过点击事件进行跳转， 并且在跳转的同时需要携带内容的参数</p>
+</blockquote>
+<p>在文章列表中页中， 通过点击事件<code>@click=&quot;$router.push(/detail/$&#123;item.id&#125;)</code> 实现页面的跳转， 并且通过同台路由传参来传递参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;article-page&quot;&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;div class=&quot;article-item&quot;  </span><br><span class="line">    v-for=&quot;(item, index) in articelList&quot; </span><br><span class="line">    :key=&quot;item.id&quot; </span><br><span class="line">    @click=&quot;$router.push(`/detail/$&#123;item.id&#125;`)&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;head&quot;&gt;</span><br><span class="line">        &lt;img :src=&quot;item.creatorAvatar&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;con&quot;&gt;</span><br><span class="line">          &lt;p class=&quot;title&quot;&gt;&#123;&#123; item.stem &#125;&#125;&lt;/p&gt;</span><br><span class="line">          &lt;p class=&quot;other&quot;&gt;&#123;&#123; item.creatorName &#125;&#125;| &#123;&#123; item.createdAt &#125;&#125;&lt;/p&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;body&quot;&gt;</span><br><span class="line">        &#123;&#123; item.content &#125;&#125;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;foot&quot;&gt;点赞 &#123;&#123; item.likeCount &#125;&#125; | 浏览 &#123;&#123; item.views &#125;&#125;&lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="动态路由传参-1"><a href="#动态路由传参-1" class="headerlink" title="动态路由传参"></a>动态路由传参</h4><ol>
+<li>配置路由参数 <code> &#123;path: &#39;/detail/:id&#39;, component: ArticleDetail&#125;</code></li>
+<li>点击携带路由参数</li>
+</ol>
+<blockquote>
+<p>@click&#x3D;”$router.push(<code>/detail/$&#123;item.id&#125;</code>)”</p>
+</blockquote>
+<ol start="3">
+<li>在<code>Article</code>详情页面通过 <code>this.$route.params.id</code> 来接受数据</li>
+</ol>
+<h4 id="点击返回调转到上一个页面"><a href="#点击返回调转到上一个页面" class="headerlink" title="点击返回调转到上一个页面"></a>点击返回调转到上一个页面</h4><p><img src="/images/1698666431679-46f0fc5f-b156-42f1-8df8-4063df1667d8.png" alt="image.png"><br>通过routerback返回<br> <code> &lt;nav class=&quot;nav&quot;&gt;&lt;span class=&quot;back&quot; @click=&quot;$router.back()&quot;&gt;&amp;lt;&lt;/span&gt; 面经详情&lt;/nav&gt;</code></p>
+<h4 id="渲染页面"><a href="#渲染页面" class="headerlink" title="渲染页面"></a>渲染页面</h4><p>通过得到的传过来的请求参数， 然后再通过<code>axios</code>进行发送请求 ，最后将得到的数据。 最后将数据渲染到页面上</p>
+<h3 id="内容3-组件缓存Keep-alive"><a href="#内容3-组件缓存Keep-alive" class="headerlink" title="内容3. 组件缓存Keep- alive"></a>内容3. 组件缓存Keep- alive</h3><p>问题： </p>
+<blockquote>
+<p>从面经列表 点到 详情页，又点返回，数据重新加载了<br>但是我们希望回到原来的位置</p>
+</blockquote>
+<p>原因： </p>
+<blockquote>
+<p>当路由被<strong>跳转</strong>后，原来所看到的组件就<strong>被销毁</strong>了（会执行组件内的beforeDestroy和destroyed生命周期钩子），重新返回<strong>后组件又被重新创建</strong>了（会执行组件内的beforeCreate,created,beforeMount,Mounted生命周期钩子），<strong>所以数据被加载了</strong></p>
+</blockquote>
+<p>解决方案：<br><strong>利用keep-alive把原来的组件给缓存下来</strong></p>
+<blockquote>
+<p>keep-alive 是 Vue 的内置组件，当它包裹动态组件时，<strong>会缓存不活动的组件实例，而不是销毁</strong>它们。<br>keep-alive 是一个抽象组件：它自身不会渲染成一个 DOM 元素，也不会出现在父组件中。<br><strong>优点：</strong><br>在组件切换过程中把切换出去的组件保留在内存中，防止重复渲染DOM，<br>减少加载时间及性能消耗，提高用户体验性。</p>
+</blockquote>
+<p>缓存所有的内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;h5-wrapper&quot;&gt;</span><br><span class="line">    &lt;keep-alive&gt;</span><br><span class="line">      &lt;router-view&gt;&lt;/router-view&gt;</span><br><span class="line">    &lt;/keep-alive&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>但是这样会导致所有的内容都被缓存， 容易出现乱序的现象<br>所以需要配置<code>&lt;keep-alive&gt;</code>的属性</p>
+<h4 id="keep-alive的三个属性"><a href="#keep-alive的三个属性" class="headerlink" title="keep-alive的三个属性"></a><code>keep-alive</code>的三个属性</h4><p>① include  ： 组件名数组，只有匹配的组件<strong>会被缓存</strong><br>② exclude ： 组件名数组，任何匹配的组件都<strong>不会被缓存</strong><br>③ max       ： 最多可以<strong>缓存多少</strong>组件实例</p>
+<blockquote>
+<p>组件名 就是该组件中的 name， 如果没有name 才会找文件名作为组件名数组</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;h5-wrapper&quot;&gt;</span><br><span class="line">    &lt;keep-alive :include=&quot;keepArr&quot;&gt;</span><br><span class="line">      &lt;router-view&gt;&lt;/router-view&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/keep-alive&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;h5-wrapper&quot;,</span><br><span class="line">  data() &#123; </span><br><span class="line">    return &#123;</span><br><span class="line">      // 缓存组件的数组</span><br><span class="line">      keepArr: [&#x27;LayoutPage&#x27;]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>通过<code>:include</code>就可以实现对指定组件的缓存 </p>
+<h1 id="VueCli-自定义创建项目"><a href="#VueCli-自定义创建项目" class="headerlink" title="VueCli 自定义创建项目"></a>VueCli 自定义创建项目</h1><p>1.安装脚手架 (已安装)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i @vue/cli -g</span><br></pre></td></tr></table></figure>
+
+<p>2.创建项目</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue create hm-exp-mobile</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>选项</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span> <span class="variable constant_">CLI</span> v5<span class="number">.0</span><span class="number">.8</span></span><br><span class="line">? <span class="title class_">Please</span> pick a <span class="attr">preset</span>:</span><br><span class="line">  <span class="title class_">Default</span> ([<span class="title class_">Vue</span> <span class="number">3</span>] babel, eslint)</span><br><span class="line">  <span class="title class_">Default</span> ([<span class="title class_">Vue</span> <span class="number">2</span>] babel, eslint)</span><br><span class="line">&gt; <span class="title class_">Manually</span> select features     选自定义</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/1698667577518-c9088282-655b-49b3-ad93-bb60ac06541c.png" alt="image.png"></p>
+<ul>
+<li><p>选择eslint的风格 （eslint 代码规范的检验工具，检验代码是否符合规范）</p>
+</li>
+<li><p>比如：const age &#x3D; 18;   &#x3D;&gt;  报错！多加了分号！后面有工具，一保存，全部格式化成最规范的样子<br><img src="/images/1698667635574-586d6d60-70bb-4871-87c2-ea05f4ae6d46.png" alt="image.png"></p>
+</li>
+<li><p>启动项目</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run serve</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Vuex"><a href="#Vuex" class="headerlink" title="Vuex"></a>Vuex</h1><blockquote>
+<p>Vuex 是一个 Vue 的 状态管理工具，状态就是数据。<br>大白话：Vuex 是一个插件，可以帮我们管理 Vue 通用的数据 (多组件共享的数据)。例如：购物车数据   个人信息数</p>
+</blockquote>
+<h2 id="基本使用-1"><a href="#基本使用-1" class="headerlink" title="基本使用"></a>基本使用</h2><p><img src="/images/1698670311208-a7a999fa-38a8-46a4-a7a3-b67747f3a26d.png" alt="image.png"></p>
+<h3 id="1-安装-vuex"><a href="#1-安装-vuex" class="headerlink" title="1.安装 vuex"></a>1.安装 vuex</h3><p>安装vuex与vue-router类似，vuex是一个独立存在的插件，如果脚手架初始化没有选 vuex，就需要额外安装。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add vuex@3 或者 npm i vuex@3</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-新建-store-index-js-专门存放-vuex"><a href="#2-新建-store-index-js-专门存放-vuex" class="headerlink" title="2.新建 store/index.js 专门存放 vuex"></a>2.新建 <code>store/index.js</code> 专门存放 vuex</h3><pre><code>为了维护项目目录的整洁，在src目录下新建一个store目录其下放置一个index.js文件。 (和 `router/index.js` 类似)
+</code></pre>
+<p><img src="/images/1698670335808-f938dbd3-70be-4784-b489-219413fa867c.png" alt="image.png"><br>.创建仓库 <code>store/index.js</code></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 导入 vue</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="comment">// 导入 vuex</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vuex</span> <span class="keyword">from</span> <span class="string">&#x27;vuex&#x27;</span></span><br><span class="line"><span class="comment">// vuex也是vue的插件, 需要use一下, 进行插件的安装初始化</span></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">Vuex</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建仓库 store</span></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 导出仓库</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-在-main-js-中导入挂载到-Vue-实例上"><a href="#4-在-main-js-中导入挂载到-Vue-实例上" class="headerlink" title="4 在 main.js 中导入挂载到 Vue 实例上"></a>4 在 main.js 中导入挂载到 Vue 实例上</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;./App.vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">&#x27;./store&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="property">config</span>.<span class="property">productionTip</span> = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Vue</span>(&#123;</span><br><span class="line">  <span class="attr">render</span>: <span class="function"><span class="params">h</span> =&gt;</span> <span class="title function_">h</span>(<span class="title class_">App</span>),</span><br><span class="line">  store</span><br><span class="line">&#125;).$mount(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>此刻起, 就成功创建了一个 <strong>空仓库!!</strong></p>
+<h3 id="5-测试打印Vuex"><a href="#5-测试打印Vuex" class="headerlink" title="5.测试打印Vuex"></a>5.测试打印Vuex</h3><p>App.vue</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">created</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">$store</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="state-状态"><a href="#state-状态" class="headerlink" title="state 状态"></a>state 状态</h2><blockquote>
+<p>如何给仓库存储数据， 如果取出使用仓库的数据</p>
+</blockquote>
+<h3 id="提供数据（存入数据）"><a href="#提供数据（存入数据）" class="headerlink" title="提供数据（存入数据）"></a>提供数据（存入数据）</h3><p>State提供唯一的公共数据源，所有共享的数据都要统一放到Store中的State中存储。<br>打开项目中的<code>store.js</code>文件，在state对象中可以添加我们要共享的数据。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建仓库 store</span></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>(&#123;</span><br><span class="line">  <span class="comment">// state 状态, 即数据, 类似于vue组件中的data,</span></span><br><span class="line">  <span class="comment">// 区别：</span></span><br><span class="line">  <span class="comment">// 1.data 是组件自己的数据, </span></span><br><span class="line">  <span class="comment">// 2.state 中的数据整个vue项目的组件都能访问到</span></span><br><span class="line">  <span class="attr">state</span>: &#123;</span><br><span class="line">    <span class="attr">count</span>: <span class="number">101</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="访问数据"><a href="#访问数据" class="headerlink" title="访问数据"></a>访问数据</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">获取 store：</span><br><span class="line"> <span class="number">1.</span><span class="title class_">Vue</span>模板中获取 <span class="variable language_">this</span>.<span class="property">$store</span></span><br><span class="line"> <span class="number">2.</span>js文件中获取 <span class="keyword">import</span> 导入 store</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">模板中：     &#123;&#123; $store.<span class="property">state</span>.<span class="property">xxx</span> &#125;&#125;</span><br><span class="line">组件逻辑中：  <span class="variable language_">this</span>.<span class="property">$store</span>.<span class="property">state</span>.<span class="property">xxx</span></span><br><span class="line"><span class="variable constant_">JS</span>模块中：   store.<span class="property">state</span>.<span class="property">xxx</span></span><br></pre></td></tr></table></figure>
+
+<p>如果数据量变大， 那么使用这种方法明显就比较累坠了。所以我们可以通过使用辅助函数来帮助我们<strong>把store中的数据映射到 组件的计算属性中, 它属于一种方便的用法</strong><br><img src="/images/1698671114135-d5de0deb-23dd-4a30-8c85-15b2dab68e71.png" alt="image.png"><br>通过数组的方式得到对象</p>
+<h3 id="第一步：导入mapState-mapState是vuex中的一个函数"><a href="#第一步：导入mapState-mapState是vuex中的一个函数" class="headerlink" title="第一步：导入mapState (mapState是vuex中的一个函数)"></a>第一步：导入mapState (mapState是vuex中的一个函数)</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; mapState &#125; <span class="keyword">from</span> <span class="string">&#x27;vuex&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第二步：采用数组形式引入state属性"><a href="#第二步：采用数组形式引入state属性" class="headerlink" title="第二步：采用数组形式引入state属性"></a>第二步：采用数组形式引入state属性</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">mapState</span>([<span class="string">&#x27;count&#x27;</span>]) <span class="comment">// count 就是我们仓库中的属性名</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>上面代码的最终得到的是 <strong>类似于</strong></p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">count () &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">$store</span>.<span class="property">state</span>.<span class="property">count</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第三步：利用展开运算符将导出的状态映射给计算属性"><a href="#第三步：利用展开运算符将导出的状态映射给计算属性" class="headerlink" title="第三步：利用展开运算符将导出的状态映射给计算属性"></a>第三步：利用展开运算符将导出的状态映射给计算属性</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">computed</span>: &#123;</span><br><span class="line">  ...<span class="title function_">mapState</span>([<span class="string">&#x27;count&#x27;</span>])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt; state的数据：&#123;&#123; count &#125;&#125;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://Ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/92619e7d.html">https://ray2310.github.io/post/92619e7d.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ray2310.github.io" target="_blank">Rayce. Blogs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/vue/">vue</a></div><div class="post_share"><div class="social-share" data-image="https://th.bing.com/th/id/OIP.1tjF2kQmna-oY-8tTH5OQgHaE7?pid=ImgDet&amp;rs=1" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/c4fe0bb4.html" title="组件化详细"><img class="cover" src="https://www.google.com/imgres?imgurl=https%3A%2F%2Ftmpl.downzz.com%2Fsucai%2Fcontent%2F0tf4t1r53js.jpg&amp;imgrefurl=https%3A%2F%2Fwww.downzz.com%2Fjianyuebizhi%2F36732.html&amp;tbnid=O22DjUrs0X8icM&amp;vet=12ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ..i&amp;docid=Xc2fZTMSl7dnDM&amp;w=1202&amp;h=676&amp;q=%E7%AE%80%E7%BA%A6%20%E7%94%B5%E8%84%91%20%E5%A3%81%E7%BA%B8%204k&amp;ved=2ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ" onerror="onerror=null;src='/img/second.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">组件化详细</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/c4fe0bb4.html" title="组件化详细"><img class="cover" src="https://www.google.com/imgres?imgurl=https%3A%2F%2Ftmpl.downzz.com%2Fsucai%2Fcontent%2F0tf4t1r53js.jpg&imgrefurl=https%3A%2F%2Fwww.downzz.com%2Fjianyuebizhi%2F36732.html&tbnid=O22DjUrs0X8icM&vet=12ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ..i&docid=Xc2fZTMSl7dnDM&w=1202&h=676&q=%E7%AE%80%E7%BA%A6%20%E7%94%B5%E8%84%91%20%E5%A3%81%E7%BA%B8%204k&ved=2ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-10-28</div><div class="title">组件化详细</div></div></a></div><div><a href="/post/f914d2ff.html" title="Vue工程化"><img class="cover" src="https://pic2.zhimg.com/v2-93d5754cb8c35c94f8ade4a5399929c1_r.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-10-24</div><div class="title">Vue工程化</div></div></a></div><div><a href="/post/b5f5f2e1.html" title="Vue-QuickStarted"><img class="cover" src="https://th.bing.com/th/id/R.0fc443a72d9db316bfde971a16183f0b?rik=PXfjJ755mSffZQ&riu=http%3a%2f%2fpic.qqbizhi.com%2fallimg%2fbbpic%2f52%2f1152_1.jpg&ehk=7rVKhOuGUW%2bcK6qwj4%2fmjwH1ZrDLF1e82i%2f09SqbqSE%3d&risl=&pid=ImgRaw&r=0" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-10-24</div><div class="title">Vue-QuickStarted</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://tupian.qqw21.com/article/UploadPic/2022-12/202212422481414327.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">120</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">24</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center">自我沉淀，在繁华中自律，在落魄中自愈</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E9%A1%B5%E5%BA%94%E7%94%A8%E5%92%8C%E5%A4%9A%E9%A1%B5%E5%BA%94%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">单页应用和多页应用的区别：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">路由的基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-amp-%E4%BD%9C%E7%94%A8%EF%BC%9A"><span class="toc-number">2.1.</span> <span class="toc-text">定义&amp;作用：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">基本使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.3.</span> <span class="toc-text">核心步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BE%E7%BD%AE%E4%BD%8D%E7%BD%AE%EF%BC%9A"><span class="toc-number">2.4.</span> <span class="toc-text">放置位置：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E8%BF%9B%E9%98%B6"><span class="toc-number">3.</span> <span class="toc-text">路由进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E6%A8%A1%E5%9D%97%E5%B0%81%E8%A3%85"><span class="toc-number">3.1.</span> <span class="toc-text">路由模块封装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E5%BC%8F%E5%AF%BC%E8%88%AA-amp-%E5%AF%BC%E8%88%AA%E9%AB%98%E4%BA%AE-x2F-%E7%B2%BE%E7%A1%AE%E5%8C%B9%E9%85%8D-x2F-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%AB%98%E4%BA%AE%E7%B1%BB%E5%90%8D"><span class="toc-number">3.2.</span> <span class="toc-text">声明式导航&amp; 导航高亮 &#x2F; 精确匹配 &#x2F; 自定义高亮类名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BC%E8%88%AA%E9%AB%98%E4%BA%AE"><span class="toc-number">3.2.1.</span> <span class="toc-text">导航高亮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E7%B1%BB%E5%90%8D"><span class="toc-number">3.2.2.</span> <span class="toc-text">两个类名</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B2%BE%E7%A1%AE%E5%8C%B9%E9%85%8D%EF%BC%9Arouter-link-exact-active"><span class="toc-number">3.2.2.1.</span> <span class="toc-text">精确匹配：router-link-exact-active</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E7%B3%8A%E5%8C%B9%E9%85%8D%EF%BC%9A-router-link-active"><span class="toc-number">3.2.2.2.</span> <span class="toc-text">模糊匹配： router-link-active</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%90%8D"><span class="toc-number">3.2.3.</span> <span class="toc-text">自定义类名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E5%BC%8F%E5%AF%BC%E8%88%AA%E7%9A%84%E8%B7%B3%E8%BD%AC%E4%BC%A0%E5%8F%82%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-number">3.2.4.</span> <span class="toc-text">声明式导航的跳转传参的两种方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%8F%82%E6%95%B0%E4%BC%A0%E5%8F%82"><span class="toc-number">3.2.5.</span> <span class="toc-text">查询参数传参</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1%E4%BC%A0%E5%8F%82"><span class="toc-number">3.2.6.</span> <span class="toc-text">动态路由传参</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E4%BC%A0%E5%8F%82%E6%95%B0%E7%9A%84%E6%96%B9%E5%BC%8F%E5%8C%BA%E5%88%AB"><span class="toc-number">3.2.7.</span> <span class="toc-text">两种传参数的方式区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E9%87%8D%E5%AE%9A%E5%90%91-x2F-%E8%B7%AF%E7%94%B1404-x2F-%E8%B7%AF%E7%94%B1%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.3.</span> <span class="toc-text">路由重定向 &#x2F; 路由404 &#x2F; 路由模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-number">3.3.1.</span> <span class="toc-text">路由重定向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1404"><span class="toc-number">3.3.2.</span> <span class="toc-text">路由404</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.3.3.</span> <span class="toc-text">路由模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%AD%E6%B3%95"><span class="toc-number">3.3.4.</span> <span class="toc-text">2.语法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A8%8B%E5%BC%8F%E5%AF%BC%E8%88%AA-%E4%B8%A4%E7%A7%8D%E8%B7%AF%E7%94%B1%E8%B7%B3%E8%BD%AC%E6%96%B9%E5%BC%8F"><span class="toc-number">3.4.</span> <span class="toc-text">编程式导航- 两种路由跳转方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#path%E7%9A%84%E5%BD%A2%E5%BC%8F%E8%BF%9B%E8%A1%8C%E8%B7%B3%E8%BD%AC"><span class="toc-number">3.4.1.</span> <span class="toc-text">path的形式进行跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#name%E5%91%BD%E5%90%8D%E8%B7%AF%E7%94%B1%E8%B7%B3%E8%BD%AC"><span class="toc-number">3.4.2.</span> <span class="toc-text">name命名路由跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E8%B7%B3%E8%BD%AC%E7%9A%84%E4%BC%A0%E5%8F%82"><span class="toc-number">3.4.3.</span> <span class="toc-text">路由跳转的传参</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.</span> <span class="toc-text">案例实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E8%B7%AF%E7%94%B1"><span class="toc-number">4.1.</span> <span class="toc-text">配置路由</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%AF%BC%E8%88%AA%E7%9A%84%E9%AB%98%E4%BA%AE%E6%95%88%E6%9E%9C"><span class="toc-number">4.2.</span> <span class="toc-text">实现导航的高亮效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%AF%B9%E5%BA%94%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">4.3.</span> <span class="toc-text">实现对应的功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AE%B91-%E5%AE%9E%E7%8E%B0%E9%A6%96%E9%A1%B5%E5%86%85%E5%AE%B9%E7%9A%84%E6%98%BE%E7%A4%BA"><span class="toc-number">4.3.1.</span> <span class="toc-text">内容1. 实现首页内容的显示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AE%B92-%E5%AE%9E%E7%8E%B0%E7%82%B9%E5%87%BB%E6%98%BE%E7%A4%BA%E8%AF%A6%E7%BB%86%E7%9A%84%E5%86%85%E5%AE%B9"><span class="toc-number">4.3.2.</span> <span class="toc-text">内容2. 实现点击显示详细的内容</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1%E4%BC%A0%E5%8F%82-1"><span class="toc-number">4.3.2.1.</span> <span class="toc-text">动态路由传参</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%82%B9%E5%87%BB%E8%BF%94%E5%9B%9E%E8%B0%83%E8%BD%AC%E5%88%B0%E4%B8%8A%E4%B8%80%E4%B8%AA%E9%A1%B5%E9%9D%A2"><span class="toc-number">4.3.2.2.</span> <span class="toc-text">点击返回调转到上一个页面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E9%A1%B5%E9%9D%A2"><span class="toc-number">4.3.2.3.</span> <span class="toc-text">渲染页面</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AE%B93-%E7%BB%84%E4%BB%B6%E7%BC%93%E5%AD%98Keep-alive"><span class="toc-number">4.3.3.</span> <span class="toc-text">内容3. 组件缓存Keep- alive</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#keep-alive%E7%9A%84%E4%B8%89%E4%B8%AA%E5%B1%9E%E6%80%A7"><span class="toc-number">4.3.3.1.</span> <span class="toc-text">keep-alive的三个属性</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VueCli-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-number">5.</span> <span class="toc-text">VueCli 自定义创建项目</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Vuex"><span class="toc-number">6.</span> <span class="toc-text">Vuex</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-1"><span class="toc-number">6.1.</span> <span class="toc-text">基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-vuex"><span class="toc-number">6.1.1.</span> <span class="toc-text">1.安装 vuex</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%96%B0%E5%BB%BA-store-index-js-%E4%B8%93%E9%97%A8%E5%AD%98%E6%94%BE-vuex"><span class="toc-number">6.1.2.</span> <span class="toc-text">2.新建 store&#x2F;index.js 专门存放 vuex</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%9C%A8-main-js-%E4%B8%AD%E5%AF%BC%E5%85%A5%E6%8C%82%E8%BD%BD%E5%88%B0-Vue-%E5%AE%9E%E4%BE%8B%E4%B8%8A"><span class="toc-number">6.1.3.</span> <span class="toc-text">4 在 main.js 中导入挂载到 Vue 实例上</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%B5%8B%E8%AF%95%E6%89%93%E5%8D%B0Vuex"><span class="toc-number">6.1.4.</span> <span class="toc-text">5.测试打印Vuex</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#state-%E7%8A%B6%E6%80%81"><span class="toc-number">6.2.</span> <span class="toc-text">state 状态</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E4%BE%9B%E6%95%B0%E6%8D%AE%EF%BC%88%E5%AD%98%E5%85%A5%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="toc-number">6.2.1.</span> <span class="toc-text">提供数据（存入数据）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E6%95%B0%E6%8D%AE"><span class="toc-number">6.3.</span> <span class="toc-text">访问数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E5%AF%BC%E5%85%A5mapState-mapState%E6%98%AFvuex%E4%B8%AD%E7%9A%84%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0"><span class="toc-number">6.3.1.</span> <span class="toc-text">第一步：导入mapState (mapState是vuex中的一个函数)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E9%87%87%E7%94%A8%E6%95%B0%E7%BB%84%E5%BD%A2%E5%BC%8F%E5%BC%95%E5%85%A5state%E5%B1%9E%E6%80%A7"><span class="toc-number">6.3.2.</span> <span class="toc-text">第二步：采用数组形式引入state属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E5%88%A9%E7%94%A8%E5%B1%95%E5%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6%E5%B0%86%E5%AF%BC%E5%87%BA%E7%9A%84%E7%8A%B6%E6%80%81%E6%98%A0%E5%B0%84%E7%BB%99%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7"><span class="toc-number">6.3.3.</span> <span class="toc-text">第三步：利用展开运算符将导出的状态映射给计算属性</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/92619e7d.html" title="Vue路由"><img src="https://th.bing.com/th/id/OIP.1tjF2kQmna-oY-8tTH5OQgHaE7?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Vue路由"/></a><div class="content"><a class="title" href="/post/92619e7d.html" title="Vue路由">Vue路由</a><time datetime="2023-10-30T13:15:39.000Z" title="发表于 2023-10-30 21:15:39">2023-10-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/c4fe0bb4.html" title="组件化详细"><img src="https://www.google.com/imgres?imgurl=https%3A%2F%2Ftmpl.downzz.com%2Fsucai%2Fcontent%2F0tf4t1r53js.jpg&amp;imgrefurl=https%3A%2F%2Fwww.downzz.com%2Fjianyuebizhi%2F36732.html&amp;tbnid=O22DjUrs0X8icM&amp;vet=12ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ..i&amp;docid=Xc2fZTMSl7dnDM&amp;w=1202&amp;h=676&amp;q=%E7%AE%80%E7%BA%A6%20%E7%94%B5%E8%84%91%20%E5%A3%81%E7%BA%B8%204k&amp;ved=2ahUKEwjel_jKnqn8AhUTxpQKHavjA08QMygAegUIARCrAQ" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="组件化详细"/></a><div class="content"><a class="title" href="/post/c4fe0bb4.html" title="组件化详细">组件化详细</a><time datetime="2023-10-27T10:40:47.000Z" title="发表于 2023-10-27 18:40:47">2023-10-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/f914d2ff.html" title="Vue工程化"><img src="https://pic2.zhimg.com/v2-93d5754cb8c35c94f8ade4a5399929c1_r.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Vue工程化"/></a><div class="content"><a class="title" href="/post/f914d2ff.html" title="Vue工程化">Vue工程化</a><time datetime="2023-10-24T12:23:01.000Z" title="发表于 2023-10-24 20:23:01">2023-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/6c80c3f9.html" title="二叉树篇二刷总结"><img src="https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/d058ccbf6c81800ae9cb0e37b83533fa828b47d9.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="二叉树篇二刷总结"/></a><div class="content"><a class="title" href="/post/6c80c3f9.html" title="二叉树篇二刷总结">二叉树篇二刷总结</a><time datetime="2023-10-21T05:07:43.000Z" title="发表于 2023-10-21 13:07:43">2023-10-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/b5f5f2e1.html" title="Vue-QuickStarted"><img src="https://th.bing.com/th/id/R.0fc443a72d9db316bfde971a16183f0b?rik=PXfjJ755mSffZQ&amp;riu=http%3a%2f%2fpic.qqbizhi.com%2fallimg%2fbbpic%2f52%2f1152_1.jpg&amp;ehk=7rVKhOuGUW%2bcK6qwj4%2fmjwH1ZrDLF1e82i%2f09SqbqSE%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Vue-QuickStarted"/></a><div class="content"><a class="title" href="/post/b5f5f2e1.html" title="Vue-QuickStarted">Vue-QuickStarted</a><time datetime="2023-10-19T12:22:13.000Z" title="发表于 2023-10-19 20:22:13">2023-10-19</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://th.bing.com/th/id/OIP.1tjF2kQmna-oY-8tTH5OQgHaE7?pid=ImgDet&amp;rs=1')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a><a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a><a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> <a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: '',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: '',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
