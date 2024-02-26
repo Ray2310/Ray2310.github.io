@@ -1,0 +1,334 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>缓存穿透、雪崩、击穿三者如何解决 | Rayce. Blogs</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="业务场景： 生活点评项目的商品缓存项目地址： https:&#x2F;&#x2F;github.com&#x2F;Ray2310&#x2F;Evaluate-System  商品缓存在客户端与数据库之间加上一个Redis缓存，先从Redis中查询，如果没有查到，再去MySQL中查询，同时查询完毕之后，将查询到的数据也存入Redis，这样当下一个用户来进行查询的时候，就可以直接从Redis中获取到数据  缓存模型和思路标准的操作方式就是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="缓存穿透、雪崩、击穿三者如何解决">
+<meta property="og:url" content="https://ray2310.github.io/post/9404648c.html">
+<meta property="og:site_name" content="Rayce. Blogs">
+<meta property="og:description" content="业务场景： 生活点评项目的商品缓存项目地址： https:&#x2F;&#x2F;github.com&#x2F;Ray2310&#x2F;Evaluate-System  商品缓存在客户端与数据库之间加上一个Redis缓存，先从Redis中查询，如果没有查到，再去MySQL中查询，同时查询完毕之后，将查询到的数据也存入Redis，这样当下一个用户来进行查询的时候，就可以直接从Redis中获取到数据  缓存模型和思路标准的操作方式就是">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://w.wallhaven.cc/full/85/wallhaven-85rpvy.png">
+<meta property="article:published_time" content="2024-02-26T12:08:18.000Z">
+<meta property="article:modified_time" content="2024-02-26T12:16:54.253Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="后端">
+<meta property="article:tag" content="redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://w.wallhaven.cc/full/85/wallhaven-85rpvy.png"><link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQHlJW3iX0eSx0YEsPnrToEC7iKW4m3TEgiQ&usqp=CAU"><link rel="canonical" href="https://ray2310.github.io/post/9404648c.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. Blogs","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '缓存穿透、雪崩、击穿三者如何解决',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-02-26 20:16:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://avatars.githubusercontent.com/u/109897266?v=4" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">132</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">46</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">28</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://w.wallhaven.cc/full/85/wallhaven-85rpvy.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. Blogs"><span class="site-name">Rayce. Blogs</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">缓存穿透、雪崩、击穿三者如何解决</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-02-26T12:08:18.000Z" title="发表于 2024-02-26 20:08:18">2024-02-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-02-26T12:16:54.253Z" title="更新于 2024-02-26 20:16:54">2024-02-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF/redis/">redis</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="缓存穿透、雪崩、击穿三者如何解决"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>业务场景： 生活点评项目的商品缓存<br>项目地址： <a target="_blank" rel="noopener" href="https://github.com/Ray2310/Evaluate-System">https://github.com/Ray2310/Evaluate-System</a></p>
+</blockquote>
+<h1 id="商品缓存"><a href="#商品缓存" class="headerlink" title="商品缓存"></a>商品缓存</h1><p>在客户端与数据库之间加上一个Redis缓存，先从Redis中查询，如果没有查到，再去MySQL中查询，同时查询完毕之后，将查询到的数据也存入Redis，这样当下一个用户来进行查询的时候，就可以直接从Redis中获取到数据</p>
+<p><img src="/images/1708827115409-a63d0f7a-774f-4f5e-a8f2-03647a480ee2.png" alt="image.png"></p>
+<h4 id="缓存模型和思路"><a href="#缓存模型和思路" class="headerlink" title="缓存模型和思路"></a>缓存模型和思路</h4><p>标准的操作方式就是查询数据库之前先查询缓存，如果缓存数据存在，则直接从缓存中返回，如果缓存数据不存在，再查询数据库，然后将数据存入Redis。<br><img src="/images/1708827162422-432f279f-caba-4db9-a1d6-b9e387b46a5f.png" alt="image.png"></p>
+<h2 id="缓存的更新策略"><a href="#缓存的更新策略" class="headerlink" title="缓存的更新策略"></a>缓存的更新策略</h2><p>三种策略的比较<br><img src="/images/1708829257508-3a75ce38-c936-4631-ac6f-3a31a459ddc8.png" alt="image.png"></p>
+<h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><p>**低一致性需求： **使用内存淘汰机制，例如店铺类型的查询缓存<br><strong>高一致性需求</strong>： 主动更新，并且使用超时剔除作为兜底方案。例如店铺的详情查询</p>
+<h3 id="数据库和缓存不一致带来的问题"><a href="#数据库和缓存不一致带来的问题" class="headerlink" title="数据库和缓存不一致带来的问题"></a>数据库和缓存不一致带来的问题</h3><ul>
+<li>由于我们的缓存数据源来自数据库，而数据库的数据是会发生变化的，因此，如果当数据库中数据发生变化，而缓存却没有同步，此时就会有一致性问题存在，其后果是<ul>
+<li>用户使用缓存中的过时数据，就会产生类似多线程数据安全问题，从而影响业务，产品口碑等</li>
+</ul>
+</li>
+</ul>
+<h3 id="那么如何解决这个问题呢？"><a href="#那么如何解决这个问题呢？" class="headerlink" title="那么如何解决这个问题呢？"></a>那么如何解决这个问题呢？</h3><p>有如下三种方式： </p>
+<pre><code>  1. Cache Aside Pattern 人工编码方式：**缓存调用者在更新完数据库之后再去更新缓存**，也称之为**双写方案**
+  2. Read/Write Through Pattern：**缓存与数据库整合为一个服务，由服务来维护一致性。**调用者调用该服务，无需关心缓存一致性问题。**但是维护这样一个服务很复杂**，市面上也不容易找到这样的一个现成的服务，开发成本高
+  3. Write Behind Caching Pattern：**调用者只操作缓存，其他线程去异步处理数据库，最终实现一致性。但是维护这样的一个异步的任务很复杂**，需要实时监控缓存中的数据更新，其他线程去异步更新数据库也可能不太及时，而且缓存服务器如果宕机，那么缓存的数据也就丢失了
+</code></pre>
+<h3 id="数据库和缓存不一致采用什么方案"><a href="#数据库和缓存不一致采用什么方案" class="headerlink" title="数据库和缓存不一致采用什么方案"></a>数据库和缓存不一致采用什么方案</h3><p><strong>综上所述，在企业的实际应用中，还是方案一最可靠，但是方案一的调用者该如何处理呢？</strong></p>
+<ul>
+<li>如果采用方案一，假设我们每次操作完数据库之后，都去更新一下缓存，但是如果中间并没有人查询数据，那么这个更新动作只有最后一次是有效的，中间的更新动作意义不大，所以我们可以把缓存直接删除，等到有人再次查询时，再将缓存中的数据加载出来</li>
+<li><strong>对比删除缓存与更新缓存</strong><ul>
+<li>更新缓存：每次更新数据库都需要更新缓存，无效写操作较多</li>
+<li>删除缓存：更新数据库时让缓存失效，再次查询时更新缓存</li>
+</ul>
+</li>
+<li>如何保证缓存与数据库的操作同时成功&#x2F;同时失败<ul>
+<li>单体系统：将缓存与数据库操作放在同一个事务</li>
+<li>分布式系统：利用TCC等分布式事务方案</li>
+</ul>
+</li>
+<li>先操作缓存还是先操作数据库？我们来仔细分析一下这两种方式的线程安全问题</li>
+<li><strong>先删除缓存，再操作数据库</strong></li>
+</ul>
+<blockquote>
+<p><strong>删除缓存的操作很快，但是更新数据库的操作相对较慢，如果此时有一个线程2刚好进来查询缓存，由于我们刚刚才删除缓存，所以线程2需要查询数据库，并写入缓存，但是我们更新数据库的操作还未完成，所以线程2查询到的数据是脏数据，出现线程安全问题</strong></p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://pic1.imgdb.cn/item/6354be3e16f2c2beb1d11bd0.jpg"><img src="/images/1708829900987-54508d31-9e96-4c72-a85b-aa367095e91b.jpeg"></a></p>
+<ul>
+<li><strong>先操作数据库，再删除缓存</strong></li>
+</ul>
+<blockquote>
+<p>线<strong>程1在查询缓存的时候，缓存TTL刚好失效，需要查询数据库并写入缓存，这个操作耗时相对较短（相比较于上图来说），但是就在这么短的时间内，线程2进来了，更新数据库，删除缓存，但是线程1虽然查询完了数据（更新前的旧数据），但是还没来得及写入缓存，所以线程2的更新数据库与删除缓存，并没有影响到线程1的查询旧数据，写入缓存，造成线程安全问题</strong></p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://pic1.imgdb.cn/item/6354be5316f2c2beb1d130c0.jpg"><img src="/images/1708829900936-869586fa-0bb8-4026-9d07-53192f60d88e.jpeg"></a></p>
+<ul>
+<li><strong>虽然这二者都存在线程安全问题，但是相对来说，后者出现线程安全问题的概率相对较低，所以我们最终采用后者先操作数据库，再删除缓存的方案</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//todo 更新数据库删除缓存</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="meta">@Transactional</span> <span class="comment">//添加事务</span></span><br><span class="line"><span class="keyword">public</span> Result <span class="title function_">update</span><span class="params">(Shop shop)</span> &#123;</span><br><span class="line">    <span class="comment">//1. 更新数据库</span></span><br><span class="line">    updateById(shop);</span><br><span class="line">    <span class="keyword">if</span>(shop.getId() == <span class="literal">null</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> Result.fail(<span class="string">&quot;店铺id不能为空！！！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">Long</span> <span class="variable">id</span> <span class="operator">=</span> shop.getId();</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> CACHE_SHOP_KEY + id;</span><br><span class="line">    <span class="comment">//删除缓存</span></span><br><span class="line">    stringRedisTemplate.delete(key);</span><br><span class="line">    <span class="keyword">return</span> Result.ok();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="缓存穿透问题"><a href="#缓存穿透问题" class="headerlink" title="缓存穿透问题"></a>缓存穿透问题</h2><p>指客户端请求的数据在缓存中和数据库中都不存在，这样缓存永远不会生效，这些请求都会打到数据库。</p>
+<h3 id="两种解决思路"><a href="#两种解决思路" class="headerlink" title="两种解决思路"></a>两种解决思路</h3><ol>
+<li>**缓存空对象	**<ul>
+<li><strong>优点：实现简单，维护方便</strong></li>
+<li><strong>缺点：额外的内存消耗，可能造成短期的不一致</strong></li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><img src="/images/1708832334619-cbc9be28-d51d-4bc0-951a-006dd1ff3fe6.png" alt="image.png"></li>
+</ul>
+<ol start="2">
+<li><strong>布隆过滤</strong><ul>
+<li><strong>优点：内存占用啥哦，没有多余的key</strong></li>
+<li><strong>缺点：实现复杂，可能存在误判</strong></li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><img src="/images/1708832352446-f1c882d1-ca10-49b3-8329-ee9cd54da78c.png" alt="image.png"></li>
+</ul>
+<h3 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h3><ul>
+<li><p><strong>缓存空对象思路分析：</strong>当我们客户端访问不存在的数据时，会先请求redis，但是此时redis中也没有数据，就会直接访问数据库，但是数据库里也没有数据，那么这个数据就穿透了缓存，直击数据库。但是数据库能承载的并发不如redis这么高，所以如果大量的请求同时都来访问这个不存在的数据，那么这些请求就会访问到数据库，简单的解决方案就是哪怕这个数据在数据库里不存在，我们也把这个这个数据存在redis中去（这就是为啥说会有额外的内存消耗），这样下次用户过来访问这个不存在的数据时，redis缓存中也能找到这个数据，不用去查数据库。可能造成的短期不一致是指在空对象的存活期间，我们更新了数据库，把这个空对象变成了正常的可以访问的数据，但由于空对象的TTL还没过，所以当用户来查询的时候，查询到的还是空对象，等TTL过了之后，才能访问到正确的数据，不过这种情况很少见罢了</p>
+</li>
+<li><p><strong>布隆过滤思路分析：</strong>布隆过滤器其实采用的是哈希思想来解决这个问题，通过一个庞大的二进制数组，根据哈希思想去判断当前这个要查询的数据是否存在，如果布隆过滤器判断存在，则放行，这个请求会去访问redis，哪怕此时redis中的数据过期了，但是数据库里一定会存在这个数据，从数据库中查询到数据之后，再将其放到redis中。如果布隆过滤器判断这个数据不存在，则直接返回。这种思想的优点在于节约内存空间，但存在误判，误判的原因在于：布隆过滤器使用的是哈希思想，只要是哈希思想，都可能存在哈希冲突</p>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>缓存穿透产生的原因是什么？<ul>
+<li>用户请求的数据在缓存中和在数据库中都不存在，不断发起这样的请求，会给数据库带来巨大压力</li>
+</ul>
+</li>
+<li><strong>缓存穿透的解决方案有哪些？</strong><ul>
+<li>缓存null值</li>
+<li>布隆过滤</li>
+<li>增强id复杂度，避免被猜测id规律（可以采用雪花算法）</li>
+<li>做好数据的基础格式校验</li>
+<li>**加强用户权限校验	**</li>
+<li>做好热点参数的限流</li>
+</ul>
+</li>
+</ul>
+<h2 id="缓存雪崩问题"><a href="#缓存雪崩问题" class="headerlink" title="缓存雪崩问题"></a>缓存雪崩问题</h2><p><strong>缓存雪崩是指在同一时间段，大量缓存的key同时失效，或者Redis服务宕机，导致大量请求到达数据库，带来巨大压力</strong></p>
+<ul>
+<li><strong>解决方案</strong><ul>
+<li>给不同的Key的TTL添加随机值，让其在不同时间段分批失效</li>
+<li>利用Redis集群提高服务的可用性（使用一个或者多个哨兵(Sentinel)实例组成的系统，对redis节点进行监控，在主节点出现故障的情况下，能将从节点中的一个升级为主节点，进行故障转义，保证系统的可用性。 ）</li>
+<li>给缓存业务添加降级限流策略</li>
+<li>给业务添加多级缓存（浏览器访问静态资源时，优先读取浏览器本地缓存；访问非静态资源（ajax查询数据）时，访问服务端；请求到达Nginx后，优先读取Nginx本地缓存；如果Nginx本地缓存未命中，则去直接查询Redis（不经过Tomcat）；如果Redis查询未命中，则查询Tomcat；请求进入Tomcat后，优先查询JVM进程缓存；如果JVM进程缓存未命中，则查询数据库）</li>
+</ul>
+</li>
+</ul>
+<h2 id="缓存击穿问题"><a href="#缓存击穿问题" class="headerlink" title="缓存击穿问题"></a>缓存击穿问题</h2><p><strong>缓存击穿也叫热点Key问题，就是一个被高并发访问并且缓存重建业务较复杂的key突然失效了，那么无数请求访问就会在瞬间给数据库带来巨大的冲击</strong></p>
+<ul>
+<li>举个不太恰当的例子：一件秒杀中的商品的key突然失效了，大家都在疯狂抢购，那么这个瞬间就会有无数的请求访问去直接抵达数据库，从而造成缓存击穿</li>
+</ul>
+<h3 id="缓存击穿问题解决思路"><a href="#缓存击穿问题解决思路" class="headerlink" title="缓存击穿问题解决思路"></a>缓存击穿问题解决思路</h3><p>解决缓存击穿的方法可以是<strong>设置热点数据永不过期</strong>，或者<strong>使用互斥锁</strong>（即在缓存失效的时候，不是立即加载数据库查询结果到缓存，而是先使用锁或者其他同步机制保证只有一个请求查询数据库并加载到缓存）。</p>
+<h4 id="常见的解决方案有两种"><a href="#常见的解决方案有两种" class="headerlink" title="常见的解决方案有两种"></a>常见的解决方案有两种</h4><pre><code>  1. **互斥锁**
+  2. **逻辑过期**
+</code></pre>
+<ul>
+<li><strong>逻辑分析：</strong>假设线程1在查询缓存之后未命中，本来应该去查询数据库，重建缓存数据，完成这些之后，其他线程也就能从缓存中加载这些数据了。但是在线程1还未执行完毕时，又进来了线程2、3、4同时来访问当前方法，那么这些线程都不能从缓存中查询到数据，那么他们就会在同一时刻访问数据库，执行SQL语句查询，对数据库访问压力过大</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://pic1.imgdb.cn/item/6354f77716f2c2beb1225032.jpg"><img src="/images/1708836957821-90cd6e7e-384b-41b0-a939-d1d45f6982bd.jpeg"></a></p>
+<ul>
+<li>解决方案一：互斥锁</li>
+<li>利用锁的互斥性，假设线程过来，只能一个人一个人的访问数据库，从而避免对数据库频繁访问产生过大压力，但这也会影响查询的性能，将查询的性能从并行变成了串行，我们可以采用tryLock方法+double check来解决这个问题</li>
+<li>线程1在操作的时候，拿着锁把房门锁上了，那么线程2、3、4就不能都进来操作数据库，只有1操作完了，把房门打开了，此时缓存数据也重建好了，线程2、3、4直接从redis中就可以查询到数据。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://pic1.imgdb.cn/item/6354f76816f2c2beb1223b47.jpg"><img src="/images/1708836956755-2fbd3dd3-e268-430f-85f8-d9ead7706dd7.jpeg"></a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">//todo 方法二：  基于互斥锁方式解决缓存击穿问题</span></span><br><span class="line"><span class="keyword">public</span> Result <span class="title function_">queryWithMutex</span><span class="params">(Long id)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> CACHE_SHOP_KEY + id;</span><br><span class="line">    <span class="comment">// 1. 从redis中查询商铺的缓存</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">shopJson</span> <span class="operator">=</span> stringRedisTemplate.opsForValue().get(key);</span><br><span class="line">    <span class="comment">//  2. 判断redis中是否存在该id的商户</span></span><br><span class="line">    <span class="keyword">if</span>(StrUtil.isNotBlank(shopJson))&#123;</span><br><span class="line">        <span class="comment">//3. 如果存在： 返回商户的信息</span></span><br><span class="line">        <span class="type">Shop</span> <span class="variable">shop</span> <span class="operator">=</span> JSONUtil.toBean(shopJson, Shop.class);</span><br><span class="line">        <span class="keyword">return</span> Result.ok(shop);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(shopJson != <span class="literal">null</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">Shop</span> <span class="variable">shopN</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">//未命中---------尝试获取互斥锁--------</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">lockKey</span> <span class="operator">=</span> LOCK_SHOP_KEY + id;</span><br><span class="line">    <span class="comment">//1. 判断获取互斥锁是否成功</span></span><br><span class="line">    <span class="type">boolean</span> <span class="variable">isLock</span> <span class="operator">=</span> tryLock(lockKey);</span><br><span class="line">    <span class="comment">//2.失败休眠，成功就获取</span></span><br><span class="line">    <span class="keyword">if</span> (!isLock)&#123;</span><br><span class="line">        Thread.sleep(<span class="number">50</span>);</span><br><span class="line">        queryWithMutex(id);     <span class="comment">//递归重试获取互斥锁</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//！获取互斥锁成功</span></span><br><span class="line">    shopN = getById(id);</span><br><span class="line">    <span class="keyword">if</span>(shopN == <span class="literal">null</span>)&#123;</span><br><span class="line">        stringRedisTemplate.opsForValue().set(key,<span class="string">&quot;&quot;</span>,CACHE_NULL_TTL,TimeUnit.MINUTES);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 4.2数据库中 商户如果存在就将商户信息写入redis ,超时删除30min</span></span><br><span class="line">    stringRedisTemplate.opsForValue().set(key,JSONUtil.toJsonStr(shopN),<span class="number">30</span>, TimeUnit.MINUTES);</span><br><span class="line">    unLock(lockKey);</span><br><span class="line">    <span class="comment">//6. 返回商户信息</span></span><br><span class="line">    <span class="keyword">return</span> Result.ok(shopN);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//todo 获取锁</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">tryLock</span><span class="params">(String key)</span>&#123;</span><br><span class="line">    <span class="comment">//setIfAbsent 该方法的作用是只有当键不存在时，才会设置键的值，并且设置一个过期时间，以避免死锁的情况发生。</span></span><br><span class="line">    <span class="type">Boolean</span> <span class="variable">aBoolean</span> <span class="operator">=</span>  stringRedisTemplate.opsForValue().setIfAbsent(key, <span class="string">&quot;1&quot;</span>, <span class="number">10</span>, TimeUnit.MINUTES);</span><br><span class="line">    <span class="keyword">return</span> BooleanUtil.isTrue(aBoolean);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//todo 释放锁</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">unLock</span><span class="params">(String key)</span>&#123;</span><br><span class="line">    stringRedisTemplate.delete(key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>解决方案二：逻辑过期方案</li>
+<li>方案分析：我们之所以会出现缓存击穿问题，主要原因是在于我们对key设置了TTL，如果我们不设置TTL，那么就不会有缓存击穿问题，但是不设置TTL，数据又会一直占用我们的内存，所以我们可以采用逻辑过期方案</li>
+<li>我们之前是TTL设置在redis的value中，注意：这个过期时间并不会直接作用于Redis，而是我们后续通过逻辑去处理。假设线程1去查询缓存，然后从value中判断当前数据已经过期了，此时线程1去获得互斥锁，那么其他线程会进行阻塞，获得了锁的进程他会开启一个新线程去进行之前的重建缓存数据的逻辑，直到新开的线程完成者逻辑之后，才会释放锁，而线程1直接进行返回，假设现在线程3过来访问，由于线程2拿着锁，所以线程3无法获得锁，线程3也直接返回数据（但只能返回旧数据，牺牲了数据一致性，换取性能上的提高），只有等待线程2重建缓存数据之后，其他线程才能返回正确的数据</li>
+<li>这种方案巧妙在于，异步构建缓存数据，缺点是在重建完缓存数据之前，返回的都是脏数据<br><a target="_blank" rel="noopener" href="https://pic1.imgdb.cn/item/6354f97716f2c2beb124e950.jpg"><img src="/images/1708836956780-e63c8d48-01b0-41c0-ba9c-930cc3434a31.jpeg"></a></li>
+</ul>
+<h3 id="对比逻辑删除和互斥锁"><a href="#对比逻辑删除和互斥锁" class="headerlink" title="对比逻辑删除和互斥锁"></a>对比逻辑删除和互斥锁</h3><ul>
+<li><strong>互斥锁方案：</strong>由于保证了互斥性，所以数据一致，且实现简单，只是加了一把锁而已，也没有其他的事情需要操心，所以没有额外的内存消耗，<strong>缺点在于有锁的情况，就可能死锁，所以只能串行执行，性能会受到影响</strong></li>
+<li><strong>逻辑过期方案</strong>：线程读取过程中不需要等待，性能好，有一个额外的线程持有锁去进行重构缓存数据，但是在重构数据完成之前，其他线程只能返回脏数据，且实现起来比较麻烦</li>
+</ul>
+<p><img src="/images/image-20240226201001533.png" alt="image-20240226201001533"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://Ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/9404648c.html">https://ray2310.github.io/post/9404648c.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ray2310.github.io" target="_blank">Rayce. Blogs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java/">java</a><a class="post-meta__tags" href="/tags/%E5%90%8E%E7%AB%AF/">后端</a><a class="post-meta__tags" href="/tags/redis/">redis</a></div><div class="post_share"><div class="social-share" data-image="https://w.wallhaven.cc/full/85/wallhaven-85rpvy.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/be30be59.html" title="商品下单对接支付宝/微信支付"><img class="cover" src="https://w.wallhaven.cc/full/01/wallhaven-01jpdv.jpg" onerror="onerror=null;src='/img/second.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">商品下单对接支付宝/微信支付</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/23c7dc9f.html" title="浅谈SpringMVC"><img class="cover" src="https://static-bbs.nubia.cn/forum/201705/11/212740nj1388z8351yy5yp.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-02-26</div><div class="title">浅谈SpringMVC</div></div></a></div><div><a href="/post/51453cee.html" title="深入理解AOP思想"><img class="cover" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAV5IsDhf40B0JNiTadUzM9WvxBWbE9ud8mw&usqp=CAU" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-03-20</div><div class="title">深入理解AOP思想</div></div></a></div><div><a href="/post/3a4cd68c.html" title="Security授权实现"><img class="cover" src="https://bpic.588ku.com/back_origin_min_pic/19/10/22/4b2ca2ba13a830385cd398820ef837e1.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-02-17</div><div class="title">Security授权实现</div></div></a></div><div><a href="/post/b339061c.html" title="Security实现密码加密处理"><img class="cover" src="https://pic2.zhimg.com/v2-93d5754cb8c35c94f8ade4a5399929c1_r.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-02-14</div><div class="title">Security实现密码加密处理</div></div></a></div><div><a href="/post/1de3cf99.html" title="security实现验证码andRemember-Me"><img class="cover" src="https://th.bing.com/th/id/OIP.IyVUba7h32yX0HI7AFFh2QHaEb?pid=ImgDet&rs=1" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-02-13</div><div class="title">security实现验证码andRemember-Me</div></div></a></div><div><a href="/post/fa5d4e71.html" title="自定义配置拦截器"><img class="cover" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.win3000.com%2Ftags%2Fjianyue%2F&psig=AOvVaw2LdtjXeJYr5p33Qbr1LJKq&ust=1672760873466000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCLjanYCeqfwCFQAAAAAdAAAAABAH" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2023-02-13</div><div class="title">自定义配置拦截器</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://avatars.githubusercontent.com/u/109897266?v=4" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">132</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">46</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">28</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center">无人扶我青云志，我自踏雪至山巅</p> <p align="center">倘若命中无此运，孤身亦可登昆仑</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%95%86%E5%93%81%E7%BC%93%E5%AD%98"><span class="toc-number">1.</span> <span class="toc-text">商品缓存</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%92%8C%E6%80%9D%E8%B7%AF"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">缓存模型和思路</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E7%9A%84%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5"><span class="toc-number">1.1.</span> <span class="toc-text">缓存的更新策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF"><span class="toc-number">1.1.1.</span> <span class="toc-text">场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E7%BC%93%E5%AD%98%E4%B8%8D%E4%B8%80%E8%87%B4%E5%B8%A6%E6%9D%A5%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.2.</span> <span class="toc-text">数据库和缓存不一致带来的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%82%A3%E4%B9%88%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E8%BF%99%E4%B8%AA%E9%97%AE%E9%A2%98%E5%91%A2%EF%BC%9F"><span class="toc-number">1.1.3.</span> <span class="toc-text">那么如何解决这个问题呢？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E7%BC%93%E5%AD%98%E4%B8%8D%E4%B8%80%E8%87%B4%E9%87%87%E7%94%A8%E4%BB%80%E4%B9%88%E6%96%B9%E6%A1%88"><span class="toc-number">1.1.4.</span> <span class="toc-text">数据库和缓存不一致采用什么方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">缓存穿透问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF"><span class="toc-number">1.2.1.</span> <span class="toc-text">两种解决思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%E5%88%86%E6%9E%90"><span class="toc-number">1.2.2.</span> <span class="toc-text">思路分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.2.3.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.</span> <span class="toc-text">缓存雪崩问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.</span> <span class="toc-text">缓存击穿问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF"><span class="toc-number">1.4.1.</span> <span class="toc-text">缓存击穿问题解决思路</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%9C%89%E4%B8%A4%E7%A7%8D"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">常见的解决方案有两种</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E6%AF%94%E9%80%BB%E8%BE%91%E5%88%A0%E9%99%A4%E5%92%8C%E4%BA%92%E6%96%A5%E9%94%81"><span class="toc-number">1.4.2.</span> <span class="toc-text">对比逻辑删除和互斥锁</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/9404648c.html" title="缓存穿透、雪崩、击穿三者如何解决"><img src="https://w.wallhaven.cc/full/85/wallhaven-85rpvy.png" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="缓存穿透、雪崩、击穿三者如何解决"/></a><div class="content"><a class="title" href="/post/9404648c.html" title="缓存穿透、雪崩、击穿三者如何解决">缓存穿透、雪崩、击穿三者如何解决</a><time datetime="2024-02-26T12:08:18.000Z" title="发表于 2024-02-26 20:08:18">2024-02-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/be30be59.html" title="商品下单对接支付宝/微信支付"><img src="https://w.wallhaven.cc/full/01/wallhaven-01jpdv.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="商品下单对接支付宝/微信支付"/></a><div class="content"><a class="title" href="/post/be30be59.html" title="商品下单对接支付宝/微信支付">商品下单对接支付宝/微信支付</a><time datetime="2024-02-23T09:26:17.000Z" title="发表于 2024-02-23 17:26:17">2024-02-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/5823fd7c.html" title="策略模式+工厂服务实现规则过滤"><img src="https://w.wallhaven.cc/full/4l/wallhaven-4lex7p.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="策略模式+工厂服务实现规则过滤"/></a><div class="content"><a class="title" href="/post/5823fd7c.html" title="策略模式+工厂服务实现规则过滤">策略模式+工厂服务实现规则过滤</a><time datetime="2024-02-09T14:25:09.000Z" title="发表于 2024-02-09 22:25:09">2024-02-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/3ae28175.html" title="实战抽象工厂模式"><img src="https://w.wallhaven.cc/full/j8/wallhaven-j8l35y.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="实战抽象工厂模式"/></a><div class="content"><a class="title" href="/post/3ae28175.html" title="实战抽象工厂模式">实战抽象工厂模式</a><time datetime="2024-02-07T12:13:08.000Z" title="发表于 2024-02-07 20:13:08">2024-02-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/81c04182.html" title="ChatGPT模型请求参数学习"><img src="https://w.wallhaven.cc/full/q2/wallhaven-q2ljxr.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="ChatGPT模型请求参数学习"/></a><div class="content"><a class="title" href="/post/81c04182.html" title="ChatGPT模型请求参数学习">ChatGPT模型请求参数学习</a><time datetime="2024-02-06T15:10:16.000Z" title="发表于 2024-02-06 23:10:16">2024-02-06</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://w.wallhaven.cc/full/85/wallhaven-85rpvy.png')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2024 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a><a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a><a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> <a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: '',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: '',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
