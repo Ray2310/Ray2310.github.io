@@ -1,0 +1,269 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Deployment容器编排？怎么编排 | Rayce. Blogs</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="工作负载在上一章中， 我们简要的了解了工作负载的作用及其概要， 在这章节的学习中 ， 在学期容器编排之前 ， 让我们来再加深一下对工作负载的理解。  在Kubernetes中，工作负载是对一组Pod的抽象模型，用于描述业务的运行载体。这些工作负载类型帮助用户定义和管理他们的应用程序，确保它们在容器化环境中高效运行。  借用我阅读的过的文章的一个图， 来表示一下工作负载到底再干什么？  从图中清晰明">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deployment容器编排？怎么编排">
+<meta property="og:url" content="https://ray2310.github.io/post/25bb90fa.html">
+<meta property="og:site_name" content="Rayce. Blogs">
+<meta property="og:description" content="工作负载在上一章中， 我们简要的了解了工作负载的作用及其概要， 在这章节的学习中 ， 在学期容器编排之前 ， 让我们来再加深一下对工作负载的理解。  在Kubernetes中，工作负载是对一组Pod的抽象模型，用于描述业务的运行载体。这些工作负载类型帮助用户定义和管理他们的应用程序，确保它们在容器化环境中高效运行。  借用我阅读的过的文章的一个图， 来表示一下工作负载到底再干什么？  从图中清晰明">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://w.wallhaven.cc/full/l8/wallhaven-l8xql2.png">
+<meta property="article:published_time" content="2024-07-16T15:55:47.000Z">
+<meta property="article:modified_time" content="2024-07-16T15:58:08.991Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="云原生">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://w.wallhaven.cc/full/l8/wallhaven-l8xql2.png"><link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQHlJW3iX0eSx0YEsPnrToEC7iKW4m3TEgiQ&usqp=CAU"><link rel="canonical" href="https://ray2310.github.io/post/25bb90fa.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. Blogs","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Deployment容器编排？怎么编排',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-16 23:58:08'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://avatars.githubusercontent.com/u/109897266?v=4" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">139</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">51</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">32</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://w.wallhaven.cc/full/l8/wallhaven-l8xql2.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. Blogs"><span class="site-name">Rayce. Blogs</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Deployment容器编排？怎么编排</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-07-16T15:55:47.000Z" title="发表于 2024-07-16 23:55:47">2024-07-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-16T15:58:08.991Z" title="更新于 2024-07-16 23:58:08">2024-07-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/kubernetes/">kubernetes</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Deployment容器编排？怎么编排"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="工作负载"><a href="#工作负载" class="headerlink" title="工作负载"></a>工作负载</h1><p>在上一章中， 我们简要的了解了工作负载的作用及其概要， 在这章节的学习中 ， 在学期容器编排之前 ， 让我们来再加深一下对工作负载的理解。</p>
+<blockquote>
+<p>在Kubernetes中，<strong>工作负载是对一组Pod的抽象模型</strong>，用于描述业务的运行载体。这些<strong>工作负载类型帮助用户定义和管理他们的应用程序，确保它们在容器化环境中高效运行。</strong></p>
+</blockquote>
+<p>借用我阅读的过的文章的一个图， 来表示一下工作负载到底再干什么？<br><img src="/images/1721138553655-cc007d5c-9a64-4544-9374-97cd56f0093d.webp"></p>
+<blockquote>
+<p>从图中清晰明了的看到，工作负载管理者一组pod ，而pod其实是一组或者一个容器的集合。 所以说， 工作负载是一组pod的抽象模型。 </p>
+</blockquote>
+<p><strong>Deployment是一种工作负载</strong>，在Kubernetes中用于描述期望的状态。具体来说，Deployment是用于部署、扩展和管理Pod的API对象，<strong>它代表用户期望的Pod集合的状态。</strong></p>
+<h2 id="为什么要有工作负载？"><a href="#为什么要有工作负载？" class="headerlink" title="为什么要有工作负载？"></a>为什么要有工作负载？</h2><p>为了减轻用户的使用负担，通常不需要用户直接管理每个 <code>Pod</code>。 而是使用<strong>负载资源</strong>来替用户管理一组 Pod。 这些负载资源通过配置 控制器 来确保正确类型的、处于运行状态的 Pod 个数是正确的，<strong>与用户所指定的状态相一致。</strong>这就是我前面所说的工作负载代表用户期望pod的状态.<br>在张磊老师的深入剖析kubernetes中，他是这样描述deployment的。</p>
+<blockquote>
+<p><strong>Pod 这个看似复杂的 API 对象，实际上就是对容器的进一步抽象和封装而已。</strong><br>说得更形象些，“容器”镜像虽然好用，但是容器这样一个“沙盒”的概念，对于描述应用来说，还是太过简单了。这就好比，集装箱固然好用，但是如果它四面都光秃秃的，吊车还怎么把这个集装箱吊起来并摆放好呢？<br>所以，Pod 对象，其实就是容器的升级版。它对容器进行了组合，添加了更多的属性和字段。这就好比给集装箱四面安装了吊环，使得 Kubernetes 这架“吊车”，可以更轻松地操作它。<br>**而kubernetes操作这些pod的逻辑就是通过工作负载来实现的。 **</p>
+</blockquote>
+<p>在看下kubernetes源码中的 pkg&#x2F;controller 目录， 里面的内容就是我们控制器源码实现<br>这<strong>个目录下面的每一个控制器，都以独有的方式负责某种编排功能。而我们的 Deployment，正是这些控制器中的一种。</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ cd kubernetes/pkg/controller/</span><br><span class="line">$ ls -d */              </span><br><span class="line">deployment/             job/                    podautoscaler/          </span><br><span class="line">cloud/                  disruption/             namespace/              </span><br><span class="line">replicaset/             serviceaccount/         volume/</span><br><span class="line">cronjob/                garbagecollector/       nodelifecycle/          replication/            statefulset/            daemon/</span><br><span class="line">...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="控制器怎么编排？"><a href="#控制器怎么编排？" class="headerlink" title="控制器怎么编排？"></a>控制器怎么编排？</h2><p>之前我们说到， 控制器描述的是人们期望的pod的状态 ，但是往往事与愿违。应用程序实际运行的状态受很多因素的影响， 所以我们还是需要**根据实际的状态来调整， 调整成为我们希望的状态， 这就是容编排. **<br>用一段伪代码来表示编排动作。 </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">  实际状态 := 获取集群中对象X的实际状态（Actual State）</span><br><span class="line">  期望状态 := 获取集群中对象X的期望状态（Desired State）</span><br><span class="line">  <span class="keyword">if</span> 实际状态 == 期望状态&#123;</span><br><span class="line">    什么都不做</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    执行编排动作，将实际状态调整为期望状态</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>既然我们<strong>期望的状态是通过定义的yaml文件来完成的</strong>， 那么实际状态又是怎么来的呢 ？ 虽然我们知道实际状态肯定是通过工作节点上获取到的。 但是如何获取？ 获取什么才能判断 ？这些我们都不知道。</p>
+<h3 id="获取实际状态"><a href="#获取实际状态" class="headerlink" title="获取实际状态"></a>获取实际状态</h3><p>常见的获取容器状态的手段就是kubelet 通过心跳汇报的容器状态和节点状态，或者监控系统中保存的应用监控数据，或者控制器主动收集的它自己感兴趣的信息，这些都是常见的实际状态的来源。</p>
+<h3 id="如何由实际状态达到期望状态-？"><a href="#如何由实际状态达到期望状态-？" class="headerlink" title="如何由实际状态达到期望状态 ？"></a>如何由实际状态达到期望状态 ？</h3><p>其实这个上一章已经讲过了， 但是为了让大家理解更加深刻， 我们再来理解一遍<br>以 Deployment 部署nginx服务为例，我简单描述一下：</p>
+<ol>
+<li>Deployment 控制器从 Etcd 中获取到所有携带了“app: nginx”标签的 Pod，然后统计它们的数量，这就是实际状态；</li>
+<li>Deployment 对象的 Replicas 字段的值就是期望状态；</li>
+<li>Deployment 控制器将两个状态做比较，然后根据比较结果，确定是创建 Pod，还是删除已有的 Pod</li>
+</ol>
+<p>可以看到，<strong>一个 Kubernetes 对象的主要编排逻辑，实际上是在第三步的“对比”阶段完成的。</strong><br>这个操作，通常被叫作调谐（Reconcile）。这个调谐的过程，则被称作“Reconcile Loop”（调谐循环）或者“Sync Loop”（同步循环）。</p>
+<p><strong>实际上， kubernetes实现编排的方法就是通过deployment来对pod进行控制循环， 循环看他们的状态， 是否和预期的一致， 不一致要么删除一些已存在的pod ，要么重新创建一些pod。大致的思路就是这样， 但是具体的怎么删除， 怎么添加， 不同的控制器有着不同的实现逻辑。 我们下面要做的就是学习不同的控制器来深入每种编排思想。</strong></p>
+<blockquote>
+<p>注意， 这里大家不要被控制器（controller）和工作负载搞晕了， 工作负载是一组pod的集合。控制器是kubernetes提供来保证工作负载按照预期运行， 同时能够确保他们能够在集群中自动扩容和恢复。<br>另外再提一嘴， controller manager 是kubernetes提供的一个组件， 用于管理controller。 controller的种类由很多 ，上面有说（kubernetes源码中的&#x2F;pkg&#x2F;controller目录下）</p>
+</blockquote>
+<h1 id="Deployment-，-作业副本与水平扩展"><a href="#Deployment-，-作业副本与水平扩展" class="headerlink" title="Deployment ， 作业副本与水平扩展"></a>Deployment ， 作业副本与水平扩展</h1><p>在这块， 我们具体介绍一下kubernetes的一种控制器， Deployment<br>前面其实有说。<strong>Deployment是一种工作负载</strong>，在Kubernetes中用于描述期望的状态。Deployment是用于部署、扩展和管理Pod的API对象，它代表用户期望的Pod集合的状态。Deployment会根据用户定义的期望状态自动管理Pod的生命周期，包括创建、更新和删除Pod。<br>Deployment的定义主要包括以下几个方面：</p>
+<ol>
+<li><strong>Pod模板</strong>：定义了要创建的Pod的模板，包括容器的镜像、资源限制等。</li>
+<li><strong>副本数量</strong>：指定了期望运行的Pod副本数量。</li>
+<li><strong>更新策略</strong>：定义了Pod更新的方式，如滚动更新等。</li>
+<li><strong>选择器</strong>：用于选择哪些Pod应该由该Deployment管理。</li>
+</ol>
+<p>通过Deployment，用户可以轻松地管理和扩展应用程序，同时确保应用程序的高可用性。Kubernetes会根据Deployment的定义自动处理Pod的创建、更新和删除等操作，以满足用户期望的状态</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-deployment</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">affinity:</span></span><br><span class="line">        <span class="attr">podAntiAffinity:</span></span><br><span class="line">          <span class="attr">requiredDuringSchedulingIgnoredDuringExecution:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">labelSelector:</span></span><br><span class="line">                <span class="attr">matchExpressions:</span></span><br><span class="line">                  <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">app</span></span><br><span class="line">                    <span class="attr">operator:</span> <span class="string">In</span></span><br><span class="line">                    <span class="attr">values:</span></span><br><span class="line">                      <span class="bullet">-</span> <span class="string">nginx</span></span><br><span class="line">              <span class="attr">topologyKey:</span> <span class="string">&quot;kubernetes.io/hostname&quot;</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:latest</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p>这是我自己做练习的时候 通过deployment模板创建的一个nginx的yaml文件。这就是之前说的— 期望状态。<br>注意这里<br><code>spec: - replicas: 2</code> 这个其实就是ReplicaSet（也是一种控制器）的一个概念。<br>那么，在具体的实现上，这个 Deployment，与 ReplicaSet，以及 Pod 的关系是怎样的呢？<br>用一张图把它描述出来：<br><img src="/images/1721142138919-04656966-7059-422d-ad27-e8508dbd59b9.png" alt="image.png"><br>通过这张图，我们就很清楚地看到，一个定义了 replicas&#x3D;3 的 Deployment，与它的 ReplicaSet，以及 Pod 的关系，实际上是一种“层层控制”的关系。<br>**ReplicaSet 【后面简称 rs】负责通过“控制器模式”，保证系统中 Pod 的个数永远等于指定的个数（比如，3 个)**。这也正是 Deployment 只允许容器的 restartPolicy&#x3D;Always 的主要原因：只有在容器能保证自己始终是 Running 状态的前提下，ReplicaSet 调整 Pod 的个数才有意义。</p>
+<p>而在此基础上，<strong>Deployment 同样通过“控制器模式”，来操作 ReplicaSet 的个数和属性，进而实现“水平扩展 &#x2F; 收缩”和“滚动更新”这两个编排动作。</strong></p>
+<ul>
+<li>水平扩展、收缩： 就是通过replicas来控制pod个数</li>
+<li>滚动更新 ？ 好像就是更新策略….. 下面来研究一下滚动更新</li>
+</ul>
+<h2 id="滚动更新"><a href="#滚动更新" class="headerlink" title="滚动更新"></a>滚动更新</h2><p>以这个 Deployment 为例，来说说“滚动更新”的过程<br><img src="https://cdn.nlark.com/yuque/0/2024/png/29629815/1721142846514-f11d259a-0c27-4c52-bb87-95835b52044f.png#averageHue=%23141729&clientId=u8a0d8f9b-f620-4&from=paste&height=71&id=ucd5d8a68&originHeight=80&originWidth=1010&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=18443&status=done&style=none&taskId=u462193b2-2b9a-4db3-b9a8-80f776361cd&title=&width=897.7777777777778" alt="image.png"><br>在返回结果中，我们可以看到四个状态字段，它们的含义如下所示。</p>
+<ol>
+<li>READY：当前处于 Running 状态的 Pod 的个数；</li>
+<li>UP-TO-DATE：当前处于最新版本的 Pod 的个数，所谓最新版本指的是 Pod 的 Spec 部分与 Deployment 里 Pod 模板里定义的完全一致；</li>
+<li><strong>AVAILABLE：当前已经可用的 Pod 的个数，即：既是 Running 状态，又是最新版本，并且已经处于 Ready（健康检查正确）状态的 Pod 的个数</strong>。</li>
+</ol>
+<p>可以看到，只有这个 AVAILABLE 字段，描述的才是用户所期望的最终状态。<br>通过命令<code>kubectl get deployment</code>查看当前的控制器名称<br><img src="/images/1721143592370-b7dd91f9-924c-4dae-b284-272b5dfd6c6c.png" alt="image.png"><br>然后通过<code>kubectl edit deployment/nginx-deployment</code> 来进行修改etcd中对于这个deployment的内容。 他这里修改完之后就会重新提交上去。 然后就会进行滚动更新操作。<br>而 Kubernetes 项目还为我们提供了一条指令，让我们可以实时查看 Deployment 对象的状态变化。这个指令就是 kubectl rollout status：<br><code> kubectl rollout status deployment/nginx-deployment</code><br><img src="/images/1721143495819-5deca2ab-c69c-4232-9fd6-133ff527f6d8.png" alt="image.png"><br>具体流程如下： </p>
+<ol>
+<li>首先，当你修改了 Deployment 里的 Pod 定义之后，Deployment Controller 会使用这个修改后的 Pod 模板，创建一个新的 ReplicaSet（hash&#x3D;1764197365），这个新的 ReplicaSet 的初始 Pod 副本数是：0。</li>
+<li>然后，在 Age&#x3D;24 s 的位置，Deployment Controller 开始将这个新的 ReplicaSet 所控制的 Pod 副本数从 0 个变成 1 个，即：“水平扩展”出一个副本。</li>
+<li>紧接着，在 Age&#x3D;22 s 的位置，Deployment Controller 又将旧的 ReplicaSet（hash&#x3D;3167673210）所控制的旧 Pod 副本数减少一个，即：“水平收缩”成两个副本。</li>
+<li>如此交替进行，新 ReplicaSet 管理的 Pod 副本数，从 0 个变成 1 个，再变成 2 个，最后变成 3 个。而旧的 ReplicaSet 管理的 Pod 副本数则从 3 个变成 2 个，再变成 1 个，最后变成 0 个。这样，就完成了这一组 Pod 的版本升级过程。</li>
+</ol>
+<p>像这样，<strong>将一个集群中正在运行的多个 Pod 版本，交替地逐一升级的过程，就是“滚动更新”。</strong><br>当然， 在更新的同时， pod还会有健康检查机制 ，如果fail了， 那么运维人员就会接入。当然， 旧的pod依然在运行， 并不会对现网的业务造成任何影响。<br><strong>而为了进一步保证服务的连续性，Deployment Controller 还会确保，在任何时间窗口内，只有指定比例的 Pod 处于离线状态。</strong>同时，它也会确保，在任何时间窗口内，只有指定比例的新 Pod 被创建出来。这两个比例的值都是可以配置的，默认都是 DESIRED 值的 25%。<br><img src="/images/1721143961094-38168e53-5fa0-4dcd-8960-74e0d66685f3.png" alt="image.png"><br>所以，在上面这个 Deployment 的例子中，它有 3 个 Pod 副本，那么控制器在“滚动更新”的过程中永远都会确保至少有 2 个 Pod 处于可用状态，至多只有 4 个 Pod 同时存在于集群中。这个策略，是 Deployment 对象的一个字段，名叫 RollingUpdate<br>RollingUpdate中，对于最大删除有着百分比的要求。<br>两个配置还可以用前面我们介绍的百分比形式来表示，比如：maxUnavailable&#x3D;50%，指的是我们最多可以一次删除“50%*DESIRED 数量”个 Pod。<br>综上， 我们可以扩展一下 Deployment、ReplicaSet 和 Pod 的关系图<br><img src="/images/1721144315717-3b3f89ad-5e39-44ec-882a-9fc41947f9c9.png" alt="image.png"><br>Deployment 的控制器，实际上控制的是 ReplicaSet 的数目，以及每个 ReplicaSet 的属性。<br>而一个应用的版本，对应的正是一个 ReplicaSet；这个版本应用的 Pod 数量，则由 ReplicaSet 通过它自己的控制器（ReplicaSet Controller)来保证。<br>通过这样的多个 ReplicaSet 对象，Kubernetes 项目就实现了对多个“应用版本”的描述。</p>
+<h2 id="Deployment-对应用进行版本控制的具体原理"><a href="#Deployment-对应用进行版本控制的具体原理" class="headerlink" title="Deployment 对应用进行版本控制的具体原理"></a>Deployment 对应用进行版本控制的具体原理</h2><p>这一次，我会使用一个叫 <strong>kubectl set image</strong> 的指令，直接修改 nginx-deployment 所使用的镜像。这个命令的好处就是，你可以不用像 kubectl edit 那样需要打开编辑器。<br><code>$ kubectl set image deployment/nginx-deployment nginx=nginx:1.91</code><br>由于这个 nginx:1.91 镜像在 Docker Hub 中并不存在，所以这个 Deployment 的“滚动更新”被触发后，会立刻报错并停止。</p>
+<p>通过这个返回结果，我们可以看到，新版本的 ReplicaSet（hash&#x3D;2156724341）的“水平扩展”已经停止。而且此时，它已经创建了两个 Pod，但是它们都没有进入 READY 状态。这当然是因为这两个 Pod 都拉取不到有效的镜像。<br>与此同时，旧版本的 ReplicaSet（hash&#x3D;1764197365）的“水平收缩”，也自动停止了。此时，已经有一个旧 Pod 被删除，还剩下两个旧 Pod。</p>
+<p>我们只需要执行一条 kubectl rollout undo 命令，就能把整个 Deployment 回滚到上一个版本：<code>$ kubectl rollout undo deployment/nginx-deployment</code></p>
+<p>更进一步地，如果我想回滚到更早之前的版本，要怎么办呢？<br>**首先，我需要使用 <strong><code>kubectl rollout history</code> 命令，查看每次 Deployment 变更对应的版本</strong>。而由于我们在创建这个 Deployment 的时候，指定了–record 参数，所以我们创建这些版本时执行的 kubectl 命令，都会被记录下来。</p>
+<p>**然后，我们就可以在 kubectl rollout undo 命令行最后，加上要回滚到的指定版本的版本号，就可以回滚到指定版本了。这个指令的用法如下：<br><code>kubectl rollout undo deployment/nginx-deployment --to-revision=2</code><br>这样，Deployment Controller 还会按照“滚动更新”的方式，完成对 Deployment 的降级操作。</p>
+<blockquote>
+<p>Tip:<br>Deployment 对象有一个字段，叫作 spec.revisionHistoryLimit，就是 Kubernetes 为 Deployment 保留的“历史版本”个数。所以，如果把它设置为 0，你就再也不能做回滚操作了。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://Ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/25bb90fa.html">https://ray2310.github.io/post/25bb90fa.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ray2310.github.io" target="_blank">Rayce. Blogs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/kubernetes/">kubernetes</a><a class="post-meta__tags" href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a></div><div class="post_share"><div class="social-share" data-image="https://w.wallhaven.cc/full/l8/wallhaven-l8xql2.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/72dd3c2b.html" title="Kubernetes的pod解析"><img class="cover" src="https://w.wallhaven.cc/full/p9/wallhaven-p913ep.jpg" onerror="onerror=null;src='/img/second.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Kubernetes的pod解析</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/72dd3c2b.html" title="Kubernetes的pod解析"><img class="cover" src="https://w.wallhaven.cc/full/p9/wallhaven-p913ep.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-15</div><div class="title">Kubernetes的pod解析</div></div></a></div><div><a href="/post/a6460819.html" title="Kubernetes安装总结"><img class="cover" src="https://w.wallhaven.cc/full/d6/wallhaven-d6jx53.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-13</div><div class="title">Kubernetes安装总结</div></div></a></div><div><a href="/post/53db2c5f.html" title="Kubernetes RUSH"><img class="cover" src="https://w.wallhaven.cc/full/01/wallhaven-01jvd3.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-03-22</div><div class="title">Kubernetes RUSH</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://avatars.githubusercontent.com/u/109897266?v=4" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">139</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">51</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">32</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center">无人扶我青云志，我自踏雪至山巅</p> <p align="center">倘若命中无此运，孤身亦可登昆仑</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E8%B4%9F%E8%BD%BD"><span class="toc-number">1.</span> <span class="toc-text">工作负载</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%89%E5%B7%A5%E4%BD%9C%E8%B4%9F%E8%BD%BD%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">为什么要有工作负载？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E5%99%A8%E6%80%8E%E4%B9%88%E7%BC%96%E6%8E%92%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">控制器怎么编排？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%AE%9E%E9%99%85%E7%8A%B6%E6%80%81"><span class="toc-number">1.2.1.</span> <span class="toc-text">获取实际状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%94%B1%E5%AE%9E%E9%99%85%E7%8A%B6%E6%80%81%E8%BE%BE%E5%88%B0%E6%9C%9F%E6%9C%9B%E7%8A%B6%E6%80%81-%EF%BC%9F"><span class="toc-number">1.2.2.</span> <span class="toc-text">如何由实际状态达到期望状态 ？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Deployment-%EF%BC%8C-%E4%BD%9C%E4%B8%9A%E5%89%AF%E6%9C%AC%E4%B8%8E%E6%B0%B4%E5%B9%B3%E6%89%A9%E5%B1%95"><span class="toc-number">2.</span> <span class="toc-text">Deployment ， 作业副本与水平扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BB%9A%E5%8A%A8%E6%9B%B4%E6%96%B0"><span class="toc-number">2.1.</span> <span class="toc-text">滚动更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deployment-%E5%AF%B9%E5%BA%94%E7%94%A8%E8%BF%9B%E8%A1%8C%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E7%9A%84%E5%85%B7%E4%BD%93%E5%8E%9F%E7%90%86"><span class="toc-number">2.2.</span> <span class="toc-text">Deployment 对应用进行版本控制的具体原理</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/25bb90fa.html" title="Deployment容器编排？怎么编排"><img src="https://w.wallhaven.cc/full/l8/wallhaven-l8xql2.png" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Deployment容器编排？怎么编排"/></a><div class="content"><a class="title" href="/post/25bb90fa.html" title="Deployment容器编排？怎么编排">Deployment容器编排？怎么编排</a><time datetime="2024-07-16T15:55:47.000Z" title="发表于 2024-07-16 23:55:47">2024-07-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/72dd3c2b.html" title="Kubernetes的pod解析"><img src="https://w.wallhaven.cc/full/p9/wallhaven-p913ep.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Kubernetes的pod解析"/></a><div class="content"><a class="title" href="/post/72dd3c2b.html" title="Kubernetes的pod解析">Kubernetes的pod解析</a><time datetime="2024-07-15T15:41:31.000Z" title="发表于 2024-07-15 23:41:31">2024-07-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/a6460819.html" title="Kubernetes安装总结"><img src="https://w.wallhaven.cc/full/d6/wallhaven-d6jx53.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Kubernetes安装总结"/></a><div class="content"><a class="title" href="/post/a6460819.html" title="Kubernetes安装总结">Kubernetes安装总结</a><time datetime="2024-07-13T15:30:04.000Z" title="发表于 2024-07-13 23:30:04">2024-07-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/94113fc3.html" title="一直在用的ipTables,你真的懂吗？"><img src="https://w.wallhaven.cc/full/l8/wallhaven-l8p58l.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="一直在用的ipTables,你真的懂吗？"/></a><div class="content"><a class="title" href="/post/94113fc3.html" title="一直在用的ipTables,你真的懂吗？">一直在用的ipTables,你真的懂吗？</a><time datetime="2024-07-10T12:39:00.000Z" title="发表于 2024-07-10 20:39:00">2024-07-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/79e7236e.html" title="Kubernetes集群搭建(简易命令版)"><img src="https://gss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e850352ac65c10386843e1f4be119313b07e89c2.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Kubernetes集群搭建(简易命令版)"/></a><div class="content"><a class="title" href="/post/79e7236e.html" title="Kubernetes集群搭建(简易命令版)">Kubernetes集群搭建(简易命令版)</a><time datetime="2024-04-16T05:35:15.000Z" title="发表于 2024-04-16 13:35:15">2024-04-16</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://w.wallhaven.cc/full/l8/wallhaven-l8xql2.png')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2024 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a><a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a><a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> <a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: '',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: '',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
