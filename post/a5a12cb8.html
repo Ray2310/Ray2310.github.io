@@ -1,0 +1,280 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>有状态应用的编排-statefulSet | Rayce. Blogs</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前置在学习StatefulSet之前， 我们先看下什么是有状态应用， 什么是无状态应用。   有状态应用： 简单来说是指那些需要存储和管理持久化数据的应用 无状态应用就是不需要管理存储和持久化数据的应用  之前我们使用的deployment， 他就是管理无状态应用的控制器。 如果想要管理有状态应用， 他是不的 ，为什么呢？首先， 他的设计初衷就是为了管理无状态应用的， 基本上就没考虑过有状态应用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="有状态应用的编排-statefulSet">
+<meta property="og:url" content="https://ray2310.github.io/post/a5a12cb8.html">
+<meta property="og:site_name" content="Rayce. Blogs">
+<meta property="og:description" content="前置在学习StatefulSet之前， 我们先看下什么是有状态应用， 什么是无状态应用。   有状态应用： 简单来说是指那些需要存储和管理持久化数据的应用 无状态应用就是不需要管理存储和持久化数据的应用  之前我们使用的deployment， 他就是管理无状态应用的控制器。 如果想要管理有状态应用， 他是不的 ，为什么呢？首先， 他的设计初衷就是为了管理无状态应用的， 基本上就没考虑过有状态应用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://w.wallhaven.cc/full/l8/wallhaven-l8ppv2.jpg">
+<meta property="article:published_time" content="2024-07-20T14:47:45.000Z">
+<meta property="article:modified_time" content="2024-07-20T14:49:40.413Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="云原生">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://w.wallhaven.cc/full/l8/wallhaven-l8ppv2.jpg"><link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQHlJW3iX0eSx0YEsPnrToEC7iKW4m3TEgiQ&usqp=CAU"><link rel="canonical" href="https://ray2310.github.io/post/a5a12cb8.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. Blogs","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '有状态应用的编排-statefulSet',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-20 22:49:40'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://avatars.githubusercontent.com/u/109897266?v=4" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">140</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">51</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">32</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://w.wallhaven.cc/full/l8/wallhaven-l8ppv2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. Blogs"><span class="site-name">Rayce. Blogs</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">有状态应用的编排-statefulSet</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-07-20T14:47:45.000Z" title="发表于 2024-07-20 22:47:45">2024-07-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-20T14:49:40.413Z" title="更新于 2024-07-20 22:49:40">2024-07-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/kubernetes/">kubernetes</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="有状态应用的编排-statefulSet"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="前置"><a href="#前置" class="headerlink" title="前置"></a>前置</h2><p>在学习StatefulSet之前， 我们先看下什么是有状态应用， 什么是无状态应用。 </p>
+<ul>
+<li>有状态应用： 简单来说是指那些需要存储和管理持久化数据的应用</li>
+<li>无状态应用就是不需要管理存储和持久化数据的应用</li>
+</ul>
+<p>之前我们使用的deployment， 他就是管理无状态应用的控制器。 如果想要管理有状态应用， 他是不的 ，为什么呢？<br>首先， 他的设计初衷就是为了管理无状态应用的， 基本上就没考虑过有状态应用。 如果你读过张磊老师的《深入剖析kubernetes》你就会知道 ，云原生时代刚开始的那几年里， 有状态应用一直是界内“禁忌般”的话题 。<br>其次， Deplotment更新pod的时候是直接删除旧的， 然后创建新的。 再通过平滑的滚动更新来实现更新操作。 如果出问题 ，那就直接回滚到之前的pod版本。<br>最后， 对于Deployment来说， 通过ReplicaSet管理副本数量的方式是将多的删除 ，少的创建就行了，并没有考虑创建的顺序、也不需要关心数据一致性等等。这些都说明着deployment不适合管理有状态应用。</p>
+<h1 id="管理有状态应用的法宝——StatefulSet"><a href="#管理有状态应用的法宝——StatefulSet" class="headerlink" title="管理有状态应用的法宝——StatefulSet"></a>管理有状态应用的法宝——StatefulSet</h1><p>首先， 来介绍一下他把， StatefulSet的设计初衷就是为有状态应用设计的资源类型，它支持有序部署、扩展和回滚。StatefulSet为每个Pod分配一个<strong>持久化标识符</strong>（如<code>myapp-0</code>、<code>myapp-1</code>等），并确保在更新过程中按照预期的顺序创建和删除Pod。此外，StatefulSet还支持持久化存储，以便Pod在重启或重新调度时保留数据。</p>
+<h3 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h3><p><strong>StatefulSet 对于需要满足以下一个或多个需求的应用程序很有价值：</strong></p>
+<ul>
+<li><strong>稳定的、唯一的网络标识符。</strong></li>
+<li><strong>稳定的、持久的存储。</strong></li>
+<li><strong>有序的、优雅的部署和扩缩。</strong></li>
+<li><strong>有序的、自动的滚动更新。</strong></li>
+</ul>
+<h3 id="限制情况"><a href="#限制情况" class="headerlink" title="限制情况"></a>限制情况</h3><ul>
+<li>给定 Pod 的存储必须由 <a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/concepts/storage/dynamic-provisioning/">PersistentVolume Provisioner</a> （<a target="_blank" rel="noopener" href="https://github.com/kubernetes/examples/tree/master/staging/persistent-volume-provisioning/README.md">例子在这里</a>） 基于所请求的 <strong>storage class</strong> 来制备，或者由管理员预先制备。</li>
+<li>删除或者扩缩 StatefulSet 并<strong>不会</strong>删除它关联的存储卷。 这样做是为了保证数据安全，它通常比自动清除 StatefulSet 所有相关的资源更有价值。</li>
+<li>StatefulSet 当前需要无头服务（Headless Services）来负责 Pod 的网络标识。你需要负责创建此服务。</li>
+<li>当删除一个 StatefulSet 时，该 StatefulSet 不提供任何终止 Pod 的保证。 为了实现 StatefulSet 中的 Pod 可以有序且体面地终止，可以在删除之前将 StatefulSet 缩容到 0。 	</li>
+<li>在默认 Pod 管理策略(<code>OrderedReady</code>) 时使用<a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/concepts/workloads/controllers/statefulset/#rolling-updates">滚动更新</a>， 可能进入需要<a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/concepts/workloads/controllers/statefulset/#forced-rollback">人工干预</a>才能修复的损坏状态。</li>
+</ul>
+<h2 id="StatefulSet的设计思想"><a href="#StatefulSet的设计思想" class="headerlink" title="StatefulSet的设计思想"></a>StatefulSet的设计思想</h2><p>StatefulSet是一种高级工作负载资源，专为需要稳定网络标识和稳定持久存储的应用程序而设计。 <strong>StatefulSet 为它们的每个 Pod 维护了一个有粘性的 ID。这些 Pod 是基于相同的规约来创建的， 但是不能相互替换：无论怎么调度，每个 Pod 都有一个永久不变的 ID。</strong><br>StatefulSet的设计是将真实世界的应用状态抽象为了两种状态 ， 拓展状态和 存储状态。 </p>
+<ol>
+<li>拓扑状态</li>
+</ol>
+<p>什么是拓展状态呢  ?   拓展就意味着应用的多个实例之间并不是完全对等的关系。 他们可能是相互依赖的 。比如应用的主节点 A 要先于从节点 B 启动。而如果你把 A 和 B 两个 Pod 删除掉，它们再次被创建出来时也必须严格按照这个顺序才行。并且，新创建出来的 Pod，必须和原来 Pod 的网络标识一样，这样原先的访问者才能使用同样的方法，访问到这个新 Pod。</p>
+<ol start="2">
+<li>存储状态</li>
+</ol>
+<p>应用的多个实例分别绑定了不同的存储数据。对于这些应用实例来说，Pod A 第一次读取到的数据，和隔了十分钟之后再次读取到的数据，应该是同一份，哪怕在此期间 Pod A 被重新创建过。这种情况最典型的例子，就是一个数据库应用的多个存储实例。</p>
+<p>所以，<strong>StatefulSet 的核心功能，就是通过某种方式记录这些状态，然后在 Pod 被重新创建时，能够为新 Pod 恢复这些状态。</strong></p>
+<h2 id="拓展的探究及Service的实践"><a href="#拓展的探究及Service的实践" class="headerlink" title="拓展的探究及Service的实践"></a>拓展的探究及Service的实践</h2><p>Service 是 Kubernetes 项目中用来将一组 Pod 暴露给外界访问的一种机制。比如，一个 Deployment 有 3 个 Pod，那么我就可以定义一个 Service。然后，用户只要能访问到这个 Service，它就能访问到某个具体的 Pod。在pod里面再根据负载均衡访问到某个容器 	。<br>这个Service里面的门道可多着呢， 之前在学习iptables和ipvs的时候就是从这里找到的启发。 这里我们先简单介绍一下， 后续在进行详细介绍。<br> Service 是如何访问到pod的呢？<br><strong>第一种方式，是以 Service 的 VIP（Virtual IP，即：虚拟 IP）方式</strong>。比如：当我访问 10.0.23.1 这个 Service 的 IP 地址时，10.0.23.1 其实就是一个 VIP，它<strong>会把请求转发到该 Service 所代理的某一个 Pod 上。</strong>（Service为关联的Pod提供负载均衡功能。当外部客户端发送请求到Service的网络端口时，Kubernetes会根据负载均衡策略选择一个Pod来处理请求）这里的具体原理，我会在后续的 Service 章节中进行详细介绍。<br><strong>第二种方式，就是以 Service 的 DNS 方式</strong>。比如：这时候，只要我访问“my-svc.my-namespace.svc.cluster.local”这条 DNS 记录，就可以访问到名叫 my-svc 的 Service 所代理的某一个 Pod。<br><strong>而在第二种 Service DNS 的方式下，具体还可以分为两种处理方法：</strong><br>第一种处理方法，是 Normal Service。这种情况下，你访问“my-svc.my-namespace.svc.cluster.local”解析到的，正是 my-svc 这个 Service 的 VIP，后面的流程就跟 VIP 方式一致了。<br>而第二种处理方法，正是 Headless Service。这种情况下，你访问“my-svc.my-namespace.svc.cluster.local”解析到的，直接就是 my-svc 代理的某一个 Pod 的 IP 地址。<strong>可以看到，这里的区别在于，Headless Service 不需要分配一个 VIP，而是可以直接以 DNS 记录的方式解析出被代理 Pod 的 IP 地址。</strong><br>回到我们之前讨论的问题， service是如何发现pod的？<br>在之前， 我们是通过创建Service的yaml 然后通过selector下的app标签来指定， 比如这个</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">web</span></span><br><span class="line">  <span class="attr">clusterIP:</span> <span class="string">None</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br></pre></td></tr></table></figure>
+
+<p>这个Service就会发现所有的pod名为nginx的。但是可以看到，所谓的 Headless Service，其实仍是一个标准 Service 的 YAML 文件。只不过，<strong>它的 clusterIP 字段的值是：None，即：这个 Service，没有一个 VIP 作为“头”。这也就是 Headless 的含义。</strong>所以，这个 Service 被创建后并不会被分配一个 VIP，而是会以 DNS 记录的方式暴露出它所代理的 Pod。<br>然后关键就被引出来了，当你按照这样的方式创建了一个 Headless Service 之后，它所代理的所有 Pod 的 IP 地址，都会被绑定一个这样格式的 DNS 记录，如下所示：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&lt;pod-name&gt;.&lt;svc-name&gt;.&lt;namespace&gt;.svc.cluster.local</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>这个 DNS 记录，正是 Kubernetes 项目为 Pod 分配的唯一的“可解析身份”（Resolvable Identity）。</strong><br>有了这个“可解析身份”，只要你知道了一个 Pod 的名字，以及它对应的 Service 的名字，你就可以非常确定地通过这条 DNS 记录访问到 Pod 的 IP 地址。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">StatefulSet</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">web</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">serviceName:</span> <span class="string">&quot;nginx&quot;</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.9.1</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">web</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>当这两个 Pod 都进入了 Running 状态之后，你就可以查看到它们各自唯一的“网络身份”了。<br>我们使用 kubectl exec 命令进入到容器中查看它们的 hostname<br><code>$ kubectl exec web-0 -- sh -c &#39;hostname&#39;</code><br>得到的内容就是web-1和web-0 。<br>可以看到，<strong>这两个 Pod 的 hostname 与 Pod 名字是一致的，都被分配了对应的编号。</strong>接下来，我们再试着以 DNS 的方式，访问一下这个 Headless Service：<br><code>$ kubectl run -i --tty --image busybox:1.28.4 dns-test --restart=Never --rm /bin/sh</code><br>可以看到，当我们把这两个 Pod 删除之后，Kubernetes 会按照原先编号的顺序，创建出了两个新的 Pod。并且，Kubernetes 依然为它们分配了与原来相同的“网络身份”：web-0.nginx 和 web-1.nginx。<br>然后，在这个 Pod 的容器里面，我们尝试用 nslookup 命令，解析一下 Pod 对应的 Headless Service：<code>nslookup web-0.nginx</code><br>规则就是创建通过statefulset控制器的对象名- 对应的pod编号， 然后再.加上service的name<br> <code>&lt;sts&gt;-&lt;编号&gt;.&lt;service名&gt;</code><br><img src="/images/1721477779088-77b6f3e3-52da-474b-bb93-c8076809030f.png" alt="image.png"><br>  从 nslookup 命令的输出结果中，我们可以看到，在访问 web-0.nginx 的时候，最后解析到的，正是 web-0 这个 Pod 的 IP 地址；而当访问 web-1.nginx 的时候，解析到的则是 web-1 的 IP 地址。</p>
+<h3 id="service访问pod的方式来探讨StatefulSet"><a href="#service访问pod的方式来探讨StatefulSet" class="headerlink" title="service访问pod的方式来探讨StatefulSet"></a>service访问pod的方式来探讨StatefulSet</h3><p><strong>当我们把这两个 Pod 删除之后，Kubernetes 会按照原先编号的顺序，创建出了两个新的 Pod。并且，Kubernetes 依然为它们分配了与原来相同的“网络身份”：web-0.nginx 和 web-1.nginx。</strong><br>通过这种严格的对应规则，<strong>StatefulSet 就保证了 Pod 网络标识的稳定性</strong>。<br>通过这种方法，<strong>Kubernetes 就成功地将 Pod 的拓扑状态（比如：哪个节点先启动，哪个节点后启动），按照 Pod 的“名字 + 编号”的方式固定了下来</strong>。此外，Kubernetes 还为每一个 Pod 提供了一个固定并且唯一的访问入口，即：这个 Pod 对应的 DNS 记录。<br><strong>这些状态，在 StatefulSet 的整个生命周期里都会保持不变，绝不会因为对应 Pod 的删除或者重新创建而失效。</strong><br>不过，相信你也已经注意到了，尽管 web-0.nginx 这条记录本身不会变，但它解析到的 Pod 的 IP 地址，并不是固定的。这就意味着，对于“有状态应用”实例的访问，你必须使用 DNS 记录或者 hostname 的方式，而绝不应该直接访问这些 Pod 的 IP 地址。</p>
+<h2 id="存储状态"><a href="#存储状态" class="headerlink" title="存储状态"></a>存储状态</h2><p>存储的管理是一个与计算实例的管理完全不同的问题。** PersistentVolume 子系统为用户和管理员提供了一组 API<strong>，</strong> 将存储如何制备的细节从其如何被使用中抽象出来。 为了实现这点，我们引入了两个新的 API 资源：PersistentVolume 和 PersistentVolumeClaim。**<br>下面来解释一下这两个名词</p>
+<ul>
+<li><strong>持久卷（PersistentVolume，PV） 是集群中的一块存储，可以由管理员事先制备， 或者使用存储类（Storage Class）来动态制备。</strong> 持久卷是集群资源，就像节点也是集群资源一样。PV 持久卷和普通的 Volume 一样， 也是使用卷插件来实现的，只是<strong>它们拥有独立于任何使用 PV 的 Pod 的生命周期。</strong> 此 API 对象中记述了存储的实现细节，无论其<strong>背后是 NFS、iSCSI 还是特定于云平台的存储系统。</strong></li>
+<li><strong>持久卷申领（PersistentVolumeClaim，PVC） 表达的是用户对存储的请求</strong>。<strong>概念上与 Pod 类似。 Pod 会耗用节点资源，而 PVC 申领会耗用 PV 资源</strong>。Pod 可以请求特定数量的资源（CPU 和内存）。同样 PVC 申领也可以请求特定的大小和访问模式 （例如，可以挂载为 ReadWriteOnce、ReadOnlyMany、ReadWriteMany 或 ReadWriteOncePod， 请参阅访问模式）。</li>
+</ul>
+<h3 id="最简单的用法"><a href="#最简单的用法" class="headerlink" title="最简单的用法"></a>最简单的用法</h3><ol>
+<li>声明一个PVC</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">PersistentVolumeClaim</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pv-claim</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">accessModes:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">ReadWriteOnce</span></span><br><span class="line">  <span class="attr">resources:</span></span><br><span class="line">    <span class="attr">requests:</span></span><br><span class="line">      <span class="attr">storage:</span> <span class="string">1Gi</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，在这个 PVC 对象里，不需要任何关于 Volume 细节的字段，只有描述性的属性和定义。比如，storage: 1Gi，表示我想要的 Volume 大小至少是 1 GiB；accessModes: ReadWriteOnce，表示这个 Volume 的挂载方式是<strong>可读写，</strong>并且只能被挂载在一个节点上而非被多个节点共享。</p>
+<ol start="2">
+<li>在pod中通过pvc使用这个pv</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pv-pod</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">pv-container</span></span><br><span class="line">      <span class="attr">image:</span> <span class="string">nginx</span></span><br><span class="line">      <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">&quot;http-server&quot;</span></span><br><span class="line">      <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">&quot;/usr/share/nginx/html&quot;</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">pv-storage</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">pv-storage</span></span><br><span class="line">      <span class="attr">persistentVolumeClaim:</span></span><br><span class="line">        <span class="attr">claimName:</span> <span class="string">pv-claim</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，在这个 Pod 的 Volumes 定义中，<strong>我们只需要声明它的类型是 persistentVolumeClaim，然后指定 PVC 的名字，而完全不必关心 Volume 本身的定义。</strong><br>这时候，只要我们创建这个 PVC 对象，Kubernetes 就会自动为它绑定一个符合条件的 Volume。可是，这些符合条件的 Volume 又是从哪里来的呢？<br><strong>答案是，它们来自于由运维人员维护的 PV（Persistent Volume）对象。接下来，我们一起看一个常见的 PV 对象的 YAML 文件：</strong></p>
+<ol start="3">
+<li>pv对象</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">PersistentVolume</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pv-volume</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">local</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">capacity:</span></span><br><span class="line">    <span class="attr">storage:</span> <span class="string">10Gi</span></span><br><span class="line">  <span class="attr">accessModes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">ReadWriteOnce</span></span><br><span class="line">  <span class="attr">rbd:</span></span><br><span class="line">    <span class="attr">monitors:</span></span><br><span class="line">    <span class="comment"># 使用 kubectl get pods -n rook-ceph 查看 rook-ceph-mon- 开头的 POD IP 即可得下面的列表</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;10.16.154.78:6789&#x27;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;10.16.154.82:6789&#x27;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;10.16.154.83:6789&#x27;</span></span><br><span class="line">    <span class="attr">pool:</span> <span class="string">kube</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">foo</span></span><br><span class="line">    <span class="attr">fsType:</span> <span class="string">ext4</span></span><br><span class="line">    <span class="attr">readOnly:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">user:</span> <span class="string">admin</span></span><br><span class="line">    <span class="attr">keyring:</span> <span class="string">/etc/ceph/keyring</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这个 PV 对象的 spec.rbd 字段，正是我们前面介绍过的 Ceph RBD Volume 的详细定义。而且，它还声明了这个 PV 的容量是 10 GiB。这样，Kubernetes 就会为我们刚刚创建的 PVC 对象绑定这个 PV。</p>
+<p>所以，Kubernetes 中 PVC 和 PV 的设计，<strong>实际上类似于“接口”和“实现”的思想</strong>。开发者只要知道并会使用“接口”，即：PVC；而运维人员则负责给“接口”绑定具体的实现，即：PV。</p>
+<h3 id="为什么pod重建后数据不会丢失"><a href="#为什么pod重建后数据不会丢失" class="headerlink" title="为什么pod重建后数据不会丢失"></a>为什么pod重建后数据不会丢失</h3><p>其实，我和你分析一下 StatefulSet 控制器恢复这个 Pod 的过程，你就可以很容易理解了。</p>
+<ol>
+<li>首先，当你把一个 Pod，比如 web-0，删除之后，这个 Pod 对应的 PVC 和 PV，并不会被删除，而这个 Volume 里已经写入的数据，也依然会保存在远程存储服务里（比如，我们在这个例子里用到的 Ceph 服务器）。</li>
+<li>此时，StatefulSet 控制器发现，一个名叫 web-0 的 Pod 消失了。所以，控制器就会重新创建一个新的、<strong>名字还是叫作 web-0 的 Pod 来，“纠正”这个不一致的情况。</strong></li>
+<li><strong>需要注意的是，在这个新的 Pod 对象的定义里，它声明使用的 PVC 的名字，还是叫作：www-web-0。</strong>这个 PVC 的定义，还是来自于 PVC 模板（volumeClaimTemplates），这是 StatefulSet 创建 Pod 的标准流程。</li>
+<li><strong>所以，在这个新的 web-0 Pod 被创建出来之后，Kubernetes 为它查找名叫 www-web-0 的 PVC 时，就会直接找到旧 Pod 遗留下来的同名的 PVC，进而找到跟这个 PVC 绑定在一起的 PV。</strong></li>
+</ol>
+<p>这样，新的 Pod 就可以挂载到旧 Pod 对应的那个 Volume，并且获取到保存在 Volume 里的数据。<br><strong>通过这种方式，Kubernetes 的 StatefulSet 就实现了对应用存储状态的管理。</strong></p>
+<p><strong>还有一种理解方式就是</strong></p>
+<ol>
+<li><strong>首先，StatefulSet 的控制器直接管理的是 Pod</strong>。这是因为，StatefulSet 里的不同 Pod 实例，不再像 ReplicaSet 中那样都是完全一样的，而是有了细微区别的。比如，每个 Pod 的 hostname、名字等都是不同的、携带了编号的。而 StatefulSet 区分这些实例的方式，就是通过在 Pod 的名字里加上事先约定好的编号。</li>
+<li><strong>其次，Kubernetes 通过 Headless Service，为这些有编号的 Pod，在 DNS 服务器中生成带有同样编号的 DNS 记录</strong>。只要 StatefulSet 能够保证这些 Pod 名字里的编号不变，那么 Service 里类似于 web-0.nginx.default.svc.cluster.local 这样的 DNS 记录也就不会变，而这条记录解析出来的 Pod 的 IP 地址，则会随着后端 Pod 的删除和再创建而自动更新。这当然是 Service 机制本身的能力，不需要 StatefulSet 操心。</li>
+<li><strong>最后，StatefulSet 还为每一个 Pod 分配并创建一个同样编号的 PVC</strong>。这样，Kubernetes 就可以通过 Persistent Volume 机制为这个 PVC 绑定上对应的 PV，从而保证了每一个 Pod 都拥有一个独立的 Volume。</li>
+</ol>
+<p><strong>在这种情况下，即使 Pod 被删除，它所对应的 PVC 和 PV 依然会保留下来。所以当这个 Pod 被重新创建出来之后，Kubernetes 会为它找到同样编号的 PVC，挂载这个 PVC 对应的 Volume，从而获取到以前保存在 Volume 里的数据。</strong></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>从这些讲述中，我们不难看出 StatefulSet 的设计思想：StatefulSet 其实就是一种特殊的 Deployment，而其独特之处在于，它的每个 Pod 都被编号了。而且，这个编号会体现在 Pod 的名字和 hostname 等标识信息上，这不仅代表了 Pod 的创建顺序，也是 Pod 的重要网络标识（即：在整个集群里唯一的、可被访问的身份）。<br>有了这个编号后，StatefulSet 就使用 Kubernetes 里的两个标准功能：Headless Service 和 PV&#x2F;PVC，实现了对 Pod 的拓扑状态和存储状态的维护</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://Ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/a5a12cb8.html">https://ray2310.github.io/post/a5a12cb8.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ray2310.github.io" target="_blank">Rayce. Blogs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/kubernetes/">kubernetes</a><a class="post-meta__tags" href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a></div><div class="post_share"><div class="social-share" data-image="https://w.wallhaven.cc/full/l8/wallhaven-l8ppv2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/25bb90fa.html" title="Deployment容器编排？怎么编排"><img class="cover" src="https://w.wallhaven.cc/full/l8/wallhaven-l8xql2.png" onerror="onerror=null;src='/img/second.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Deployment容器编排？怎么编排</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/25bb90fa.html" title="Deployment容器编排？怎么编排"><img class="cover" src="https://w.wallhaven.cc/full/l8/wallhaven-l8xql2.png" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-16</div><div class="title">Deployment容器编排？怎么编排</div></div></a></div><div><a href="/post/72dd3c2b.html" title="Kubernetes的pod解析"><img class="cover" src="https://w.wallhaven.cc/full/p9/wallhaven-p913ep.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-15</div><div class="title">Kubernetes的pod解析</div></div></a></div><div><a href="/post/a6460819.html" title="Kubernetes安装总结"><img class="cover" src="https://w.wallhaven.cc/full/d6/wallhaven-d6jx53.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-13</div><div class="title">Kubernetes安装总结</div></div></a></div><div><a href="/post/53db2c5f.html" title="Kubernetes RUSH"><img class="cover" src="https://w.wallhaven.cc/full/01/wallhaven-01jvd3.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-03-22</div><div class="title">Kubernetes RUSH</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://avatars.githubusercontent.com/u/109897266?v=4" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">140</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">51</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">32</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center">无人扶我青云志，我自踏雪至山巅</p> <p align="center">倘若命中无此运，孤身亦可登昆仑</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">前置</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%A1%E7%90%86%E6%9C%89%E7%8A%B6%E6%80%81%E5%BA%94%E7%94%A8%E7%9A%84%E6%B3%95%E5%AE%9D%E2%80%94%E2%80%94StatefulSet"><span class="toc-number"></span> <span class="toc-text">管理有状态应用的法宝——StatefulSet</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">0.1.</span> <span class="toc-text">适用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%90%E5%88%B6%E6%83%85%E5%86%B5"><span class="toc-number">0.2.</span> <span class="toc-text">限制情况</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#StatefulSet%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3"><span class="toc-number">1.</span> <span class="toc-text">StatefulSet的设计思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%93%E5%B1%95%E7%9A%84%E6%8E%A2%E7%A9%B6%E5%8F%8AService%E7%9A%84%E5%AE%9E%E8%B7%B5"><span class="toc-number">2.</span> <span class="toc-text">拓展的探究及Service的实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#service%E8%AE%BF%E9%97%AEpod%E7%9A%84%E6%96%B9%E5%BC%8F%E6%9D%A5%E6%8E%A2%E8%AE%A8StatefulSet"><span class="toc-number">2.1.</span> <span class="toc-text">service访问pod的方式来探讨StatefulSet</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E7%8A%B6%E6%80%81"><span class="toc-number">3.</span> <span class="toc-text">存储状态</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E7%94%A8%E6%B3%95"><span class="toc-number">3.1.</span> <span class="toc-text">最简单的用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88pod%E9%87%8D%E5%BB%BA%E5%90%8E%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%BC%9A%E4%B8%A2%E5%A4%B1"><span class="toc-number">3.2.</span> <span class="toc-text">为什么pod重建后数据不会丢失</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.3.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/a5a12cb8.html" title="有状态应用的编排-statefulSet"><img src="https://w.wallhaven.cc/full/l8/wallhaven-l8ppv2.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="有状态应用的编排-statefulSet"/></a><div class="content"><a class="title" href="/post/a5a12cb8.html" title="有状态应用的编排-statefulSet">有状态应用的编排-statefulSet</a><time datetime="2024-07-20T14:47:45.000Z" title="发表于 2024-07-20 22:47:45">2024-07-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/25bb90fa.html" title="Deployment容器编排？怎么编排"><img src="https://w.wallhaven.cc/full/l8/wallhaven-l8xql2.png" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Deployment容器编排？怎么编排"/></a><div class="content"><a class="title" href="/post/25bb90fa.html" title="Deployment容器编排？怎么编排">Deployment容器编排？怎么编排</a><time datetime="2024-07-16T15:55:47.000Z" title="发表于 2024-07-16 23:55:47">2024-07-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/72dd3c2b.html" title="Kubernetes的pod解析"><img src="https://w.wallhaven.cc/full/p9/wallhaven-p913ep.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Kubernetes的pod解析"/></a><div class="content"><a class="title" href="/post/72dd3c2b.html" title="Kubernetes的pod解析">Kubernetes的pod解析</a><time datetime="2024-07-15T15:41:31.000Z" title="发表于 2024-07-15 23:41:31">2024-07-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/a6460819.html" title="Kubernetes安装总结"><img src="https://w.wallhaven.cc/full/d6/wallhaven-d6jx53.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="Kubernetes安装总结"/></a><div class="content"><a class="title" href="/post/a6460819.html" title="Kubernetes安装总结">Kubernetes安装总结</a><time datetime="2024-07-13T15:30:04.000Z" title="发表于 2024-07-13 23:30:04">2024-07-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/94113fc3.html" title="一直在用的ipTables,你真的懂吗？"><img src="https://w.wallhaven.cc/full/l8/wallhaven-l8p58l.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="一直在用的ipTables,你真的懂吗？"/></a><div class="content"><a class="title" href="/post/94113fc3.html" title="一直在用的ipTables,你真的懂吗？">一直在用的ipTables,你真的懂吗？</a><time datetime="2024-07-10T12:39:00.000Z" title="发表于 2024-07-10 20:39:00">2024-07-10</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://w.wallhaven.cc/full/l8/wallhaven-l8ppv2.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2024 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a><a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a><a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> <a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: '',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: '',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
