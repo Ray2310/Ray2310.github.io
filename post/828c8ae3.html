@@ -1,0 +1,352 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>深入解析容器网络 | Rayce. Blogs</title><meta name="author" content="Rayce."><meta name="copyright" content="Rayce."><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="容器网络在使用kubernetes之前， 最为火热的技术就是Docker技术了。 它完成了从虚拟机时代的过度，是走向云原生时代的开端。 但是由于docker的故步自封导致被google的开源的kubernetes后来居上， 现在的Docker虽然在积极改进， 但是主流大势已经被kubernetes掌握， 所以也只能起到助力作用。回归正题， 在kubernetes的服务发现， 服务网格等技术火热之前">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入解析容器网络">
+<meta property="og:url" content="https://ray2310.github.io/post/828c8ae3.html">
+<meta property="og:site_name" content="Rayce. Blogs">
+<meta property="og:description" content="容器网络在使用kubernetes之前， 最为火热的技术就是Docker技术了。 它完成了从虚拟机时代的过度，是走向云原生时代的开端。 但是由于docker的故步自封导致被google的开源的kubernetes后来居上， 现在的Docker虽然在积极改进， 但是主流大势已经被kubernetes掌握， 所以也只能起到助力作用。回归正题， 在kubernetes的服务发现， 服务网格等技术火热之前">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://w.wallhaven.cc/full/x6/wallhaven-x6gvez.png">
+<meta property="article:published_time" content="2024-08-04T03:49:58.000Z">
+<meta property="article:modified_time" content="2024-08-04T03:53:23.791Z">
+<meta property="article:author" content="Rayce.">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="云原生">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://w.wallhaven.cc/full/x6/wallhaven-x6gvez.png"><link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQHlJW3iX0eSx0YEsPnrToEC7iKW4m3TEgiQ&usqp=CAU"><link rel="canonical" href="https://ray2310.github.io/post/828c8ae3.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Rayce.","link":"链接: ","source":"来源: Rayce. Blogs","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '深入解析容器网络',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-04 11:53:23'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://avatars.githubusercontent.com/u/109897266?v=4" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">145</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">51</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">32</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://w.wallhaven.cc/full/x6/wallhaven-x6gvez.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Rayce. Blogs"><span class="site-name">Rayce. Blogs</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">深入解析容器网络</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-08-04T03:49:58.000Z" title="发表于 2024-08-04 11:49:58">2024-08-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-04T03:53:23.791Z" title="更新于 2024-08-04 11:53:23">2024-08-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/kubernetes/">kubernetes</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">7.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>25分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="深入解析容器网络"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="容器网络"><a href="#容器网络" class="headerlink" title="容器网络"></a>容器网络</h1><p>在使用kubernetes之前， 最为火热的技术就是Docker技术了。 它完成了从虚拟机时代的过度，是走向云原生时代的开端。 但是由于docker的故步自封导致被google的开源的kubernetes后来居上， 现在的Docker虽然在积极改进， 但是主流大势已经被kubernetes掌握， 所以也只能起到助力作用。<br>回归正题， 在kubernetes的服务发现， 服务网格等技术火热之前， 是怎么来实现容器之间的通信呢 ？本文我们就来探讨一下。</p>
+<h2 id="什么是容器网络及它解决了什么问题-？"><a href="#什么是容器网络及它解决了什么问题-？" class="headerlink" title="什么是容器网络及它解决了什么问题 ？"></a>什么是容器网络及它解决了什么问题 ？</h2><p>容器网络利用Linux的<strong>network namespace</strong>实现对网络资源的隔离，每个容器都有自己的<strong>网络栈，包括网卡、回环设备、路由表和iptables规则</strong>。<br>**容器网络需要解决的主要问题包括容器IP的分配、容器之间的互相访问、容器如何访问主机外部网络、以及外部网络如何访问到容器内部。 **</p>
+<h2 id="容器网络实现技术"><a href="#容器网络实现技术" class="headerlink" title="容器网络实现技术"></a>容器网络实现技术</h2><p>容器网络的实现主要借助了下面两种技术。一个是 Veth Pair ，另一个是Bridge 网桥</p>
+<ul>
+<li><strong>Veth Pair</strong>：用于实现不同Network Namespace之间的通信。</li>
+<li><strong>Bridge</strong>：Linux中的虚拟交换机，用于连接不同的Network Namespace</li>
+</ul>
+<blockquote>
+<p>这里先暂时理解为实体的电脑的多个网卡和 电脑内置交换机（自造词）。 但其实他们之间还是有很大差异的， 后面我再详细解释下他们为什么有这么大差异。</p>
+</blockquote>
+<p>后面我在来详细说下， 先有这个概念</p>
+<h2 id="探讨容器网络"><a href="#探讨容器网络" class="headerlink" title="探讨容器网络"></a>探讨容器网络</h2><p>其实， 虽然上面说到了使用linux的namespace规则实现对网络资源的隔离， 但是作为一个容器，它可以声明直接使用宿主机的网络栈（–net&#x3D;host），即：不开启 Network Namespace，比如：<br><code>$ docker run –d –net=host --name nginx-host nginx</code><br>在这种情况下，这个容器启动后，直接监听的就是宿主机的 80 端口。<br>像这样直接使用宿主机网络栈的方式，虽然可以为容器提供良好的网络性能，但也会不可避免地引入共享网络资源的问题，比如端口冲突。所以，<strong>在大多数情况下，我们都希望容器进程能使用自己 Network Namespace 里的网络栈，即：拥有属于自己的 IP 地址和端口。</strong><br>为了理解这个问题，你其实可以把每一个容器看做一台主机，它们都有一套独立的“网络栈”。</p>
+<blockquote>
+<p>如果你想要实现两台主机之间的通信，最直接的办法，就是把它们用一根网线连接起来；而如果你想要实现多台主机之间的通信，那就需要用网线，把它们连接在一台交换机上。</p>
+</blockquote>
+<p>在** Linux 中，能够起到虚拟交换机作用的网络设备，是网桥（Bridge**）。它是一个工作在数据链路层（Data Link）的设备，主要功能是根据 MAC 地址学习来将数据包转发到网桥的不同端口（Port）上</p>
+<blockquote>
+<h3 id="简介网桥Bridge"><a href="#简介网桥Bridge" class="headerlink" title="简介网桥Bridge"></a>简介网桥Bridge</h3><p>bridge网桥是一种虚拟网络设备，用于连接不同的网络设备和容器，使它们能够在同一网络中进行通信。Bridge网桥充当一个中介，将容器与主机网络连接起来，使容器可以与外部网络和其他容器进行通信。</p>
+</blockquote>
+<p>为了实现上述目的，<strong>Docker 项目会默认在宿主机上创建一个名叫 docker0 的网桥，凡是连接在 docker0 网桥上的容器，就可以通过它来进行通信。</strong><br>可是，我们又该如何把这些容器“连接”到 docker0 网桥上呢？<br>这时候，我们就需要使用一种名叫** Veth Pair 的虚拟设备了**。</p>
+<blockquote>
+<h3 id="简介Veth-Pair"><a href="#简介Veth-Pair" class="headerlink" title="简介Veth Pair"></a>简介Veth Pair</h3><p><strong>veth pair</strong> 是成对出现的一种虚拟网络设备接口，一端连着网络协议栈，一端彼此相连。<strong>veth pair</strong> 总是成对出现的，从一端进入的数据包将会在另一端出现。我们可以把 <strong>veth pair</strong> 看成一条网线两端连接的两张以太网卡。只要将 <strong>veth pair</strong> 每一段分别接入不同的 <code>Namespace</code>，那么这两个 <code>Namespace</code> 就可以实现互通了</p>
+</blockquote>
+<p>Veth Pair 设备的特点是：它被创建出来后，总是以两张虚拟网卡（Veth Peer）的形式成对出现的。并且，从其中一个“网卡”发出的数据包，可以直接出现在与它对应的另一张“网卡”上，哪怕这两个“网卡”在不同的 Network Namespace 里。<br><strong>这就使得 Veth Pair 常常被用作连接不同 Network Namespace 的“网线”。</strong></p>
+<h3 id="举例来说Veth-Pair"><a href="#举例来说Veth-Pair" class="headerlink" title="举例来说Veth Pair"></a>举例来说Veth Pair</h3><p>比如，现在我们启动了一个叫作 nginx-1 的容器，然后进入到这个容器中查看一下它的网络设备：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># 在宿主机上</span><br><span class="line">$ docker exec -it nginx-1 /bin/bash</span><br><span class="line"># 在容器里</span><br><span class="line">root@2b3c181aecf1:/# ifconfig</span><br><span class="line">eth0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        inet 172.17.0.2  netmask 255.255.0.0  broadcast 0.0.0.0</span><br><span class="line">        inet6 fe80::42:acff:fe11:2  prefixlen 64  scopeid 0x20&lt;link&gt;</span><br><span class="line">        ether 02:42:ac:11:00:02  txqueuelen 0  (Ethernet)</span><br><span class="line">        RX packets 364  bytes 8137175 (7.7 MiB)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 281  bytes 21161 (20.6 KiB)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line">        </span><br><span class="line">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536</span><br><span class="line">        inet 127.0.0.1  netmask 255.0.0.0</span><br><span class="line">        inet6 ::1  prefixlen 128  scopeid 0x10&lt;host&gt;</span><br><span class="line">        loop  txqueuelen 1000  (Local Loopback)</span><br><span class="line">        RX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 0  bytes 0 (0.0 B)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line">        </span><br><span class="line">$ route</span><br><span class="line">Kernel IP routing table</span><br><span class="line">Destination     Gateway         Genmask         Flags Metric Ref    Use Iface</span><br><span class="line">default         172.17.0.1      0.0.0.0         UG    0      0        0 eth0</span><br><span class="line">172.17.0.0      0.0.0.0         255.255.0.0     U     0      0        0 eth0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，这个容器里有一张叫作 eth0 的网卡，它正是一个 Veth Pair 设备在容器里的这一端。<br>通过 route 命令查看 nginx-1 容器的路由表，我们可以看到，这个 eth0 网卡是这个容器里的默认路由设备；所有对 172.17.0.0&#x2F;16 网段的请求，也会被交给 eth0 来处理（第二条 172.17.0.0 路由规则）。<br><strong>而这个 Veth Pair 设备的另一端，则在宿主机上。你可以通过查看宿主机的网络设备看到它</strong>，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># 在宿主机上</span><br><span class="line">$ ifconfig</span><br><span class="line">...</span><br><span class="line">docker0   Link encap:Ethernet  HWaddr 02:42:d8:e4:df:c1  </span><br><span class="line">          inet addr:172.17.0.1  Bcast:0.0.0.0  Mask:255.255.0.0</span><br><span class="line">          inet6 addr: fe80::42:d8ff:fee4:dfc1/64 Scope:Link</span><br><span class="line">          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1</span><br><span class="line">          RX packets:309 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:372 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line"> collisions:0 txqueuelen:0 </span><br><span class="line">          RX bytes:18944 (18.9 KB)  TX bytes:8137789 (8.1 MB)</span><br><span class="line">veth9c02e56 Link encap:Ethernet  HWaddr 52:81:0b:24:3d:da  </span><br><span class="line">          inet6 addr: fe80::5081:bff:fe24:3dda/64 Scope:Link</span><br><span class="line">          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1</span><br><span class="line">          RX packets:288 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:371 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line"> collisions:0 txqueuelen:0 </span><br><span class="line">          RX bytes:21608 (21.6 KB)  TX bytes:8137719 (8.1 MB)</span><br><span class="line">          </span><br><span class="line">$ brctl show</span><br><span class="line">bridge name bridge id  STP enabled interfaces</span><br><span class="line">docker0  8000.0242d8e4dfc1 no  veth9c02e56</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>通过 ifconfig 命令的输出，你可以看到，nginx-1 容器对应的 Veth Pair 设备，在宿主机上是一张虚拟网卡。它的名字叫作 veth9c02e56。并且，通过 brctl show 的输出，你可以看到这张网卡被“插”在了 docker0 上。<br>这时候，如果我们再在这台宿主机上启动另一个 Docker 容器，比如 nginx-2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ docker run –d --name nginx-2 nginx</span><br><span class="line">$ brctl show</span><br><span class="line">bridge name bridge id  STP enabled interfaces</span><br><span class="line">docker0  8000.0242d8e4dfc1 no  veth9c02e56</span><br><span class="line">       vethb4963f3</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>你就会发现一个新的、名叫 vethb4963f3 的虚拟网卡，也被“插”在了 docker0 网桥上。<br>这时候，如果你在 nginx-1 容器里 ping 一下 nginx-2 容器的 IP 地址（172.17.0.3），<strong>就会发现同一宿主机上的两个容器默认就是相互连通的。</strong><br><img src="/images/1722439548004-ecf6431c-ef07-411c-8419-5da17a0aa5b0.png" alt="image.png"><br>需要注意的是，在实际的数据传递时，上述数据的传递过程在网络协议栈的不同层次，都有 Linux 内核 Netfilter 参与其中。</p>
+<h3 id="简述网桥Bridge"><a href="#简述网桥Bridge" class="headerlink" title="简述网桥Bridge"></a>简述网桥Bridge</h3><p>熟悉了 docker0 网桥的工作方式，你就可以理解，在默认情况下，<strong>被限制在 Network Namespace 里的容器进程，实际上是通过 Veth Pair 设备 + 宿主机网桥的方式，实现了跟同其他容器的数据交换。</strong><br>与之类似地，当你在一台宿主机上，访问该宿主机上的容器的 IP 地址时，这个请求的数据包，也是先根据路由规则到达 docker0 网桥，然后被转发到对应的 Veth Pair 设备，最后出现在容器里。这个过程的示意图，如下所示：<br><img src="/images/1722439633076-3a77cc86-fb90-4cf7-b853-350479022493.png" alt="image.png"><br>    同样地，<strong>当一个容器试图连接到另外一个宿主机时</strong>，比如：ping 10.168.0.3，它发出的请求数据包，<strong>首先经过 docker0 网桥出现在宿主机上。然后根据宿主机的路由表里的直连路由规则（10.168.0.0&#x2F;24 via eth0)），对 10.168.0.3 的访问请求就会交给宿主机的 eth0 处理。</strong><br>所以接下来，这个数据包就会经宿主机的 eth0 网卡转发到宿主机网络上，最终到达 10.168.0.3 对应的宿主机上。当然，这个过程的实现要求这两台宿主机（本身就是一个宿主机）本身是连通的。这个过程的示意图，如下所示：<br><img src="/images/1722439757334-1974b911-28f5-432a-a317-4445d3d52679.png" alt="image.png"><br>所以说，<strong>当你遇到容器连不通“外网”的时候，你都应该先试试 docker0 网桥能不能 ping 通，然后查看一下跟 docker0 和 Veth Pair 设备相关的 iptables 规则是不是有异常，往往就能够找到问题的答案了。</strong></p>
+<p>不过，在最后一个“Docker 容器连接其他宿主机”的例子里，你可能已经联想到了这样一个问题：如果在另外一台宿主机（比如：10.168.0.3）上，也有一个 Docker 容器。那么，我们的 nginx-1 容器又该如何访问它呢？这个问题，**其实就是容器的“跨主通信”问题。 **</p>
+<h3 id="跨主机通信的问题怎么解决-？"><a href="#跨主机通信的问题怎么解决-？" class="headerlink" title="跨主机通信的问题怎么解决 ？"></a>跨主机通信的问题怎么解决 ？</h3><blockquote>
+<p>在 Docker 的默认配置下，一台宿主机上的 docker0 网桥，和其他宿主机上的 docker0 网桥，没有任何关联，它们互相之间也没办法连通。所以，连接在这些网桥上的容器，自然也没办法进行通信了。</p>
+</blockquote>
+<p>如果我们通过软件的方式，创建一个整个集群“公用”的网桥，然后把集群里的所有容器都连接到这个网桥上，不就可以相互通信了吗？类似这样。<br><img src="/images/1722439884102-01218b9e-15a5-4702-ba37-3acfb6c8576c.png" alt="image.png"></p>
+<p>可以看到，构建这种容器网络的核心在于：我们需要在已有的宿主机网络上，再通过软件构建一个覆盖在已有宿主机网络之上的、可以把所有容器连通在一起的虚拟网络。所以，这种技术就被称为：<strong>Overlay Network（覆盖网络）</strong>。 这是一个概念技术， 下面我们就来看看真正的实体技术了。 </p>
+<h1 id="容器跨主机网络通信"><a href="#容器跨主机网络通信" class="headerlink" title="容器跨主机网络通信"></a>容器跨主机网络通信</h1><p>容器的跨主机交流首先是在<br>Flannel 项目本身只是一个框架，真正为我们提供容器网络功能的，是 Flannel 的后端实现。目前，Flannel 支持三种后端实现，分别是：</p>
+<ol>
+<li>VXLAN；（目前来说最好的， 可以跨子网）</li>
+<li>host-gw；（缺点是只能在同一子网内的节点之间进行Pod网络通信，不支持跨子网或跨VPC的网络通信。）</li>
+<li>UDP。（性能最差的）</li>
+</ol>
+<p>这三种不同的后端实现，正代表了三种容器跨主网络的主流实现方法。<br>而 UDP 模式，是 Flannel 项目最早支持的一种方式，却也是性能最差的一种方式。所以，这个模式目前已经被弃用。不过，Flannel 之所以最先选择 UDP 模式，就是因为这种模式是最直接、也是最容易理解的容器跨主网络实现。</p>
+<h2 id="容器“跨主网络”的实现原理"><a href="#容器“跨主网络”的实现原理" class="headerlink" title="容器“跨主网络”的实现原理"></a>容器“跨主网络”的实现原理</h2><p>下面我会来一一介绍一下他们， 但是重点的应该是VXLAN， 因为这个是目前用的 也是最好的， udp虽然已经被剔除了 ，但是他是最初始的， 所以为了便于我们理解整个历程还是来学下的好。 我这里主要是以张磊老师的案例和资料进行学习。</p>
+<h2 id="UDP模式"><a href="#UDP模式" class="headerlink" title="UDP模式"></a>UDP模式</h2><p>以下面的例子来说</p>
+<blockquote>
+<p>两台宿主机。</p>
+<ul>
+<li>宿主机 Node 1 上有一个容器 container-1，它的 IP 地址是 <code>100.96.1.2</code>，对应的 docker0 网桥的地址是：<code>100.96.1.1/24</code>。</li>
+<li>宿主机 Node 2 上有一个容器 container-2，它的 IP 地址是 <code>100.96.2.3</code>，对应的 docker0 网桥的地址是：<code>100.96.2.1/24</code>。</li>
+</ul>
+<p>我们现在的任务，就是让 container-1 访问 container-2。</p>
+</blockquote>
+<p>流程如下：<br><img src="/images/1722524945630-a991bf45-ff8c-4d71-a8bd-d56b43b1a432.png" alt="image.png"><br>这种情况下，container-1 容器里的进程发起的 IP 包，其源地址就是 100.96.1.2，目的地址就是 100.96.2.3。由于目的地址 100.96.2.3 并不在 Node 1 的 docker0 网桥的网段里，所以这个 IP 包会被交给默认路由规则，通过容器的网关进入 docker0 网桥（如果是同一台宿主机上的容器间通信，走的是直连规则)，从而出现在宿主机上。<br>这时候，这个 IP 包的下一个目的地，就取决于宿主机上的路由规则了。此时，Flannel 已经在宿主机上创建出了一系列的路由规则。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 在Node 1上</span><br><span class="line">$ ip route</span><br><span class="line">default via 10.168.0.1 dev eth0</span><br><span class="line">100.96.0.0/16 dev flannel0  proto kernel  scope link  src 100.96.1.0</span><br><span class="line">100.96.1.0/24 dev docker0  proto kernel  scope link  src 100.96.1.1</span><br><span class="line">10.168.0.0/24 dev eth0  proto kernel  scope link  src 10.168.0.2</span><br></pre></td></tr></table></figure>
+
+<p>由于我们的 IP 包的目的地址是 100.96.2.3，它匹配不到本机 docker0 网桥对应的 100.96.1.0&#x2F;24 网段，只能匹配到第二条、也就是 100.96.0.0&#x2F;16 对应的这条路由规则，从而进入到一个叫作 flannel0 的设备中。<br>而这个 flannel0 设备的类型就比较有意思了：它是一个 <strong>TUN 设备（Tunnel 设备）</strong>。<br>在 Linux 中，TUN 设备是一种工作在三层（Network Layer）的虚拟网络设备。<strong>TUN 设备的功能非常简单，即：在操作系统内核和用户应用程序之间传递 IP 包。</strong></p>
+<h3 id="flannel的工作方式"><a href="#flannel的工作方式" class="headerlink" title="flannel的工作方式"></a>flannel的工作方式</h3><blockquote>
+<p>以 flannel0 设备为例：<br>像上面提到的情况，<strong>当操作系统将一个 IP 包发送给 flannel0 设备之后，flannel0 就会把这个 IP 包，交给创建这个设备的应用程序，也就是 Flannel 进程。这是一个从内核态（Linux 操作系统）向用户态（Flannel 进程）的流动方向。</strong><br>反之，如果 Flannel 进程向 flannel0 设备发送了一个 IP 包，那么这个 IP 包就会出现在宿主机网络栈中，然后根据宿主机的路由表进行下一步处理。这是一个从用户态向内核态的流动方向。<br>所以，当 IP 包从容器经过 docker0 出现在宿主机，然后又根据路由表进入 flannel0 设备后，宿主机上的 flanneld 进程（Flannel 项目在每个宿主机上的主进程），就会收到这个 IP 包。然后，flanneld 看到了这个 IP 包的目的地址，是 100.96.2.3，就把它发送给了 Node 2 宿主机。</p>
+</blockquote>
+<p><strong>Flannel在UDP模式下的工作原理：</strong></p>
+<ol>
+<li>首先，Flannel在每个主机上运行一个名为flanneld的代理程序。这些代理程序在主机之间相互通信，以协调容器子网的分配和管理。</li>
+<li>当一个新主机加入集群时，flanneld代理程序会从Etcd（一个分布式键值存储系统）获取一个子网，并将其分配给该主机上的容器。每个主机都会知道其他主机的子网分配信息。</li>
+<li>当一个容器需要与另一个主机上的容器通信时，主机上的flanneld代理程序会首先检查目标容器的IP地址。如果目标容器位于同一主机上，数据包将直接发送。如果目标容器位于另一个主机上，数据包将被封装在一个UDP数据包中，并通过主机的物理网络发送。</li>
+<li>接收主机上的flanneld代理程序会解封装UDP数据包，并将原始数据包发送给目标容器。<br>:::info</li>
+</ol>
+<h3 id="详细说下一条数据从进入主机到达到容器的过程"><a href="#详细说下一条数据从进入主机到达到容器的过程" class="headerlink" title="详细说下一条数据从进入主机到达到容器的过程"></a>详细说下一条数据从进入主机到达到容器的过程</h3><p>当一个数据包到达主机时，它首先会经过主机的网络堆栈。以下是数据包在到达容器之前的处理过程：</p>
+<ol>
+<li>数据包首先被主机的网络接口接收。网络接口会根据数据包的<strong>目标MAC地址判断是否需要处理该数据包</strong>。如果目标MAC地址与主机的网络接口匹配，数据包将继续在主机的网络堆栈中传递。</li>
+<li>数据包接下来会被主机的<strong>防火墙处理。防火墙会根据配置的规则检查数据包的源IP地址、目标IP地址、协议和端口等信息，判断是否允许该数据包通过</strong>。如果数据包被允许通过，它将继续在网络堆栈中传递。</li>
+<li><strong>数据包随后会被路由和转发模块处理</strong>。路由模块会根据数据包的目标IP地址和主机的路由表判断数据包应该如何转发。<strong>在这个过程中，数据包可能会被转发给flannel进程。</strong></li>
+<li>如果数据包需要发送给flannel，它会被交给flanneld进程。</li>
+<li>【<strong>集群概念了</strong>】<strong>flanneld进程会根据数据包的目标IP地址查询Etcd中的子网分配信息，确定目标容器位于哪个主机。然后，flanneld会将数据包封装（例如，使用UDP或VXLAN封装），并通过主机的物理网络发送给目标主机。</strong></li>
+<li>目标主机上的flanneld进程会接收到封装的数据包，并将其解封装以获取原始数据包。接下来，flanneld会将数据包发送给目标容器的网络接口。</li>
+<li>数据包最后会进入目标容器的网络堆栈<strong>。容器内的防火墙和其他网络组件会根据自己的规则处理数据包，最终将其传递给容器内的应用程序。</strong><br>:::</li>
+</ol>
+<blockquote>
+<p>在我们的例子中，Node 1 的子网是 100.96.1.0&#x2F;24，container-1 的 IP 地址是 100.96.1.2。Node 2 的子网是 100.96.2.0&#x2F;24，container-2 的 IP 地址是 100.96.2.3。</p>
+</blockquote>
+<p>而这些子网与宿主机的对应关系，正是保存在 Etcd 当中，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl ls /coreos.com/network/subnets</span><br><span class="line">/coreos.com/network/subnets/100.96.1.0-24</span><br><span class="line">/coreos.com/network/subnets/100.96.2.0-24</span><br><span class="line">/coreos.com/network/subnets/100.96.3.0-24</span><br></pre></td></tr></table></figure>
+
+<p>所以，flanneld 进程在处理由 flannel0 传入的 IP 包时，就可以根据目的 IP 的地址（比如 100.96.2.3），匹配到对应的子网（比如 100.96.2.0&#x2F;24），从 Etcd 中找到这个子网对应的宿主机的 IP 地址是 10.168.0.3，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">etcdctl get /coreos.com/network/subnets/100.96.2.0-24</span><br><span class="line">&#123;&quot;PublicIP&quot;:&quot;10.168.0.3&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而对于 flanneld 来说，只要 Node 1 和 Node 2 是互通的，那么 flanneld 作为 Node 1 上的一个普通进程，就一定可以通过上述 IP 地址（10.168.0.3）访问到 Node 2，这没有任何问题。<br>所以说，<strong>flanneld 在收到 container-1 发给 container-2 的 IP 包之后，就会把这个 IP 包直接封装在一个 UDP 包里，然后发送给 Node 2。不难理解，这个 UDP 包的源地址，就是 flanneld 所在的 Node 1 的地址，而目的地址，则是 container-2 所在的宿主机 Node 2 的地址。</strong></p>
+<p>这个<strong>请求得以完成的原因是，每台宿主机上的 flanneld，都监听着一个 8285 端口，所以 flanneld 只要把 UDP 包发往 Node 2 的 8285 端口即可。</strong><br>通过这样一个普通的、宿主机之间的 UDP 通信，一个 UDP 包就从 Node 1 到达了 Node 2。而 Node 2 上监听 8285 端口的进程也是 flanneld，所以这时候，flanneld 就可以从这个 UDP 包里解析出封装在里面的、container-1 发来的原 IP 包。</p>
+<blockquote>
+<p>而接下来 flanneld 的工作就非常简单了：flanneld 会直接把这个 IP 包发送给它所管理的 TUN 设备，即 flannel0 设备。</p>
+</blockquote>
+<p>Linux 内核网络栈就会负责处理这个 IP 包，具体的处理方法，就是通过本机的路由表来寻找这个 IP 包的下一步流向。<br>接下来的流程，就是通过上面的容器网络，docker0 网桥会扮演二层交换机的角色，将数据包发送给正确的端口，进而通过 Veth Pair 设备进入到 container-2 的 Network Namespace 里。<br><strong>而 container-2 返回给 container-1 的数据包，则会经过与上述过程完全相反的路径回到 container-1 中。</strong></p>
+<h3 id="为什么UDP-模式性能不好-？"><a href="#为什么UDP-模式性能不好-？" class="headerlink" title="为什么UDP 模式性能不好 ？"></a>为什么UDP 模式性能不好 ？</h3><p>相比于两台宿主机之间的直接通信，基于 Flannel UDP 模式的容器通信多了一个额外的步骤，即 flanneld 的处理过程。而这个过程，由于使用到了 flannel0 这个 TUN 设备，仅在发出 IP 包的过程中，就需要经过三次用户态与内核态之间的数据拷贝，如下所示：<br><img src="/images/1722525083278-83057955-e364-4a1a-ac5d-7c8aac063f53.png" alt="image.png"><br>详细流程</p>
+<ol>
+<li>第一次，用户态的容器进程发出的 IP 包经过 docker0 网桥进入内核态；</li>
+<li>第二次，IP 包根据路由表进入 TUN（flannel0）设备，从而回到用户态的 flanneld 进程；</li>
+<li>第三次，flanneld 进行 UDP 封包之后重新进入内核态，将 UDP 包通过宿主机的 eth0 发出去。</li>
+</ol>
+<p>此外，我们还可以看到，Flannel 进行 UDP 封装（Encapsulation）和解封装（Decapsulation）的过程，也都是在用户态完成的。在 Linux 操作系统中，上述这些上下文切换和用户态操作的代价其实是比较高的，这也正是造成 Flannel UDP 模式性能不好的主要原因。</p>
+<p>所以说，<strong>我们在进行系统级编程的时候，有一个非常重要的优化原则，就是要减少用户态到内核态的切换次数，并且把核心的处理逻辑都放在内核态进行</strong>。这也是为什么，<strong>Flannel 后来支持的 VXLAN 模式，逐渐成为了主流的容器网络方案的原因。</strong></p>
+<h2 id="VXLAN-模式主流的容器网络"><a href="#VXLAN-模式主流的容器网络" class="headerlink" title="VXLAN 模式主流的容器网络"></a>VXLAN 模式主流的容器网络</h2><p>VXLAN，即 <code>Virtual Extensible LAN</code>（虚拟可扩展局域网），<strong>是 Linux 内核本身就支持的一种网络虚似化技术</strong>。所以说，<strong>VXLAN 可以完全在内核态实现上述封装和解封装的工作，从而通过与前面相似的“隧道”机制，构建出覆盖网络</strong>（Overlay Network）。<br><strong>它的主要设计思想是在现有的物理网络基础上创建虚拟网络，从而实现网络资源的优化和更高的可扩展性。下面来详细学习下。</strong></p>
+<h3 id="VXLAN-的覆盖网络的设计思想（理解的重点）"><a href="#VXLAN-的覆盖网络的设计思想（理解的重点）" class="headerlink" title="VXLAN 的覆盖网络的设计思想（理解的重点）"></a>VXLAN 的覆盖网络的设计思想（理解的重点）</h3><hr>
+<p>VXLAN 的覆盖网络的设计思想是：在现有的三层网络之上（物理层-&gt;数据链路层-&gt; 完网络层， 所以这里说的是网络层的基础上），具体来说，<strong>VXLAN通过在原始数据包（如二层数据帧）外封装一个新的IP数据包，</strong>创建了一个覆盖网络。这个新的IP数据包包含了VXLAN头部和原始数据包，可以在现有的IP网络上进行传输。当数据包到达目标主机时，会被解封装，恢复成原始的数据帧，然后传递给目标容器。</p>
+<hr>
+<blockquote>
+<p>上面的这个思想会贯穿我们后面所讲解的内容， 所需要不断的结合， 细品。</p>
+</blockquote>
+<p>而为了能够在二层网络上打通“隧道”，VXLAN 会在宿主机上设置一个特殊的网络设备作为“隧道”的两端。这个设备就叫作 VTEP，即：VXLAN Tunnel End Point（虚拟隧道端点）。</p>
+<blockquote>
+<p>** VTEP 设备的作用，其实跟前面的 flanneld 进程非常相似。**</p>
+<ul>
+<li>只不过，它进行封装和解封装的对象，<strong>是二层数据帧（数据链路层）</strong>；</li>
+<li>【<strong>前面的udp的flannel进程操作的数据包是IP数据包（网络层）</strong>】</li>
+</ul>
+<p>而且这个工作的执行流程，全部是在内核里完成的（因为 VXLAN 本身就是 Linux 内核中的一个模块）。<br>上述基于 VTEP 设备进行“隧道”通信的流程</p>
+</blockquote>
+<p><img src="/images/1722525413364-f991f6f9-f800-4f0c-a236-f4ab5d438536.png" alt="image.png"></p>
+<p><strong>可以看到，图中每台宿主机上名叫 flannel.1 的设备，就是 VXLAN 所需的 VTEP 设备，它既有 IP 地址，也有 MAC 地址。</strong></p>
+<blockquote>
+<p>现在，我们的 container-1 的 IP 地址是 10.1.15.2，要访问的 container-2 的 IP 地址是 10.1.16.3。<br>那么，<strong>与前面 UDP 模式的流程类似，</strong>当 container-1 发出请求之后，这个目的地址是 10.1.16.3 的 IP 包，会先出现在 docker0 网桥，然后被路由到本机 flannel.1 设备进行处理。<br>【不同点】<strong>来到了“隧道”的入口。</strong>为了方便叙述，我接下来会把这个 IP 包称为“原始 IP 包”。</p>
+</blockquote>
+<p>为了能够将“原始 IP 包”封装并且发送到正确的宿主机，<strong>VXLAN 就需要找到这条“隧道”的出口，即：目的宿主机的 VTEP 设备。</strong><br>而这个设备的信息，正是每台宿主机上的 flanneld 进程负责维护的。<br>比如，当 Node 2 启动并加入 Flannel 网络之后，在 Node 1（以及所有其他节点）上，flanneld 就会添加一条如下所示的路由规则：</p>
+<blockquote>
+<p>全都是计网知识。可见基础的重要性</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ route -n</span><br><span class="line">Kernel IP routing table</span><br><span class="line">Destination     Gateway         Genmask         Flags Metric Ref    Use Iface</span><br><span class="line">...</span><br><span class="line">10.1.16.0       10.1.16.0       255.255.255.0   UG    0      0        0 flannel.1</span><br><span class="line"></span><br><span class="line"># 这条规则的意思是：凡是发往 10.1.16.0/24 网段的 IP 包，</span><br><span class="line"># 都需要经过 flannel.1 设备发出，并且，它最后被发往的网关地址是：10.1.16.0。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/1722654186156-120fd0d8-0042-4daf-b28c-0a25d5c752a8.png" alt="image.png"><br>从上面的图片中 Flannel VXLAN 模式的流程图中我们可以看到，10.1.16.0 正是 Node 2 上的 VTEP 设备（也就是 flannel.1 设备)的 IP 地址。</p>
+<blockquote>
+<p>为了方便叙述，接下来我会把 Node 1 和 Node 2 上的 flannel.1 设备分别称为“源 VTEP 设备”和“目的 VTEP 设备”。</p>
+</blockquote>
+<p>而这些 VTEP 设备之间，就需要想办法组成一个虚拟的二层网络，即：通过二层数据帧进行通信。<br>所以在我们的例子中，“源 VTEP 设备”收到“原始 IP 包”后，就要想办法把“原始 IP 包”加上一个目的 MAC 地址，<strong>封装成一个二层数据帧</strong>，然后发送给“目的 VTEP 设备”（当然，这么做还是因为这个 IP 包的目的地址不是本机）。</p>
+<blockquote>
+<p>找mac地址 用什么， 当然是APR协议了。 （arp协议怎么找到 自己去学习计算机网络的基础吧， 这里再不能拓展了， 不然就拉不回正题了。）</p>
+</blockquote>
+<p>接下来，<strong>Linux 内核还需要再把“内部数据帧”进一步封装成为宿主机网络里的一个普通的数据帧</strong>，好让它“载着”“内部数据帧”，通过宿主机的 eth0 网卡进行传输。</p>
+<blockquote>
+<p>为了实现这个“搭便车”的机制，Linux 内核会在“内部数据帧”前面，加上一个特殊的 VXLAN 头，用来表示这个“乘客”实际上是一个 VXLAN 要使用的数据帧。</p>
+</blockquote>
+<blockquote>
+<p>而这个 VXLAN 头里有一个重要的标志叫作** VNI，它是 VTEP 设备识别某个数据帧是不是应该归自己处理的重要标识。而在 Flannel 中，VNI 的默认值是 1，这也是为何，宿主机上的 VTEP 设备都叫作 flannel.1 的原因**，这里的“1”，其实就是 VNI 的值。</p>
+</blockquote>
+<p><strong>然后，Linux 内核会把这个数据帧封装进一个 UDP 包里发出去。</strong><br>但是，我们知道，UDP 包是一个四层数据包，所以 Linux 内核会在它前面加上一个 IP 头，即原理图中的 <code>Outer IP Header</code>，组成一个 IP 包。并且，在这个 IP 头里，会填上前面通过 FDB 查询出来的目的主机的 IP 地址，即 Node 2 的 IP 地址 10.168.0.3。<br>然后，Linux 内核再在这个 IP 包前面加上二层数据帧头，即原理图中的 Outer Ethernet Header，并把 Node 2 的 MAC 地址填进去。这个 MAC 地址本身，是 Node 1 的 ARP 表要学习的内容，无需 Flannel 维护。然后就得到了这样的一数据帧格式<br><img src="/images/1722654963264-f7412350-4b04-4fda-acab-9d9119281a92.png" alt="image.png"><br>至此**，封包工作就宣告完成了。 **<br><strong>下面就是拆包工作了</strong></p>
+<ol>
+<li>Node 1 上的 flannel.1 设备就可以把这个数据帧从 Node 1 的 eth0 网卡发出去。显然，这个帧会经过宿主机网络来到 Node 2 的 eth0 网卡。</li>
+<li>Node 2 的内核网络栈会发现这个数据帧里有 VXLAN Header，并且 VNI&#x3D;1。所以 Linux 内核会对它进行拆包，拿到里面的内部数据帧，然后根据 VNI 的值，把它交给 Node 2 上的 flannel.1 设备。</li>
+<li>而 flannel.1 设备则会进一步拆包，取出“原始 IP 包”。接下来就回到了我在上一篇文章中分享的单机容器网络的处理流程。最终，IP 包就进入到了 container-2 容器的 Network Namespace 里。**</li>
+</ol>
+<p><strong>以上，就是 Flannel VXLAN 模式的具体工作原理了。</strong></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://Ray2310.github.io">Rayce.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ray2310.github.io/post/828c8ae3.html">https://ray2310.github.io/post/828c8ae3.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ray2310.github.io" target="_blank">Rayce. Blogs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/kubernetes/">kubernetes</a><a class="post-meta__tags" href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a></div><div class="post_share"><div class="social-share" data-image="https://w.wallhaven.cc/full/x6/wallhaven-x6gvez.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/a723b8b0.html" title="浅谈Kubernetes的存储"><img class="cover" src="https://w.wallhaven.cc/full/4x/wallhaven-4xg1qv.jpg" onerror="onerror=null;src='/img/second.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">浅谈Kubernetes的存储</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/a723b8b0.html" title="浅谈Kubernetes的存储"><img class="cover" src="https://w.wallhaven.cc/full/4x/wallhaven-4xg1qv.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-30</div><div class="title">浅谈Kubernetes的存储</div></div></a></div><div><a href="/post/39c7ed83.html" title="声明式Api及其实际应用"><img class="cover" src="https://w.wallhaven.cc/full/l8/wallhaven-l8ppv2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-27</div><div class="title">声明式Api及其实际应用</div></div></a></div><div><a href="/post/af89f2f5.html" title="容器化守护进程DaemonSet"><img class="cover" src="https://w.wallhaven.cc/full/gp/wallhaven-gp65y7.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-25</div><div class="title">容器化守护进程DaemonSet</div></div></a></div><div><a href="/post/46fb6ae1.html" title="说说Headless Service"><img class="cover" src="https://w.wallhaven.cc/full/7p/wallhaven-7p75yy.png" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-20</div><div class="title">说说Headless Service</div></div></a></div><div><a href="/post/a5a12cb8.html" title="有状态应用的编排-statefulSet"><img class="cover" src="https://w.wallhaven.cc/full/l8/wallhaven-l8ppv2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-20</div><div class="title">有状态应用的编排-statefulSet</div></div></a></div><div><a href="/post/25bb90fa.html" title="Deployment容器编排？怎么编排"><img class="cover" src="https://w.wallhaven.cc/full/l8/wallhaven-l8xql2.png" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-16</div><div class="title">Deployment容器编排？怎么编排</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://avatars.githubusercontent.com/u/109897266?v=4" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Rayce.</div><div class="author-info__description">Time never speaks, but answers all questions</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">145</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">51</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">32</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ray2310"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ray2310" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1326507725@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p align="center">无人扶我青云志，我自踏雪至山巅</p> <p align="center">倘若命中无此运，孤身亦可登昆仑</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C"><span class="toc-number">1.</span> <span class="toc-text">容器网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C%E5%8F%8A%E5%AE%83%E8%A7%A3%E5%86%B3%E4%BA%86%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98-%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">什么是容器网络及它解决了什么问题 ？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C%E5%AE%9E%E7%8E%B0%E6%8A%80%E6%9C%AF"><span class="toc-number">1.2.</span> <span class="toc-text">容器网络实现技术</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A2%E8%AE%A8%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C"><span class="toc-number">1.3.</span> <span class="toc-text">探讨容器网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B%E7%BD%91%E6%A1%A5Bridge"><span class="toc-number">1.3.1.</span> <span class="toc-text">简介网桥Bridge</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8BVeth-Pair"><span class="toc-number">1.3.2.</span> <span class="toc-text">简介Veth Pair</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BE%E4%BE%8B%E6%9D%A5%E8%AF%B4Veth-Pair"><span class="toc-number">1.3.3.</span> <span class="toc-text">举例来说Veth Pair</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E8%BF%B0%E7%BD%91%E6%A1%A5Bridge"><span class="toc-number">1.3.4.</span> <span class="toc-text">简述网桥Bridge</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%A8%E4%B8%BB%E6%9C%BA%E9%80%9A%E4%BF%A1%E7%9A%84%E9%97%AE%E9%A2%98%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3-%EF%BC%9F"><span class="toc-number">1.3.5.</span> <span class="toc-text">跨主机通信的问题怎么解决 ？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E8%B7%A8%E4%B8%BB%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1"><span class="toc-number">2.</span> <span class="toc-text">容器跨主机网络通信</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E2%80%9C%E8%B7%A8%E4%B8%BB%E7%BD%91%E7%BB%9C%E2%80%9D%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">容器“跨主网络”的实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UDP%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">UDP模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#flannel%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F"><span class="toc-number">2.2.1.</span> <span class="toc-text">flannel的工作方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%A6%E7%BB%86%E8%AF%B4%E4%B8%8B%E4%B8%80%E6%9D%A1%E6%95%B0%E6%8D%AE%E4%BB%8E%E8%BF%9B%E5%85%A5%E4%B8%BB%E6%9C%BA%E5%88%B0%E8%BE%BE%E5%88%B0%E5%AE%B9%E5%99%A8%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-number">2.2.2.</span> <span class="toc-text">详细说下一条数据从进入主机到达到容器的过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88UDP-%E6%A8%A1%E5%BC%8F%E6%80%A7%E8%83%BD%E4%B8%8D%E5%A5%BD-%EF%BC%9F"><span class="toc-number">2.2.3.</span> <span class="toc-text">为什么UDP 模式性能不好 ？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VXLAN-%E6%A8%A1%E5%BC%8F%E4%B8%BB%E6%B5%81%E7%9A%84%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C"><span class="toc-number">2.3.</span> <span class="toc-text">VXLAN 模式主流的容器网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#VXLAN-%E7%9A%84%E8%A6%86%E7%9B%96%E7%BD%91%E7%BB%9C%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3%EF%BC%88%E7%90%86%E8%A7%A3%E7%9A%84%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">2.3.1.</span> <span class="toc-text">VXLAN 的覆盖网络的设计思想（理解的重点）</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/828c8ae3.html" title="深入解析容器网络"><img src="https://w.wallhaven.cc/full/x6/wallhaven-x6gvez.png" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="深入解析容器网络"/></a><div class="content"><a class="title" href="/post/828c8ae3.html" title="深入解析容器网络">深入解析容器网络</a><time datetime="2024-08-04T03:49:58.000Z" title="发表于 2024-08-04 11:49:58">2024-08-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/a723b8b0.html" title="浅谈Kubernetes的存储"><img src="https://w.wallhaven.cc/full/4x/wallhaven-4xg1qv.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="浅谈Kubernetes的存储"/></a><div class="content"><a class="title" href="/post/a723b8b0.html" title="浅谈Kubernetes的存储">浅谈Kubernetes的存储</a><time datetime="2024-07-30T15:30:34.000Z" title="发表于 2024-07-30 23:30:34">2024-07-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/39c7ed83.html" title="声明式Api及其实际应用"><img src="https://w.wallhaven.cc/full/l8/wallhaven-l8ppv2.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="声明式Api及其实际应用"/></a><div class="content"><a class="title" href="/post/39c7ed83.html" title="声明式Api及其实际应用">声明式Api及其实际应用</a><time datetime="2024-07-27T13:30:43.000Z" title="发表于 2024-07-27 21:30:43">2024-07-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/af89f2f5.html" title="容器化守护进程DaemonSet"><img src="https://w.wallhaven.cc/full/gp/wallhaven-gp65y7.jpg" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="容器化守护进程DaemonSet"/></a><div class="content"><a class="title" href="/post/af89f2f5.html" title="容器化守护进程DaemonSet">容器化守护进程DaemonSet</a><time datetime="2024-07-25T15:25:01.000Z" title="发表于 2024-07-25 23:25:01">2024-07-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/46fb6ae1.html" title="说说Headless Service"><img src="https://w.wallhaven.cc/full/7p/wallhaven-7p75yy.png" onerror="this.onerror=null;this.src='/img/second.jpg'" alt="说说Headless Service"/></a><div class="content"><a class="title" href="/post/46fb6ae1.html" title="说说Headless Service">说说Headless Service</a><time datetime="2024-07-20T14:53:23.000Z" title="发表于 2024-07-20 22:53:23">2024-07-20</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://w.wallhaven.cc/full/x6/wallhaven-x6gvez.png')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2024 By Rayce.</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a><a target="_blank" href="https://butterfly.js.org/"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a><a target="_blank" href="https://www.jsdelivr.com/"><img src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> <a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: '',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: '',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
